@@ -1,0 +1,101 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{gastex}
+
+%\newcommand{\showLoesung}{1} %<---als Schalter
+%\newcommand{\showInhalt}{1} %<---als Schalter
+
+\input{../skel/uebmacsPNG}
+
+\usepackage{enumitem}
+
+\begin{document}
+\thispagestyle{empty}
+
+\Uebung{1}{-}{-}  % FIXME: Blattnummer, Datum, Zeit
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{aufgabe}{1}{$O$-Notation}
+Zeigen Sie, dass:
+\begin{enumerate}
+    \item $100n + n \log n \neq O(n)$
+    \item $13n^2 + 35n + 42 = O(n^2)$, indem Sie die Grenzwert-Definition der $O$-Notation verwenden.
+    \item $\operatorname{log}\left(\frac{3^n}{n + 1}\right) = O(n)$
+    \item $\sum\limits_{i=1}^{n} 2^i = O(2^n)$
+    \item $(n + 4)^5 = \Theta(n^5)$, ohne den Ausdruck auszumultiplizieren.
+    \item $\log(3n^4) = \Theta(\log n)$
+    \item $n^{2 + \cos(\pi n)} = \Omega(n) = O(n^3)$
+    \item $\sum\limits_{i=1}^{n} \frac{n + 1}{2^i - 1} = \Omega(n)$
+\end{enumerate}
+Zeigen Sie außerdem, dass für beliebige Funktionen $f, g, h \in \mathbb{N} \rightarrow \mathbb{R}^{+}$ gilt:
+\begin{enumerate}
+    \setcounter{enumi}{8}
+    \item $f(n) = O\big(g(n)\big)$ genau dann, wenn $g(n) = \Omega\big(f(n)\big)$
+    \item aus $f(n) = O\big(g(n)\big)$ und $g(n) = O\big(h(n)\big)$ folgt $f(n) = O\big(h(n)\big)$ (die $O$-Notation ist transitiv)
+\end{enumerate}
+\begin{description}
+    \item[Hinweis:] Für manche Teilaufgaben ist die geometrische Reihe nützlich: $\sum\limits_{i=0}^n a^i = \frac{1 - a^{n+1}}{1 - a}$ für alle $a \in \mathbb{R} \setminus \{1\}$
+\end{description}
+\end{aufgabe}
+
+
+\begin{aufgabe}{2}{Analyse von Algorithmen}
+\begin{enumerate}
+\item
+Implementieren Sie eine Funktion \texttt{duplicates} in einer Programmiersprache Ihrer Wahl, welche ein Array von Zahlen als Eingabe erhält und als Boolean zurück gibt, ob das Array Duplikate (zwei oder mehr Elemente des gleichen Werts) enthält.
+
+Beispiele: $\operatorname{duplicates}(\left[4, 1, 2, 4\right]) = \texttt{true}$;  $\operatorname{duplicates}(\left[4, 3, 2, 1\right]) = \texttt{false}$; $\operatorname{duplicates}(\left[3, 3, 2, 3\right]) = \texttt{true}$
+
+Achten Sie bei Ihrer Implementierung darauf, dass Sie keine zwei Werte des Arrays mehr als einmal vergleichen.
+
+\item
+Wie viele Vergleiche (\texttt{==}, \texttt{<}, \texttt{>=}, $\ldots$) benötigt Ihr Programm im Worst Case, abhängig von der Anzahl der Elemente $n$?
+
+\item Schätzen Sie anhand der Anzahl von Vergleichen die Worst-Case-Laufzeit Ihrer Funktion in $O$-Notation ab.
+\item Angenommen, Sie wissen, dass die Werte des Eingabearrays aufsteigend sortiert sind.
+Wie können Sie Ihr bestehendes Programm verbessern? Welche Laufzeit hat es nun?
+
+\end{enumerate}
+\end{aufgabe}
+
+\begin{aufgabe}{3}{Binäre Suche}
+Mittels binärer Suche kann effizient überprüft werden, ob ein Array von Zahlen einen bestimmten Wert enthält.
+Vorraussetzung ist, dass die Zahlen aufsteigend sortiert sind.
+Dafür wird der gesuchte Wert $x$ mit dem Wert $m$ in der Mitte des Arrays verglichen. Hier gibt es drei Fälle:
+\vspace{-3mm}
+\begin{itemize}
+    \item $x = m$: Der gesuchte Wert wurde gefunden. Fertig!
+    \item $x < m$: Der gesuchte Wert befindet sich, falls er existiert, links von $m$. Führe die binäre Suche rekursiv auf der linken Hälfte des Arrays aus.
+    \item $x > m$: Analog zu Fall 2, nur auf der rechten Hälfte
+\end{itemize}
+\begin{enumerate}
+    \item Implementieren Sie binäre Suche als rekursiven Algorithmus, vergessen sich nicht den Basisfall.
+    \item Konvertieren Sie Ihre Implementierung in einen Iterativen Algorithmus.
+    \item Geben Sie die Worst-Case-Laufzeit der rekursiven Variante als Rekursionsgleichung an.
+\end{enumerate}
+    
+\end{aufgabe}
+
+
+\begin{aufgabe}{4}{Registermaschinensimulator}
+\begin{enumerate}[label=\alph*)]
+    \item Implementieren Sie ein Registermaschinenprogramm, welches eine Zahl $n \in \mathbb{N}$ einliest und alle Fibonacci-Zahlen $\operatorname{fib}(i)$ mit $\operatorname{fib}(i) \leq n$ ausgibt. Bei $n = 20$ soll das Programm also die Zahlen $(1, 1, 2, 3, 5, 8, 13)$ aus\-ge\-ben; Bei Eingabe 1 nur $(1, 1)$.
+    \item \textbf{Bonusaufgabe (schwer):} Erweitern Sie Ihren Registermaschinensimulator, sodass dieser auch indirekte Adressierung untersützt.
+    Fügen Sie dafür folgende Befehle hinzu:
+    \begin{table}[h!]
+        \centering
+        \begin{tabular}{|l|l|}
+        \hline
+        \textbf{Befehl} & \textbf{Semantik} \\ \hline
+        \texttt{LDI} & $f(0) = f\big(f(\mathrm{adresse})\big)$ \\ \hline
+        \texttt{STI} & $f\big(f(\mathrm{adresse})\big) = f(0)$ \\ \hline
+        \end{tabular}
+    \end{table}
+
+    Implementieren Sie anschließend den Sieb des Eratosthenes auf der Registermaschine.
+    Das heißt, schreiben Sie ein Programm, welches eine Zahl $n \geq 2$ einliest und alle Primzahlen $p_i$ mit $p_i \leq n$ ausgibt.
+\end{enumerate}
+\end{aufgabe}
+
+\end{document}

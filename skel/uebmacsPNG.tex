@@ -1,0 +1,208 @@
+\usepackage{alltt,moreverb,amsmath,enumerate}
+\usepackage[normalem]{ulem}
+\usepackage[T1]{fontenc}
+\usepackage{ae,aecompl} %helvet,mathptm
+%\usepackage[left=15mm,right=15mm,top=20mm,bottom=20mm]{geometry}
+\usepackage[margin=.5in]{geometry}
+%\usepackage[latin1]{inputenc} % f�r Linux
+\usepackage[utf8]{inputenc} % Umlaute etc. direkt schreiben (unter Windows)
+\usepackage[german]{babel}
+\usepackage[url]{oth-logoPNG}
+%\usepackage{i2sym,i2ams}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows,shapes,trees,positioning,automata,decorations.pathreplacing,decorations.pathmorphing}
+\usepackage{tkz-graph}
+\usepackage{color}
+
+\usepackage{longtable}
+\usepackage{tabularx}
+
+%\usepackage{epic}
+%\usepackage{eepic}
+\usepackage{comment,ifthen}
+\usepackage{../include/todo}
+
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+
+\usepackage{listings}                   % Listings in Core-Erlang und Maude
+\usepackage{lstmisc}
+
+\usepackage{epic}                       % Bildbefehle (picture)
+%\usepackage{eepic}                      % erweiterte Bildbefehle
+
+\usepackage{bbm}                        % Mengensymbole (N,C,R,B)
+\usepackage{latexsym}                   % zusaetzliche Mathesymbole
+\usepackage{amsmath}                    % Mathepaket von der AMS
+\usepackage{amstext}
+\usepackage{amsfonts}
+\usepackage{stmaryrd}                   % zusaetzliche Mathesymbole
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{cancel}
+
+\usepackage{hyperref}
+\usepackage{url}                        % Zum Setzen von URLs in typewriter-face
+
+\pagestyle{empty}
+
+\let\epsilon=\varepsilon
+\let\phi=\varphi
+
+\frenchspacing
+
+\setlength{\parindent}{0pt}
+\setlength{\textwidth}{18.6cm}
+\setlength{\textheight}{26.5cm}
+\setlength{\hfuzz}{1mm}
+
+%%% Read dates of assignments from file
+\usepackage{xparse}
+\ExplSyntaxOn
+\ior_new:N \g_hringriin_file_stream
+
+\NewDocumentCommand{\ReadFile}{mm}
+ {
+  \hringriin_read_file:nn { #1 } { #2 }
+  \cs_new:Npn #1 ##1
+   {
+    \str_if_eq:nnTF { ##1 } { * }
+      { \seq_count:c { g_hringriin_file_ \cs_to_str:N #1 _seq } }
+      { \seq_item:cn { g_hringriin_file_ \cs_to_str:N #1 _seq } { ##1 } }
+   }
+ }
+
+\cs_new_protected:Nn \hringriin_read_file:nn
+ {
+  \ior_open:Nn \g_hringriin_file_stream { #2 }
+  \seq_gclear_new:c { g_hringriin_file_ \cs_to_str:N #1 _seq }
+  \ior_map_inline:Nn \g_hringriin_file_stream
+   {
+    \seq_gput_right:cx 
+     { g_hringriin_file_ \cs_to_str:N #1 _seq }
+     { \tl_trim_spaces:n { ##1 } }
+   }
+  \ior_close:N \g_hringriin_file_stream
+ }
+
+\ExplSyntaxOff
+
+\ReadFile{\uebungsabgabe}{../skel/UEBUNGSABGABE.def}
+
+%%% Read subject info from file
+\newcommand{\dozent}[1]{\def\DOZENT{#1}}
+\newcommand{\tutoren}[1]{\def\TUTOREN{#1}}
+\newcommand{\vorlesung}[1]{\def\VORLESUNG{#1}}
+\newcommand{\semester}[1]{\def\SEMESTER{#1}}
+
+\InputIfFileExists{../skel/VORLESUNG.def}{\providecommand{\TUTOREN}{}}%
+{\typeout{***********}
+ \typeout{Warnung: Kein File vorhanden, das die Vorlesung spezifiziert!}
+ \typeout{Spezifikation muss daher im Text des Blattes oder ueber die
+          Tastatur erfolgen.}
+ \typeout{***********}}
+
+\def\Uebung#1#2#3{
+  \othLehrstuhlLogo[\DOZENT]
+  \begin{center}
+	{~\\[-2em]\Large\bf \VORLESUNG}\\[0.5em]
+    \LARGE --~Zusatzübungsblatt~#1~--\\[4mm]
+	\normalsize\SEMESTER\\[2mm]
+	% Votierung und Abgabe bis zum %
+	% \ifthenelse{\equal{#2}{}}
+	%   {\textbf{\uebungsabgabe{#1}}}%
+	%   {\textbf{#2\the\year}}%
+	%   \textbf{, #3~Uhr}\\[1em]
+    \rule{\textwidth}{0.1pt}\\[1cm]
+  \end{center}
+}
+
+\def\Hinweis#1{
+	{~\\[-3em]\bf Hinweis: }
+	\begin{minipage}[t]{16.5cm}
+	#1
+	\end{minipage}\\[1em]
+    \rule{\textwidth}{0.1pt}
+}
+
+\def\Tipps#1{
+	{~\\[-3em]\bf Tipps: }
+	\begin{minipage}[t]{16.5cm}
+	#1
+	\end{minipage}\\[1em]
+    \rule{\textwidth}{0.1pt}
+}
+  
+\def\MyHeader{
+  \othLehrstuhlLogo[Prof.~Dr.~rer.~nat.~Carsten~Kern]%[Carsten~Kern,~Stefan~Rieger]
+}
+
+\newcommand{\sem}[1]{[\![#1\,]\!]}
+
+\def\aufgabe#1#2{\subsection*{Aufgabe #1 (#2)}\par}
+\def\endaufgabe{}
+
+\newenvironment{loesung}{\subsection*{L\"osungsvorschlag:}}{}
+\newenvironment{hinweis}{}{}
+\ifthenelse{\isundefined{\showLoesung}}{\excludecomment{loesung}}{\pagestyle{plain}\excludecomment{hinweis}}
+
+\newenvironment{tipps}{}{}
+\ifthenelse{\isundefined{\showTipps}}{\excludecomment{tipps}}{\excludecomment{hinweis}}
+
+\newenvironment{inhalt}{\subsection*{Kommentar:}}{}
+\ifthenelse{\isundefined{\showInhalt}}{\excludecomment{inhalt}}{}
+
+\long\def\Exercise#1#2{\begin{exercise}{#1}#2\end{exercise}}
+
+\def\underbar#1{%
+  \setbox0=\hbox{#1}%
+  \dimen0=\dp0\relax%
+  \dp0=0pt%
+  \setbox0=\hbox{\underline{\box0}}%
+  \dp0=\dimen0\relax%
+  \box0%
+  }
+
+\makeatletter
+\def\@makeunderbar[#1]#2{\expandafter\def\csname#1\endcsname{\underbar{#2}}}
+\def\makeunderbar{\@ifnextchar[{\@makeunderbar}{\@makeunderbar[]}}
+\makeatother
+
+\def\T{\mathrm{T}}
+\def\P{\mathrm{P}}
+\def\CT{\mathrm{CT}}
+\def\COp{\mathrm{COp}}
+
+\makeunderbar{Comp}
+\makeunderbar{Ops}
+\makeunderbar{trans}
+\makeunderbar[strans]{s-trans}
+\makeunderbar[ntrans]{n-trans}
+\makeunderbar{fix}
+
+\def\labelenumi{\alph{enumi})}
+\let\<=\langle
+\let\>=\rangle
+
+\parindent=0pt
+\parskip=1ex
+
+\definecolor{javared}{rgb}{0.6,0,0} % for strings
+\definecolor{javagreen}{rgb}{0.25,0.5,0.35} % comments
+\definecolor{javapurple}{rgb}{0.5,0,0.35} % keywords
+\definecolor{javadocblue}{rgb}{0.25,0.35,0.75} % javadoc
+ 
+\lstset{language=C++,
+basicstyle=\ttfamily\footnotesize,
+keywordstyle=\color{javapurple}\bf,
+stringstyle=\color{javared},
+commentstyle=\color{javagreen}\it\bf,
+morecomment=[s][\color{javadocblue}]{/**}{*/},
+numbers=left,
+numberstyle=\tiny\color{gray},
+stepnumber=1,
+numbersep=10pt,
+tabsize=3,
+showspaces=false,
+showstringspaces=false}
