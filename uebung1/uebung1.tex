@@ -2,7 +2,7 @@
 
 \usepackage{gastex}
 
-%\newcommand{\showLoesung}{1} %<---als Schalter
+\newcommand{\showLoesung}{1} %<---als Schalter
 %\newcommand{\showInhalt}{1} %<---als Schalter
 
 \input{../skel/uebmacsPNG}
@@ -39,6 +39,137 @@ Zeigen Sie außerdem, dass für beliebige Funktionen $f, g, h \in \mathbb{N} \ri
     \item[Hinweis:] Für manche Teilaufgaben ist die geometrische Reihe nützlich: $\sum\limits_{i=0}^n a^i = \frac{1 - a^{n+1}}{1 - a}$ für alle $a \in \mathbb{R} \setminus \{1\}$
 \end{description}
 \end{aufgabe}
+\begin{loesung}
+\begin{enumerate}
+    \item
+    \begin{equation}
+        \log\left(\frac{3^n}{n + 1}\right) = \log(3^n) - \log(n + 1)
+        \leq \log(3^n) = \log(3) \cdot n = O(n)
+    \end{equation}
+
+    \item 
+    \begin{align}
+        \lim\limits_{n \rightarrow \infty} \frac{13n^2 + 35n + 42}{n^2} &= \lim\limits_{n \rightarrow \infty} \left(13 + \frac{35}{n} + \frac{42}{n^2}\right) \\
+        &= 13 + \lim\limits_{n \rightarrow \infty} \frac{35}{n} + \lim\limits_{n \rightarrow \infty} \frac{42}{n^2} = 13 = c
+    \end{align}
+    \begin{equation}
+        \Rightarrow 13n^2 + 35n + 42 = O(n^2)
+    \end{equation}
+
+    \item
+    Wenn $100n + n \log n = O(n)$, gibt es per Defintion Konstanten $n_0$ und $c$, sodass für alle $n \geq n_0$
+    \begin{align}
+        100n + n \log n &\leq c\cdot n  \\
+        \label{eq:a}
+        100 + \log n &\leq c
+    \end{align}
+    Es gibt kein $n_0$, bei der Ungleichung \ref{eq:a} für ein konstantes $c$ und $n \geq n_0$ zutrifft, da $\lim\limits_{n \rightarrow \infty} \log n = \infty$.
+    Also ist $100n + n \log n \neq O(n)$.
+    
+    \item
+    \begin{align}
+        \sum\limits_{i=1}^{n} 2^i &\leq \sum\limits_{i=0}^{n} 2^i
+        \overset{\text{geometr. Reihe}}{=} \frac{1 - 2^{n+1}}{1 - 2} \\
+        &= 2^{n+1} - 1 \leq 2^{n+1} = 2 \cdot 2^n = O(2^n)
+    \end{align}
+
+    \item
+    \begin{equation}
+        (n+4)^5 \geq n^5 = \Omega(n^5)
+    \end{equation}
+    \begin{equation}
+        (n+4)^5 \overset{\text{für }n \geq 4}{\leq} (2n)^5 = 32 \cdot n ^5 = O(n^5)
+    \end{equation}
+    \begin{equation}
+        (n+4)^5 = \Omega(n^5) \wedge (n+4)^5 = O(n^5) \Rightarrow (n+4)^5 = \Theta(n^5)
+    \end{equation}
+
+    \item
+    \begin{equation}
+        \log(3n^4) = \log(3) + \log(n^4) = \log(3) + 4\log(n)
+    \end{equation}
+    \begin{equation}
+        \log(3) + 4\log(n)\geq 4\log(n) = \Omega(\log n) 
+    \end{equation}
+    Die Logarithmus-Funktion ist monoton steigend. Daher gilt für $n \geq 3$:
+    \begin{equation}
+        \log(3) + 4\log(n) \leq \log(n) + 4\log(n) = 5 \log(n) = O(\log(n)) 
+    \end{equation}
+    \begin{equation}
+        \log(3n^4) = \Omega(\log n) \wedge \log(3n^4) = O(\log n) \Rightarrow \log(3n^4) = \Theta(\log n)
+    \end{equation}
+    
+    \item
+    \begin{equation}
+        (n + 1)! \leq c n!
+    \end{equation}
+    Da $(n + 1)! = (n + 1)n!$, erhält man bei Division durch $n+1$ auf beiden Seiten
+    \begin{equation}
+        \label{eq:b}
+        n + 1 \leq c
+    \end{equation}
+    Ungleichung~\ref{eq:b} kann für große $n$ und konstantes $c$ nicht zutreffen.
+    
+
+    % \item 
+    % \begin{align}
+    %     \sum\limits_{i = 2}^{n - 1} \left( n - i + 1 \right) &= (n - 1) + (n - 2) + \ldots + 4 + 3 + 2 = \sum\limits_{i=2}^{n - 1} i \\
+    %     &= \left(\sum\limits_{i = 1}^{n - 1} i\right) - 1\overset{\text{Gaußsumme}}{=}\frac{n(n - 1)}{2} - 1 \\
+    %     &= \frac{1}{2}n^2 - \frac{1}{2}n - 1 \leq \frac{1}{2} n^2 = O(n^2)
+    % \end{align}
+
+
+    \item
+    \begin{equation}
+        -1 \leq \cos(\pi n) \leq 1
+    \end{equation}
+    \begin{equation}
+        n^{2 + \cos(\pi n)} \geq n^{2 - 1} = n = \Omega(n)
+    \end{equation}
+    \begin{equation}
+        n^{2 + \cos(\pi n)} \leq n^{2 + 1} = n^3 = O(n^3)
+    \end{equation}
+
+    \item
+    \begin{align}
+        \sum\limits_{i=1}^{n} \frac{n + 1}{2^i - 1} &= (n+1)\cdot\sum\limits_{i=1}^{n} \frac{1}{2^i - 1} \geq
+        n\cdot\sum\limits_{i=1}^{n} \frac{1}{2^i - 1} 
+        \geq n \cdot \sum\limits_{i=1}^{n} \frac{1}{2^i} \\
+        &= n \cdot \left(\sum\limits_{i=0}^{n} \frac{1}{2^i} - 1\right)
+        \overset{\text{geometr. Reihe}}{=}
+        n \cdot  \left(\frac{1 - \left(\frac{1}{2}\right)^{n+1}}{1 - \frac{1}{2}} - 1\right) \\
+        &=n \cdot  \left(2\left(1 - \left(\frac{1}{2}\right)^{n + 1}\right) - 1\right)
+        \overset{\text{für }n \geq 1}{\geq} n \cdot  \left(2 \left(1 - \frac{1}{4}\right) - 1\right) \\
+        &= n \cdot \frac{1}{2}= \Omega(n)
+    \end{align}
+
+    \item
+    Um zu zeigen, dass 
+    \begin{equation}
+     f(n) = O\big(g(n)\big) \Leftrightarrow g(n) = \Omega\big(f(n)\big),
+    \end{equation}
+    reicht es, zu zeigen, dass $f(n) = O\big(g(n)\big) \Rightarrow g(n) = \Omega\big(f(n)\big)$ und $f(n) = O\big(g(n)\big) \Leftarrow g(n) = \Omega\big(f(n)\big)$, also dass jeweils die eine Aussage aus der anderen folgt:
+    \begin{itemize}
+        \item $\Rightarrow$: Sei $f(n) = O\big(g(n)\big)$, dann gibt es positive Konstanten $n_0$ und $ c$, sodass $f(n) \leq c \cdot g(n)$ für alle $n \geq n_0$.
+        Daraus folgt, dass $g(n) \geq \frac{1}{c} f(n)$ für $n \geq n_0$.
+        Damit ist per Definition $g(n) = \Omega\big(f(n)\big)$ mit Konstanten $n_0' = n_0$ und $c' = \frac{1}{c}$
+        \item $\Leftarrow$: Die Rückrichtung erfolgt analog.
+    \end{itemize}
+
+    \item
+    Sei $f(n) = O\big(g(n)\big)$ und $g(n) = O\big(h(n)\big)$.
+    Dann gilt $f(n) \leq c_f \cdot g(n)$ für $n \geq n_{0,f}$ sowie $g(n) \leq c_g \cdot h(n)$ für $n \geq n_{0,g}$.
+    Daraus folgt, dass für jedes $n$ mit $n \geq n_{0,f}$ und $n \geq n_{0,g}$ gilt:
+    \begin{equation}
+        f(n) \leq c_f \cdot g(n) \leq c_f \cdot c_g \cdot h(n)
+    \end{equation}
+    Damit ist per Definition $f(n) = O\big(h(n)\big)$ mit Konstanten $n_0 = \max(n_{0,f}, n_{0,g})$ und $c = c_f \cdot c_g$.
+
+    
+
+
+\end{enumerate}
+\end{loesung}
 
 
 \begin{aufgabe}{2}{Analyse von Algorithmen}
@@ -60,6 +191,61 @@ Wie können Sie Ihr bestehendes Programm verbessern? Welche Laufzeit hat es nun?
 \end{enumerate}
 \end{aufgabe}
 
+\begin{loesung}
+    
+\begin{enumerate}
+    \item Beispielcode:
+    \begin{lstlisting}
+bool duplicates(int[] numbers) {
+    for (int i = 0; i < numbers.length; i++) {
+        for (int j = i + 1; j < numbers.length; j++) {
+            if (numbers[i] == numbers[j]) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+    \end{lstlisting}
+
+    \item
+    Der Vergleich \texttt{i < numbers.length} der äußeren \texttt{for}-Schleife wird $n + 1$ mal durchgeführt.
+    Die innere Schleife durchläuft für jeden Durchlauf der äußeren Schleife $n - i - 1$ Iterationen. Macht nochmal $n - i$ Vergleiche im \glqq{}\texttt{for}-Kopf\grqq{} und $n - i - 1$ Vergleiche für die \texttt{if}-Bedingung. Die Anzahl der Vergleiche $C(n)$ ist im Worst Case also:
+    \begin{align}
+        C(n) &= n + 1 + \sum\limits_{i = 0}^{n - 1} \big(2(n - i) - 1 \big)
+        = n + 1 + 2\sum\limits_{i = 0}^{n - 1} (n - i) - n \\
+        &=1 + 2\sum\limits_{i = 0}^{n - 1} (n - i)
+        = 1 + 2\big(n + (n-1) + \ldots + 2 + 1\big) = 1 + 2\sum\limits_{i = 1}^{n} i \\
+        &= 1 + 2\left( \frac{n(n + 1)}{2} \right) = 1 + n(n+1) \\
+        &= n^2 + n + 1
+    \end{align}
+
+    \item 
+    \begin{equation}
+        T(n) = n^2 + n + 1 \overset{\text{für }n \geq 1}{\leq} n^2 + n^2 + n^2 = 3 n^2 = O(n^2)
+    \end{equation}
+    
+    \item Wenn das Array aufsteigend sortiert ist, können Duplikate nur benachbarte Elemente sein:
+\begin{lstlisting}
+bool duplicatesSorted(int[] numbers) {
+    for (int i = 0; i < numbers.length - 1; i++) {
+        if (numbers[i] == numbers[i + 1]) {
+            return true;
+        }
+    }
+    return false;
+}
+\end{lstlisting}
+Diese Funktion benötigt im Worst Case $n$ Vergleiche für die \texttt{for}-Schleife und $n - 1$ Vergleiche für die \texttt{if}-Bedingung.
+Die Worst-Base-Laufzeit, abgeschätzt anhand der Anzahl von Vergleichen, entspricht also
+\begin{equation}
+    T(n) = 2n - 1 = O(n).
+\end{equation}
+
+\end{enumerate}
+\end{loesung}
+
+
 \begin{aufgabe}{3}{Binäre Suche}
 Mittels binärer Suche kann effizient überprüft werden, ob ein Array von Zahlen einen bestimmten Wert enthält.
 Vorraussetzung ist, dass die Zahlen aufsteigend sortiert sind.
@@ -78,11 +264,67 @@ Dafür wird der gesuchte Wert $x$ mit dem Wert $m$ in der Mitte des Arrays vergl
     
 \end{aufgabe}
 
+\newpage
+\begin{loesung}
+\begin{enumerate}
+    \item rekursive Implementierung (Parameter \texttt{start} ist inklusiv, \texttt{end} exklusiv):
+    \begin{lstlisting}
+bool binarySearchRec(int[] numbers, int value) {
+    return _binarySearchRec(numbers, 0, numbers.length, value);
+}
+bool _binarySearchRec(int[] numbers, int start, int end, int value) {
+    if (end - start <= 0) {
+        return false;
+    }
+    int middle = (start + end) / 2;
+    if (value == numbers[middle]) {
+        return true;
+    }
+    if (value < numbers[middle]) {
+        return _binarySearchRec(numbers, start, middle, value);
+    } else {
+        return _binarySearchRec(numbers, middle + 1, end, value);
+    }
+}
+    \end{lstlisting}
+    \item Da sich der rekursive Aufruf in Tail-Position befindet (letzte Anweisung vor dem \texttt{return}), reicht es für die iterative Implementierung, Parameter \texttt{start} und \texttt{end} jeweils für den nächsten Schleifendurchlauf zu aktualisieren.
+    Verwalten eines Stapels für die Aufrufe ist nicht notwendig.
+    \begin{lstlisting}
+bool binarySearchIt(int[] numbers, int value) {
+    int start = 0;
+    int end = numbers.length;
+    while (true) {
+        if (end - start <= 0) {
+            return false;
+        }
+        int middle = (start + end) / 2;
+        if (value == numbers[middle]) {
+            return true;
+        }
+        if (value < numbers[middle]) {
+            end = middle;
+        } else {
+            start = middle + 1;
+        }
+    }
+}
+    \end{lstlisting}
+    \item 
+    \begin{equation}
+        T(n) = \begin{cases}
+            1 & \text{für $n \leq 1$} \\
+            T(\left\lfloor \frac{n}{2} \right\rfloor) + 1  & \text{für $n > 1$} \\
+        \end{cases}
+    \end{equation}
+\end{enumerate}
+
+\end{loesung}
+
 
 \begin{aufgabe}{4}{Registermaschinensimulator}
 \begin{enumerate}[label=\alph*)]
     \item Implementieren Sie ein Registermaschinenprogramm, welches eine Zahl $n \in \mathbb{N}$ einliest und alle Fibonacci-Zahlen $\operatorname{fib}(i)$ mit $\operatorname{fib}(i) \leq n$ ausgibt. Bei $n = 20$ soll das Programm also die Zahlen $(1, 1, 2, 3, 5, 8, 13)$ aus\-ge\-ben; Bei Eingabe 1 nur $(1, 1)$.
-    Zur Definition der Fibonacci-Zahlen siehe Vorlesung 4, Folie 12
+    Zur Definition der Fibonacci-Zahlen siehe Vorlesung 4, Folie 12.
 
     \item \textbf{Bonusaufgabe (schwer):} Erweitern Sie Ihren Registermaschinensimulator, sodass dieser auch indirekte Adressierung untersützt.
     Fügen Sie dafür folgende Befehle hinzu:
@@ -100,5 +342,68 @@ Dafür wird der gesuchte Wert $x$ mit dem Wert $m$ in der Mitte des Arrays vergl
     Das heißt, schreiben Sie ein Programm, welches eine Zahl $n \geq 2$ einliest und alle Primzahlen $p_i$ mit $p_i \leq n$ ausgibt.
 \end{enumerate}
 \end{aufgabe}
+
+\begin{loesung}
+\begin{enumerate}[label=\alph*)]
+\item Speicherbelegung: $1 \rightarrow n, 2 \rightarrow a, 3 \rightarrow b, 4 \rightarrow c$
+\begin{lstlisting}
+01 INP 01 // Eingabe: n
+02 LDK 01
+03 STA 02 // a = 1
+04 STA 03 // b = 1
+05 LDA 02 
+06 SUB 01
+07 JLE 09 // while (a <= n)
+08 HLT 00 // Schleifenabbruch
+09 OUT 02 // print(a)
+10 LDA 02
+11 ADD 03
+12 STA 04 // c = a + b
+14 LDA 03
+15 STA 02 // a = b
+16 LDA 04
+17 STA 03 // b = c
+18 JMP 05 // Schleifenende
+\end{lstlisting}
+\item Speicherzellen 1 bis 3 werden für Eingabe und Zählervariablen verwendet ($n$, $i$ und $j$).
+Zelle 4 wird temporär für den indirekten Speicherzugriff verwendet.
+Das \glqq{}Boolean-Array\grqq{} für den Sieb beginnt ab Zelle 5 beginnend mit dem Wert für 2. 
+Der Wert für Zahl $i$ steht also an Adresse $i + 3$.
+0 steht dabei für prim, 1 für nicht-prim.
+\begin{lstlisting}
+01 INP 01 // Eingabe: n
+02 LDK 02
+03 STA 02 // i = 2
+04 LDK 03 // while (true) {
+05 ADD 02
+06 STA 04
+07 LDI 04
+08 JEZ 16 // if (arr[i] == 0) subroutine()
+09 LDK 01
+10 ADD 02
+11 STA 02 // i = i + 1
+12 LDA 02
+13 SUB 01 
+14 JLE 04 // if (i <= n) continue
+15 HLT 00 // return }
+16 OUT 02 // function subroutine() { print(i)
+17 LDA 02
+18 ADD 02
+19 STA 03 // j = i + i
+20 LDA 03 // while (true) {
+21 SUB 01
+22 JGZ 09 // if (j > n) return
+23 LDK 03
+24 ADD 03
+25 STA 04
+26 LDK 01
+27 STI 04 // arr[j] = 1
+28 LDA 03
+29 ADD 02
+30 STA 03 // j = j + i
+31 JMP 20 // } }
+\end{lstlisting}
+\end{enumerate}
+\end{loesung}
 
 \end{document}
