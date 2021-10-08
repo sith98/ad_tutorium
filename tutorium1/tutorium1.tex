@@ -1,6 +1,7 @@
 \documentclass[11pt,a4paper]{article}
 
 \usepackage{gastex}
+\usepackage{etoolbox}
 
 \newcommand{\showLoesung}{1} %<---als Schalter
 %\newcommand{\showInhalt}{1} %<---als Schalter
@@ -264,7 +265,7 @@ Dafür wird der gesuchte Wert $x$ mit dem Wert $m$ in der Mitte des Arrays vergl
     
 \end{aufgabe}
 
-\newpage
+\ifcsdef{showLoesung}{\newpage}{}
 \begin{loesung}
 \begin{enumerate}
     \item rekursive Implementierung (Parameter \texttt{start} ist inklusiv, \texttt{end} exklusiv):
