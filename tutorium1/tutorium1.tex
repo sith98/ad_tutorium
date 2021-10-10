@@ -17,17 +17,21 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\ifcsdef{showLoesung}{
+\textbf{Bitte beachten Sie:} Die Lösungen können trotz sorgfältiger Prüfung Fehler enthalten.
+Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in Tutorien, Übungen oder nach Vorlesungen.
+}{}
 \begin{aufgabe}{1}{$O$-Notation}
 Zeigen oder widerlegen Sie, dass:
 \begin{enumerate}
     \item $\operatorname{log}\left(\frac{3^n}{n + 1}\right) = O(n)$
     \item $13n^2 + 35n + 42 = O(n^2)$, indem Sie die Grenzwert-Definition der $O$-Notation verwenden.
     \item $100n + n \log n = O(n)$
-    \item $\sum\limits_{i=1}^{n} 2^i = O(2^n)$
+    \item $\sum\limits_{i=4}^{n-2} 2^i = O(2^n)$
     \item $(n + 4)^5 = \Theta(n^5)$, ohne den Ausdruck auszumultiplizieren.
     \item $\log(3n^4) = \Theta(\log n)$
     \item $(n + 1)! = O(n!)$
-    \item $n^{2 + \cos(\pi n)} = \Omega(n) = O(n^3)$
+    \item $n^{2 + \cos(\pi n)} = \Omega(n)$ und $n^{2 + \cos(\pi n)} = O(n^3)$
     \item $\sum\limits_{i=1}^{n} \frac{n + 1}{2^i - 1} = \Omega(n)$
 \end{enumerate}
 Zeigen Sie außerdem, dass für beliebige Funktionen $f, g, h \in \mathbb{N} \rightarrow \mathbb{R}^{+}$ gilt:
@@ -37,7 +41,7 @@ Zeigen Sie außerdem, dass für beliebige Funktionen $f, g, h \in \mathbb{N} \ri
     \item aus $f(n) = O\big(g(n)\big)$ und $g(n) = O\big(h(n)\big)$ folgt $f(n) = O\big(h(n)\big)$ (die $O$-Notation ist transitiv)
 \end{enumerate}
 \begin{description}
-    \item[Hinweis:] Für manche Teilaufgaben ist die geometrische Reihe nützlich: $\sum\limits_{i=0}^n a^i = \frac{1 - a^{n+1}}{1 - a}$ für alle $a \in \mathbb{R} \setminus \{1\}$
+    \item[Hinweis:] Für manche Teilaufgaben ist die geometrische Reihe nützlich: $\sum\limits_{i=0}^n a^i = \frac{a^{n+1} - 1}{a - 1}$ für alle $a \in \mathbb{R} \setminus \{1\}$
 \end{description}
 \end{aufgabe}
 \begin{loesung}
@@ -64,14 +68,14 @@ Zeigen Sie außerdem, dass für beliebige Funktionen $f, g, h \in \mathbb{N} \ri
         \label{eq:a}
         100 + \log n &\leq c
     \end{align}
-    Es gibt kein $n_0$, bei der Ungleichung \ref{eq:a} für ein konstantes $c$ und $n \geq n_0$ zutrifft, da $\lim\limits_{n \rightarrow \infty} \log n = \infty$.
+    Da $\lim\limits_{n \rightarrow \infty} \log n = \infty$, kann es keine Konstanten $n_0$ und $c$ geben, bei denen Ungleichung \ref{eq:a} für alle $n \geq n_0$ zutrifft.
     Also ist $100n + n \log n \neq O(n)$.
     
     \item
     \begin{align}
-        \sum\limits_{i=1}^{n} 2^i &\leq \sum\limits_{i=0}^{n} 2^i
-        \overset{\text{geometr. Reihe}}{=} \frac{1 - 2^{n+1}}{1 - 2} \\
-        &= 2^{n+1} - 1 \leq 2^{n+1} = 2 \cdot 2^n = O(2^n)
+        \sum\limits_{i=4}^{n-2} 2^i &\leq \sum\limits_{i=0}^{n-2} 2^i
+        \overset{\text{geometr. Reihe}}{=} \frac{2^{n-1} - 1}{2 - 1} \\
+        &= 2^{n-1} - 1 \leq 2^{n-1} = \frac{1}{2} \cdot 2^n = O(2^n)
     \end{align}
 
     \item
@@ -79,8 +83,9 @@ Zeigen Sie außerdem, dass für beliebige Funktionen $f, g, h \in \mathbb{N} \ri
         (n+4)^5 \geq n^5 = \Omega(n^5)
     \end{equation}
     \begin{equation}
-        (n+4)^5 \overset{\text{für }n \geq 4}{\leq} (2n)^5 = 32 \cdot n ^5 = O(n^5)
+        (n+4)^5 \overset{\text{für }n \geq 4}{\leq} (n + n)^5 = (2n)^5 = 32 \cdot n ^5 = O(n^5)
     \end{equation}
+    Insgesamt folgt also:
     \begin{equation}
         (n+4)^5 = \Omega(n^5) \wedge (n+4)^5 = O(n^5) \Rightarrow (n+4)^5 = \Theta(n^5)
     \end{equation}
@@ -92,10 +97,11 @@ Zeigen Sie außerdem, dass für beliebige Funktionen $f, g, h \in \mathbb{N} \ri
     \begin{equation}
         \log(3) + 4\log(n)\geq 4\log(n) = \Omega(\log n) 
     \end{equation}
-    Die Logarithmus-Funktion ist monoton steigend. Daher gilt für $n \geq 3$:
+    Die Logarithmus-Funktion ist streng monoton steigend. Daher gilt für $n \geq 3$:
     \begin{equation}
-        \log(3) + 4\log(n) \leq \log(n) + 4\log(n) = 5 \log(n) = O(\log(n)) 
+        \log(3) + 4\log(n) \leq \log(n) + 4\log(n) = 5 \log(n) = O(\log n) 
     \end{equation}
+    Insgesamt folgt also:
     \begin{equation}
         \log(3n^4) = \Omega(\log n) \wedge \log(3n^4) = O(\log n) \Rightarrow \log(3n^4) = \Theta(\log n)
     \end{equation}
@@ -104,13 +110,13 @@ Zeigen Sie außerdem, dass für beliebige Funktionen $f, g, h \in \mathbb{N} \ri
     \begin{equation}
         (n + 1)! \leq c n!
     \end{equation}
-    Da $(n + 1)! = (n + 1)n!$, erhält man bei Division durch $n+1$ auf beiden Seiten
+    Da $(n + 1)! = (n + 1) \cdot n!$, erhält man bei Division durch $n!$ auf beiden Seiten
     \begin{equation}
         \label{eq:b}
         n + 1 \leq c
     \end{equation}
-    Ungleichung~\ref{eq:b} kann für große $n$ und konstantes $c$ nicht zutreffen.
-    
+    Da $\lim\limits_{n \rightarrow \infty} (n + 1) = \infty$, kann es keine Konstanten $c$ und $n_0$ geben, bei denen Ungleichung~\ref{eq:b} für alle $n \geq n_0$ zutrifft.
+    Also ist $(n + 1)! \neq O(n!)$
 
     % \item 
     % \begin{align}
@@ -136,11 +142,11 @@ Zeigen Sie außerdem, dass für beliebige Funktionen $f, g, h \in \mathbb{N} \ri
         \sum\limits_{i=1}^{n} \frac{n + 1}{2^i - 1} &= (n+1)\cdot\sum\limits_{i=1}^{n} \frac{1}{2^i - 1} \geq
         n\cdot\sum\limits_{i=1}^{n} \frac{1}{2^i - 1} 
         \geq n \cdot \sum\limits_{i=1}^{n} \frac{1}{2^i} \\
-        &= n \cdot \left(\sum\limits_{i=0}^{n} \frac{1}{2^i} - 1\right)
+        &= n \cdot \left(\left(\sum\limits_{i=0}^{n} \frac{1}{2^i}\right) - 1\right)
         \overset{\text{geometr. Reihe}}{=}
-        n \cdot  \left(\frac{1 - \left(\frac{1}{2}\right)^{n+1}}{1 - \frac{1}{2}} - 1\right) \\
-        &=n \cdot  \left(2\left(1 - \left(\frac{1}{2}\right)^{n + 1}\right) - 1\right)
-        \overset{\text{für }n \geq 1}{\geq} n \cdot  \left(2 \left(1 - \frac{1}{4}\right) - 1\right) \\
+        n \cdot  \left(\frac{\left(\frac{1}{2}\right)^{n+1} - 1}{\frac{1}{2} - 1} - 1\right) \\
+        &=n \cdot  \left(-2 \cdot \left(\left(\frac{1}{2}\right)^{n + 1} - 1\right) - 1\right)
+        \overset{\text{für }n \geq 1}{\geq} n \cdot  \left(-2 \cdot \left(\frac{1}{4} - 1\right) - 1\right) \\
         &= n \cdot \frac{1}{2}= \Omega(n)
     \end{align}
 
@@ -151,10 +157,11 @@ Zeigen Sie außerdem, dass für beliebige Funktionen $f, g, h \in \mathbb{N} \ri
     \end{equation}
     reicht es, zu zeigen, dass $f(n) = O\big(g(n)\big) \Rightarrow g(n) = \Omega\big(f(n)\big)$ und $f(n) = O\big(g(n)\big) \Leftarrow g(n) = \Omega\big(f(n)\big)$, also dass jeweils die eine Aussage aus der anderen folgt:
     \begin{itemize}
-        \item $\Rightarrow$: Sei $f(n) = O\big(g(n)\big)$, dann gibt es positive Konstanten $n_0$ und $ c$, sodass $f(n) \leq c \cdot g(n)$ für alle $n \geq n_0$.
+        \item $\Rightarrow$: Sei $f(n) = O\big(g(n)\big)$, dann gibt es positive Konstanten $n_0$ und $c$, sodass $f(n) \leq c \cdot g(n)$ für alle $n \geq n_0$.
         Daraus folgt, dass $g(n) \geq \frac{1}{c} f(n)$ für $n \geq n_0$.
         Damit ist per Definition $g(n) = \Omega\big(f(n)\big)$ mit Konstanten $n_0' = n_0$ und $c' = \frac{1}{c}$
-        \item $\Leftarrow$: Die Rückrichtung erfolgt analog.
+        \item $\Leftarrow$: Analog folgt aus $g(n) \geq c_\Omega \cdot f(n)$ für $n \geq n_{0,\Omega}$, dass $f(n) \leq \frac{1}{c_\Omega} \cdot g(n)$ für $n \geq n_{0,\Omega}$.
+        Somit ist $f(n) = O\big(f(n)\big)$ (mit Konstanten $n_{0,\Omega}' = n_{0,\Omega}$ und $c_{\Omega}' = \frac{1}{c_\Omega}$).
     \end{itemize}
 
     \item
@@ -163,6 +170,7 @@ Zeigen Sie außerdem, dass für beliebige Funktionen $f, g, h \in \mathbb{N} \ri
     Daraus folgt, dass für jedes $n$ mit $n \geq n_{0,f}$ und $n \geq n_{0,g}$ gilt:
     \begin{equation}
         f(n) \leq c_f \cdot g(n) \leq c_f \cdot c_g \cdot h(n)
+        =c\cdot h(n)\text{ mit }c=c_{f}\cdot c_{g}
     \end{equation}
     Damit ist per Definition $f(n) = O\big(h(n)\big)$ mit Konstanten $n_0 = \max(n_{0,f}, n_{0,g})$ und $c = c_f \cdot c_g$.
 
@@ -195,9 +203,10 @@ Wie können Sie Ihr bestehendes Programm verbessern? Welche Laufzeit hat es nun?
 \begin{loesung}
     
 \begin{enumerate}
-    \item Beispielcode:
+    \item Beispielcode:\\
+    \begin{minipage}{\linewidth}
     \begin{lstlisting}
-bool duplicates(int[] numbers) {
+boolean duplicates(int[] numbers) {
     for (int i = 0; i < numbers.length; i++) {
         for (int j = i + 1; j < numbers.length; j++) {
             if (numbers[i] == numbers[j]) {
@@ -208,15 +217,17 @@ bool duplicates(int[] numbers) {
     return false;
 }
     \end{lstlisting}
+    \end{minipage}
 
     \item
     Der Vergleich \texttt{i < numbers.length} der äußeren \texttt{for}-Schleife wird $n + 1$ mal durchgeführt.
     Die innere Schleife durchläuft für jeden Durchlauf der äußeren Schleife $n - i - 1$ Iterationen. Macht nochmal $n - i$ Vergleiche im \glqq{}\texttt{for}-Kopf\grqq{} und $n - i - 1$ Vergleiche für die \texttt{if}-Bedingung. Die Anzahl der Vergleiche $C(n)$ ist im Worst Case also:
     \begin{align}
         C(n) &= n + 1 + \sum\limits_{i = 0}^{n - 1} \big(2(n - i) - 1 \big)
-        = n + 1 + 2\sum\limits_{i = 0}^{n - 1} (n - i) - n \\
-        &=1 + 2\sum\limits_{i = 0}^{n - 1} (n - i)
-        = 1 + 2\big(n + (n-1) + \ldots + 2 + 1\big) = 1 + 2\sum\limits_{i = 1}^{n} i \\
+        = n + 1 + 2\sum\limits_{i = 1}^{n - 1}(n - i) - \sum\limits_{i = 0}^{n - 1} 1 \\
+        &= n + 1 + 2\sum\limits_{i = 0}^{n - 1} (n - i) - n 
+        =1 + 2\sum\limits_{i = 0}^{n - 1} (n - i) \\
+        &= 1 + 2\big(n + (n-1) + \ldots + 2 + 1\big) = 1 + 2\sum\limits_{i = 1}^{n} i \\
         &= 1 + 2\left( \frac{n(n + 1)}{2} \right) = 1 + n(n+1) \\
         &= n^2 + n + 1
     \end{align}
@@ -226,9 +237,10 @@ bool duplicates(int[] numbers) {
         T(n) = n^2 + n + 1 \overset{\text{für }n \geq 1}{\leq} n^2 + n^2 + n^2 = 3 n^2 = O(n^2)
     \end{equation}
     
-    \item Wenn das Array aufsteigend sortiert ist, können Duplikate nur benachbarte Elemente sein:
+    \item Wenn das Array aufsteigend sortiert ist, können Duplikate nur benachbarte Elemente sein:\\
+\begin{minipage}{\linewidth}
 \begin{lstlisting}
-bool duplicatesSorted(int[] numbers) {
+boolean duplicatesSorted(int[] numbers) {
     for (int i = 0; i < numbers.length - 1; i++) {
         if (numbers[i] == numbers[i + 1]) {
             return true;
@@ -237,6 +249,7 @@ bool duplicatesSorted(int[] numbers) {
     return false;
 }
 \end{lstlisting}
+\end{minipage}
 Diese Funktion benötigt im Worst Case $n$ Vergleiche für die \texttt{for}-Schleife und $n - 1$ Vergleiche für die \texttt{if}-Bedingung.
 Die Worst-Base-Laufzeit, abgeschätzt anhand der Anzahl von Vergleichen, entspricht also
 \begin{equation}
@@ -265,15 +278,15 @@ Dafür wird der gesuchte Wert $x$ mit dem Wert $m$ in der Mitte des Arrays vergl
     
 \end{aufgabe}
 
-\ifcsdef{showLoesung}{\newpage}{}
 \begin{loesung}
 \begin{enumerate}
-    \item rekursive Implementierung (Parameter \texttt{start} ist inklusiv, \texttt{end} exklusiv):
+    \item rekursive Implementierung (Parameter \texttt{start} ist inklusiv, \texttt{end} exklusiv):\\
+\begin{minipage}{\linewidth}
     \begin{lstlisting}
-bool binarySearchRec(int[] numbers, int value) {
+boolean binarySearchRec(int[] numbers, int value) {
     return _binarySearchRec(numbers, 0, numbers.length, value);
 }
-bool _binarySearchRec(int[] numbers, int start, int end, int value) {
+boolean _binarySearchRec(int[] numbers, int start, int end, int value) {
     if (end - start <= 0) {
         return false;
     }
@@ -288,10 +301,12 @@ bool _binarySearchRec(int[] numbers, int start, int end, int value) {
     }
 }
     \end{lstlisting}
+\end{minipage}
     \item Da sich der rekursive Aufruf in Tail-Position befindet (letzte Anweisung vor dem \texttt{return}), reicht es für die iterative Implementierung, Parameter \texttt{start} und \texttt{end} jeweils für den nächsten Schleifendurchlauf zu aktualisieren.
-    Verwalten eines Stapels für die Aufrufe ist nicht notwendig.
+    Verwalten eines Stapels für die Aufrufe ist nicht notwendig.\\
+\begin{minipage}{\linewidth}
     \begin{lstlisting}
-bool binarySearchIt(int[] numbers, int value) {
+boolean binarySearchIt(int[] numbers, int value) {
     int start = 0;
     int end = numbers.length;
     while (true) {
@@ -310,6 +325,7 @@ bool binarySearchIt(int[] numbers, int value) {
     }
 }
     \end{lstlisting}
+\end{minipage}
     \item 
     \begin{equation}
         T(n) = \begin{cases}
@@ -346,7 +362,8 @@ bool binarySearchIt(int[] numbers, int value) {
 
 \begin{loesung}
 \begin{enumerate}[label=\alph*)]
-\item Speicherbelegung: $1 \rightarrow n, 2 \rightarrow a, 3 \rightarrow b, 4 \rightarrow c$
+\item Speicherbelegung: $1 \rightarrow n, 2 \rightarrow a, 3 \rightarrow b, 4 \rightarrow c$\\
+\begin{minipage}{\linewidth}
 \begin{lstlisting}
 01 INP 01 // Eingabe: n
 02 LDK 01
@@ -366,11 +383,14 @@ bool binarySearchIt(int[] numbers, int value) {
 17 STA 03 // b = c
 18 JMP 05 // Schleifenende
 \end{lstlisting}
+\end{minipage}
+\newpage
 \item Speicherzellen 1 bis 3 werden für Eingabe und Zählervariablen verwendet ($n$, $i$ und $j$).
 Zelle 4 wird temporär für den indirekten Speicherzugriff verwendet.
 Das \glqq{}Boolean-Array\grqq{} für den Sieb beginnt ab Zelle 5 beginnend mit dem Wert für 2. 
 Der Wert für Zahl $i$ steht also an Adresse $i + 3$.
-0 steht dabei für prim, 1 für nicht-prim.
+0 steht dabei für prim, 1 für nicht-prim.\\
+\begin{minipage}{\linewidth}
 \begin{lstlisting}
 01 INP 01 // Eingabe: n
 02 LDK 02
@@ -404,6 +424,7 @@ Der Wert für Zahl $i$ steht also an Adresse $i + 3$.
 30 STA 03 // j = j + i
 31 JMP 20 // } }
 \end{lstlisting}
+\end{minipage}
 \end{enumerate}
 \end{loesung}
 
