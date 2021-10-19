@@ -1,7 +1,7 @@
 import java.util.Arrays;
 import java.util.Random;
 
-public class Tutorium2 {
+public class Tutorium02 {
 
     int fib(int n) {
         int[] memo = new int[n + 1];
