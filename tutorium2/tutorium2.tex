@@ -1,0 +1,510 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{gastex}
+\usepackage{etoolbox}
+
+% \newcommand{\showLoesung}{2} %<---als Schalter
+%\newcommand{\showInhalt}{1} %<---als Schalter
+
+\input{../skel/uebmacsPNG}
+
+\usepackage{enumitem}
+
+\begin{document}
+\thispagestyle{empty}
+
+\Uebung{2}{3}{21. Oktober 2021}  % FIXME: Blattnummer, Datum, Zeit
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifcsdef{showLoesung}{
+\textbf{Bitte beachten Sie:} Die Lösungen können trotz sorgfältiger Prüfung Fehler enthalten.
+Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in Tutorien, Übungen oder nach Vorlesungen.
+}{}
+
+\begin{aufgabe}{1}{Rekursionsgleichungen}
+\begin{enumerate}
+    \item Lösen Sie folgende Rekursionsgleichungen mithilfe der Master-Methode oder begründen Sie, warum die Master-Methode nicht anwendbar ist.
+    \begin{enumerate}[label=\roman*)]
+        \item $T(n) = 2T(n / 6) + \sqrt[3]{n}$
+        \item $T(n) = n / 2 \cdot T(n / 2) + 1$
+        \item $T(n) = T(3n / 4) + n$
+        \item $T(n) = 4T(n / 2) + n^2 \log(n)$
+        \item $T(n) = 4T(n / 3) + \frac{n}{\log(n)}$ ($n \geq 2$)
+        \item $T(n) = 3T(n / 3) + \frac{n}{\log(n)}$ ($n \geq 2$)
+    \end{enumerate}
+
+    \item Lösen Sie folgende Rekursionsgleichungen mithilfe der Iterationsmethode:
+    \begin{enumerate}[label=\roman*)]
+        \item $T(1) = 2, \,\,\,\, T(n) = T(n - 1) + n - 1$
+        \item $T(1) = 1, \,\,\,\, T(2) = 1, \,\,\,\, T(3) = 1, \,\,\,\, T(n) = 3T(n / 3 + 2) + n$
+        \item $T(1) = 3, \,\,\,\, T(n) = 3T(n / 2) + 1$
+        \item $T(1) = 1, \,\,\,\, T(n) = T(n / 2) + \log(n)$
+        \item $T(1) = 1, \,\,\,\, T(n) = 2T(n / 4) + n$
+    \end{enumerate}
+    % \begin{description}
+    %     \item[Hinweis:] $\sum\limits_{i = 1}^n i^2 = \frac{n(n + 1)(2n + 1)}{6}$
+    % \end{description}
+
+    \item Beweisen Sie mithilfe der Substitutionsmethode, dass $T(1) = 1, \, T(n) = 2T(n / 2) + n$ durch $\Theta(n \log n)$ abgeschätzt werden kann (Tipp: Zeigen Sie, dass $T(n) = n \log(n) + n$).
+
+    \item Gegeben sei eine Funktion \texttt{coinFlip}, welche mit 50\% Wahrscheinlichkeit \texttt{true} und mit 50\% Wahrscheinlichkeit \texttt{false} zurückgibt. Betrachten Sie folgendes Programm:
+    \begin{lstlisting}
+void example(int n) {
+    if (n <= 1) return;
+    for (int i = 0; i < n; i++) {}
+    if (coinFlip()) example(n - 1);
+    else example(n / 2);
+}
+    \end{lstlisting}
+    Geben die erwartete Laufzeit als Rekursionsgleichung an.
+    Zeigen Sie mittels Substitutionsmethode, dass diese erwartete Laufzeit durch $O(n)$ beschränkt werden kann.
+
+    \item
+    Lösen Sie folgende Rekursionsgleichung:
+    \begin{equation*}
+        T(n) = T\left(\sqrt{n}\right) + 1
+    \end{equation*}
+    Substituieren Sie dafür $m = \log(n)$ und lösen Sie die neue Rekursionsgleichung $S(m)$, die aus dieser Substitution resultiert, mit einer Methode Ihrer Wahl.
+    \begin{description}
+        \item[Hinweis:] Ignorieren Sie, dass $\sqrt{n}$ im Allgmeinen keine ganze Zahl ist.
+    \end{description}
+\end{enumerate}
+\end{aufgabe}
+
+\begin{loesung}
+\begin{enumerate}
+    \item
+    \begin{enumerate}[label=\roman*)]
+        \item $a = 2$ und $b = 6$: $n^{\log_6(2)} = \sqrt[3]{n} = \Theta(\sqrt[3]{n}) \Rightarrow$ Fall 2:
+        $T(n) = \Theta(\sqrt[3]{n} \log n)$
+
+        \item $T(n)$ ist nicht in der Form $a T(n / b) + f(n)$, da $a = n / 2$ keine Konstante ist. Deswegen ist die Master-Methode nicht anwendbar.
+
+        \item $a = 1$ und $b = 1 / (3 / 4) = 4 / 3$:
+        $n^{\log_{4/3}(1)} = n^0 = \Theta(1)$. Da $f(n) = n = \Omega(n^{0 + \epsilon})$
+        und außerdem gilt $a f(n / b) = 3/4 n \leq c n = c f(n)$ mit $c = 3/4 < 1$, 
+        lässt sich Fall 3 der Master-Methode anwenden und $T(n) = \Theta(n)$.
+
+        \item $n^{\log_2(4)} = n^2$.
+        Da $f(n) = n^2 \log(n) \neq O(n^2)$, können Fälle 1 und 2 nicht angewendet werden.
+        Jedoch gilt auch $n^2 \log(n) \neq \Omega(n^{2 + \epsilon})$.
+        \begin{proof}
+            Angenommen $n^2 \log(n) = \Omega(n^{2 + \epsilon})$. Dann gilt für positive Konstanten $n_0$ und $c$ sowie $n \geq n_0$:
+            \begin{align*}
+                n^2 \log(n) &\geq n^{2 + \epsilon} &\mid \, : n^2 \\
+                \log(n) &\geq n^\epsilon = \Omega(n^\epsilon)
+            \end{align*}
+            Jedoch steigt $\log(n)$ langsamer als jede Potenz.
+                % ($\lim\limits_{n \rightarrow \infty} \frac{n^a}{\log(n)}
+                % \overset{\text{L'Hosptial}}{=} \lim\limits_{n \rightarrow \infty} \frac{a n^{a - 1}}{\frac{1}{n}}
+                % = \lim\limits_{n \rightarrow \infty} a n^a = \infty$).
+            Daher ist $\log(n) \neq \Omega(n^\epsilon)$. Widerspruch!
+        \end{proof}
+        Also ist auch Fall 3 und damit die gesamte Master-Methode nicht anwendbar.
+
+        \item $n^{\log_3(4)} \approx n^{1.26}$. Da $\frac{n}{\log(n)} = O(n) = O(n^{\log_3(4) - \epsilon})$, 
+        lässt sich Fall 1 anwenden: $T(n) = \Theta(n^{\log_3(4)})$
+
+        \item $n^{\log_3(3)} = n^1 = n$.
+        Da $\lim\limits_{n \rightarrow \infty} \log(n) = \infty$, gibt es keine positiven Konstanten $n_0$ und $c$ mit $c \geq \frac{1}{\log(n)}$ für $n \geq n_0$. Daher ist $\frac{n}{\log(n)} \neq \Omega(n)$, weshalb Fälle 2 und 3 nicht anwendbar sind.
+        Jedoch gilt auch $\frac{n}{\log(n)} \neq O(n^{1 - \epsilon})$.
+        \begin{proof}
+            Angenommen, $\frac{n}{\log(n)} = O(n^{1 - \epsilon})$ für ein $\epsilon > 0$.
+            Dann gilt für positive Konstanten $n_0$ und $c$ sowie $n \geq n_0$: 
+            \begin{align*}
+                \frac{n}{\log(n)} &\leq cn^{1 - \epsilon} &\mid \, : n \\
+                \log(n)^{-1} &\leq cn^{-\epsilon} &\mid \square^{-1} \\
+                \log(n) &\geq c n^{\epsilon} &\mid \, : c \\
+                n^\epsilon &\leq \frac{1}{c} \log(n) = O(\log n)
+            \end{align*}
+            Jedoch steigt $\log(n)$ langsamer als jede Potenz.
+            % Jedoch steigt $\log(n)$ langsamer als jede Potenz (siehe oben).
+            Daher ist $n^\epsilon \neq O(\log n)$. Widerspruch!
+        \end{proof}
+        Also ist auch Fall 1 und damit die gesamte Master-Methode nicht anwendbar.
+    \end{enumerate}
+
+    \item
+    \begin{enumerate}[label=\roman*)]
+        \item 
+        % \begin{align*}
+        %     T(n) &= T(n - 1) + n^2 = T(n - 2) + (n - 1)^2 + n^2 \\
+        %     &= T(n - 3) + (n - 2)^2 + (n - 1)^2 + n^2 = \ldots \\
+        %     &= T(n - i) + \sum\limits_{k = 0}^{i - 1} (n - k)^2
+        % \end{align*}
+        % Aus $T(n - i) = T(1)$ folgt $i = n - 1$. Substituieren:
+        % \begin{align*}
+        %     T(n) &= T(n - (n - 1)) + \sum\limits_{k=0}^{n - 2} (n - k)^2
+        %     = T(1) + \big( n^2 + (n - 1)^2 + \ldots + 3^2 + 2^2 \big) \\
+        %     &= T(1) -1 + \sum\limits_{k=1}^n k^2 = T(1) -1 + \frac{n(n + 1)(2n + 1)}{6} = \Theta(n^3)
+        % \end{align*}
+        \begin{align*}
+            T(n) &= T(n - 1) + n - 1= \big(T(n - 2) + n - 2\big) + n - 1 \\
+            &= T(n - 2) + 2n - 1 - 2 = \big(T(n - 3) + n - 3\big) + 2n - 1 - 2 \\
+            &= T(n - 3) + 3n - 1 - 2 - 3 = \big(T(n - 4) + n - 4\big) + 3n - 1 - 2 - 3 \\
+            &= T(n - 4) + 4n - 1 - 2 - 3 - 4 = \ldots \\
+            &= T(n - i) + in - \sum\limits_{k = 1}^{i} k \overset{\text{Gaußsumme}}{=} T(n - i) + in - \frac{(i + 1)i}{2}
+        \end{align*}
+        Aus $T(n - i) = T(1)$ folgt $i = n - 1$. Substituieren:
+        \begin{align*}
+            T(n) &= T(1) + (n - 1) \cdot n - \frac{n(n - 1)}{2} \\
+            &= 2 + \frac{n(n - 1)}{2} = \frac{n^2}{2} - \frac{n}{2} + 2 = \Theta(n^2)
+        \end{align*}
+
+        \item
+        \begin{align*}
+            T(n) &= 3T(n / 3 + 2) + n = 3\big(3T(n / 9 + 2) + n / 3\big) + n \\
+            &= 9T(n / 9 + 2) + 2n = 9\big(3T(n / 27 + 2) + n / 9\big) + 2n \\
+            &= 27T(n / 27 + 2) + 3n = \ldots \\
+            &= 3^i T(n / 3^i + 2) + i n 
+        \end{align*}
+        Aus $T(n / 3^i + 2) = T(3)$ folgt $i = \log_3(n)$. Substituieren:
+        \begin{align*}
+            T(n) &= 3^{\log_3(n)} T(3) + \log_3(n)n = n + \log_3(n) n = \Theta(n \log n)
+        \end{align*}
+
+        \item
+        \begin{align*}
+            T(n) &= 3T(n / 2)) + 1 = 3\big(3T(n / 4) + 1\big) + 1 \\
+            &= 9T(n / 4) + 1 + 3 = 9\big(3T(n / 8) + 1\big) + 1 + 3 \\
+            &= 9T(n / 4) + 1 + 3 + 9 = \ldots \\
+            &= 3^i T(n / 2^i) + \sum\limits_{k = 0}^{i} 3^i \overset{\text{geom. Reihe}}{=} 
+            3^i T(n / 2^i) + \frac{3^{i + 1} - 1}{2}
+        \end{align*}
+        Aus $T(n / 2^i) = T(1)$ folgt $i = \log_2(n)$. Nebenrechnung:
+        \begin{align*}
+            3^{\log_2(n)} = \left(2^{\log_2(3)}\right)^{\log_2(n)} = 
+            \left(2^{\log_2(n)}\right)^{\log_2(3)} = n ^{\log_2(3)}
+        \end{align*}
+        Substituieren:
+        \begin{align*}
+            T(n) &= 3^{\log_2(n)}T(1) + \frac{3^{\log_2(n) + 1} - 1}{2}
+            = 3n^{\log_2(3)} + \frac{3 \cdot 3^{\log_2(n)} - 1}{2} \\
+            &= 3n^{\log_2(3)} + \frac{3 \cdot n^{\log_2(3)} - 1}{2}
+            = \Theta(n^{\log_2(3)})
+        \end{align*}
+
+        \item
+        \begin{align*}
+            T(n) &= T(n/2) + \log(n) = \big(T(n / 4) + \log(n / 2)\big) + \log(n) \\
+            &= \Big(\big(T(n / 8) + \log(n / 4)\big) + \log(n / 2)\Big) + \log(n) = \ldots \\
+            &= T(n / 2^i) + \sum\limits_{k = 0}^{i - 1} \log(n / 2^k)
+            = T(n / 2^i) + \sum\limits_{k = 0}^{i - 1} \log(n) - \sum\limits_{k = 0}^{i - 1} k\log(2) \\
+            &= T(n / 2^i) + i \cdot \log(n) - \sum\limits_{k=0}^{i - 1} k
+            = T(n / 2^i) + i \cdot \log(n) - \frac{(i - 1) \cdot i}{2}
+        \end{align*}
+        Aus $T(n / 2^i) = T(1)$ folgt $i = \log(n)$. Substituieren:
+        \begin{align*}
+            T(n) &= T(1) + \log(n)^2 - \frac{(\log(n) - 1) \cdot \log(n)}{2} \\
+            &= 1 + \log(n)^2 - \frac{1}{2} \log(n)^2 + \frac{1}{2} \log(n) = \operatorname{\Theta}\left(\log(n)^2\right) = \Theta(\log^2 n)
+        \end{align*}
+
+        \item
+        \begin{align*}
+            T(n) &= 2T(n / 4) + n = 2\big(2T(n / 16) + n / 4\big) + n \\
+            &= 4T(n / 16) + \frac{3}{2} n = 4\big(2T(n / 64) + n / 16\big) + \frac{3}{2}n \\
+            &= 8T(n / 64) + \frac{7}{4} n = \ldots \\
+            &= 2^i T(n / 4^i) + \frac{2^i - 1}{2^{i - 1}} n 
+            = 2^i T(n / 4^i) + \left(2 - \frac{2}{2^i}\right) \cdot n
+            % &= 2^i T(n / 4^i + 2) + \frac{2^i - 1}{2^{i - 1}} n
+        \end{align*}
+        Aus $T(n / 4^i) = T(1)$ folgt $i = \log_4(n)$. Substituieren:
+        \begin{align*}
+            T(n) &= 2^{\log_4(n)} \cdot T(1) + \left(2 - \frac{2}{2^{\log_4(n)}}\right) \cdot n  \\
+            &= \sqrt{n} + 2n - \frac{2n}{\sqrt{n}} = \sqrt{n} + 2n - 2\sqrt{n}
+            = 2n - \sqrt{n} = \Theta(n)
+        \end{align*}
+    \end{enumerate}
+
+    \item
+    \begin{proof}
+        Beweis durch Induktion:
+        \begin{description}
+            \item[IA] $T(1) = 1 = 1 \log(1) + 1$
+            \item[IV] $T(i) = i \log(i) + i$ für alle $i < n$
+            \item[IS] 
+            \begin{align*}
+                T(n) &= 2T\left(\frac{n}{2}\right) + n
+                \overset{\text{IV}}{=} 2 \left( \frac{n}{2} \log\left(\frac{n}{2}\right) + \frac{n}{2} \right) + n
+                = n\log\left(\frac{n}{2} \right) + 2n \\
+                &= n \log(n) - n \log(2) + 2n
+                = n\log(n) + n
+                % = c n \log\left(\frac{n}{2}\right) + (1 - d) \cdot n \\
+                % &=c n \log(n) - cn\log(2) + (1 - d) \cdot n = c n \log(n) - cn + (1 - d) \\
+                % &= c n \log n + \left(1 - \frac{c}{2} - d\right) \cdot n
+                % \overset{\text{für }c \geq 2}{\leq}c n \log n - dn
+            \end{align*}
+        \end{description}
+    \end{proof}
+
+    \item
+    Durch die Schleife ergibt sich eine Laufzeit von $\Theta(n)$ für jeden Aufruf von \texttt{example}.
+    Mit 50\% Wahrscheinlichkeit wird \texttt{example(n - 1)} ausgeführt, mit 50\% Wahrscheinlichkeit \texttt{example(n / 2)}.
+    Somit lautet die Rekursionsgleichung:
+    \begin{equation*}
+        T(1) = 1 \,\,\,\,\,\,\,\, T(n) = \frac{1}{2}\left(T(n - 1) + T\left(\frac{n}{2}\right)\right) + n
+    \end{equation*}
+    \begin{proof}
+        Zeige induktiv, dass $T(n) \leq cn$:
+        \begin{description}
+            \item[IA] $T(1) = 1 \leq c \cdot 1$
+            \item[IV] $T(i) \leq ci$ für alle $i < n$
+            \item[IS]
+            \begin{align*}
+                T(n) &= \frac{1}{2}\left(T(n - 1) + T\left(\frac{n}{2}\right)\right) + n
+                \overset{\text{IV}}{\leq} \frac{1}{2}\left(c \cdot (n - 1) + c \cdot \frac{n}{2} \right) + n \\
+                &=\frac{1}{2} cn - \frac{1}{2} c + \frac{1}{4} cn + n
+                = \left(\frac{3}{4} c + 1\right) \cdot n - \frac{1}{2} c
+                \leq \left(\frac{3}{4} c + 1\right) \cdot n
+                \overset{c \geq 4}{\leq} cn
+            \end{align*} 
+        \end{description}
+    \end{proof}
+    \item 
+    Aus $m = \log(n)$ folgt $n = 2^m$. Also gilt:
+    \begin{equation*}
+        T(2^m) = T\left(\sqrt{2^{m}}\right) + 1 = T\big(2^{\frac{m}{2}}\big) + 1
+    \end{equation*}
+    Mit Definition $S(m) = T(2^m)$ ergibt sich die neue Rekursionsgleichung:
+    \begin{equation*}
+        S(m) = S\left(\frac{m}{2}\right) + 1
+    \end{equation*}
+    Lösung mittels Master-Methode: $n^{\log_2(1)} = n^0 = \Theta(1) \Rightarrow$ Fall 2.
+    Somit ergibt sich $S(m) = \Theta(\log m)$.
+    Da $m = \log(n)$, gilt:
+    \begin{equation*}
+        T(n) = T(2^m) = S(m) = \log(m) = \log(\log(n))
+    \end{equation*}
+    Also ist $T(n) = \Theta(\log \log n)$.
+\end{enumerate}
+\end{loesung}
+
+\begin{aufgabe}{2}{Algorithmenimplementierung}
+    Gegeben ein Array $\left(a_1, a_2, \ldots, a_n\right)$. Gesucht: $\max \{a_j - a_i \mid 1 \leq i < j \leq n\}$. Entwerfen und implementieren Sie:
+    \begin{enumerate}
+        \item einen naiven Algorithmus mit Laufzeit $\Theta(n^2)$
+        \item einen Divide-and-Conquer-Algorithmus mit Laufzeit $\Theta(n \log n)$
+        \item einen asymptotisch optimalen Algorithmus mit Laufzeit $\Theta(n)$
+    \end{enumerate}
+    \begin{description}
+        \item[Tipp:] 
+        Sie können sich an den Algorithmen des \textsc{MaxTeilSum}-Problems aus der Vorlesung orientieren.
+    \end{description}
+\end{aufgabe}
+
+\begin{loesung}
+\begin{enumerate}
+    \item Sämtliche mögliche Paare $i$ und $j$ durchprobieren:
+    \begin{lstlisting}
+int maxDifferenceNaive(int[] arr) {
+    int maxDiff = Integer.MIN_VALUE;
+    for (int i = 0; i < arr.length; i++) {
+        for (int j = i + 1; i < arr.length; j++) {
+            int diff = arr[j] - arr[i];
+            maxDiff = Math.max(maxDiff, step);
+        }
+    }
+    return maxDiff;
+}        
+    \end{lstlisting}
+
+    \item Analog zu \textsc{MaxTeilSum}: Teile Array in der Mitte; berechne rekursiv maximale Differenz links und rechts; berechne anschließend maximale Differenz auf der Kante (ergibt sich durch den kleinsten Wert auf der linken und den größten auf der rechten Seite); gebe Maximum dieser drei Werte zurück.
+    \begin{lstlisting}
+int maxDifferenceDaC(int[] arr) {
+    return maxDifferenceDac(arr, 0, arr.length);
+}
+int _maxDifferenceDaC(int[] arr, int start, int end) {
+    if (end - start <= 1) {
+        return Integer.MIN_VALUE;
+    }
+    int middle = (start + end) / 2;
+
+    int min = arr[start];
+    for (int i = start + 1; i < middle; i++) {
+        min = Math.min(min, arr[i]);
+    }
+    int max = arr[start];
+    for (int i = middle; i < end; i++) {
+        max = Math.max(max, arr[i]);
+    }
+
+    int maxDiff = max - min;
+    return Math.max(
+        maxDiff, 
+        Math.max(
+            _maxDifferenceDaC(arr, start, middle),
+            _maxDifferenceDaC(arr, middle, end)
+        )
+    );
+}
+    \end{lstlisting}
+
+    \item Für einen Wert $a_j$ ergibt sich die Maximale Differenz durch den kleinsten Wert links davon, also $\min \{a_i \mid 0 \leq i < j\}$. Laufe einmal über das Array und aktualisiere bei jedem Durchschnitt das aktuelle Minimum sowie die aktuell größte Differenz.
+    \begin{lstlisting}
+int maxDifferenceLinear(int[] arr) {
+    int currentMin = arr[0];
+    int maxDiff = Integer.MIN_VALUE;
+    for (int i = 1; i < arr.length; i++) {
+        maxDiff = Math.max(maxDiff, arr[i] - currentMin);
+        currentMin = Math.min(currentMin, arr[i]);
+    }
+    return maxDiff;
+}
+    \end{lstlisting}
+\end{enumerate}
+\end{loesung}
+
+\begin{aufgabe}{3}{Fibonacci-Zahlen}
+In der Vorlesung haben Sie ein rekursiver Algorithmus zum Berechnen der $n$-ten Fibonacci-Zahl mit exponentieller Laufzeit kennengelernt.
+Der Algorithmus ist so ineffizient, da er viele Berechnungen unnötigerweise mehrfach durchführt~(siehe Vorlesung 4, Folie 14).
+\begin{enumerate}
+    \item Verbessern Sie den rekursiven Algorithmus, indem Sie bereits berechnete Zwischenergebnisse in einer geeigneten Datenstruktur abspeichern, um sie später in konstanter Zeit abrufen zu können, ohne sie neu berechnen zu müssen.
+    \item Welche Laufzeit hat dieser verbesserte Algorithmus und wie viel zusätzlichen Speicherplatz benötigt er, jeweils abhängig von $n$?
+    % \item \textbf{Bonusaufgabe:} Konvertieren Sie den rekursiven Fibonacci-Algorithmus aus der Vorlesung in einen iterativen.
+\end{enumerate}
+\end{aufgabe}
+
+\begin{loesung}
+    \begin{enumerate}
+        \item Es wird ein Array verwendet. An Stelle $i$ wird $\operatorname{fib}(i)$ gespeichert.
+        Bei jedem Aufruf wird überprüft, ob der Wert bereits berechnet wurde.
+        Falls ja, wird er einfach zurück gegeben.
+        Falls nein, wird er berechnet, im Array abgespeichert und zurückgegeben.
+        \newline
+        \begin{minipage}{\linewidth}
+        \begin{lstlisting}
+int fib(int n) {
+    int[] memo = new int[n + 1];
+    for (int i = 0; i < n + 1; i++) {
+        memo[i] = -1;
+    }
+    return fib(n, memo);
+}
+int _fib(int n, int[] memo) {
+    if (memo[n] != -1) {
+        return memo[n];
+    }
+    int result;
+    if (n < 3) {
+        result = 1;
+    } else {
+        result = _fib(n - 1, memo) + _fib(n - 2, memo);
+    }
+    memo[n] = result;
+    return result;
+}
+        \end{lstlisting}
+        \end{minipage}
+
+        \item
+        \begin{description}
+            \item[Laufzeit] 
+            Zunächst wird das Array \texttt{memo} initialisiert, was $\Theta(n)$ Zeit benötigt.
+            Die eigentliche Berechnung findet in der Funktion \texttt{\_fib} statt (Der Parameter \texttt{memo} wird im Folgenden zur besseren Lesbarkeit weggelassen).
+            Um \texttt{\_fib(i)} zu berechnen, muss vorher \texttt{\_fib(i - 1)} berechnet worden sein.
+            Daher liegt nach dem ersten rekursiven Aufruf \texttt{\_fib(n - 1)} das Ergebnis \texttt{\_fib(n - 2)} im Array \texttt{memo} bereits vor.
+            Somit benötigt der zweite rekursive Aufruf nur noch konstante Zeit.
+            Die Laufzeit von \texttt{\_fib} ergibt sich also durch folgende Rekursionsgleichung:
+            \begin{equation*}
+                T(1) = 1 \,\,\,\,\,\,\,\, T(2) = 1 \,\,\,\,\,\,\,\, T(n) = T(n - 1) + 1
+            \end{equation*}
+            Das Lösen dieser Gleichung, zum Beispiel mittels Iterationsmethode, ergibt $T(n) = \Theta(n)$ (einfache Gaußsumme).
+            Der gesamte Algorithmus, inklusive Initialisierung, hat also Laufzeit $\Theta(n)$.
+            \item[Speicher]
+            Das Array \texttt{memo} speichert $n + 1 = \Theta(n)$ Ganzzahlen.
+            Ein Aufruf von \texttt{\_fib} benötigt konstanten Speicherplatz.
+            Jedoch liegen durch die Rekursion gleichzeitig bis zu $n$ Aufrufe auf dem Call-Stack.
+            Macht also nochmal Speicherplatz $\Theta(n)$.
+            Insgesamt liegt der Speicherbedarf also bei $\Theta(n)$.
+        \end{description}
+        
+%         \item 
+%         Der folgende Java-Code simuliert das Verhalten des Callstacks beim Aufruf des rekursiven Algorithmus.
+%         Ein Push entpricht einem rekursiven Aufruf, ein Pop einem Return.
+        
+% \begin{minipage}{\linewidth}
+%         \begin{lstlisting}
+% import java.util.Stack;
+% class StackFrame {
+%     int n, result;
+%     int step;
+%     StackFrame(int n) {
+%         this.n = n;
+%         this.step = 0;
+%         this.result = 
+%     }
+% }
+% public class Fibonacci {
+%     static int fib(int n) {
+%         Stack<StackFrame> stack = new Stack<>();
+%         stack.add(new StackFrame(n));
+%         int returnValue = 0;
+%         while (!stack.isEmpty()) {
+%             StackFrame frame = stack.get(stack.size() - 1);
+%             switch (frame.step) {
+%                 case 0:
+%                     if (frame.n < 3) {
+%                         returnValue = 1;
+%                         stack.pop();
+%                         break;
+%                     }
+%                     stack.add(new StackFrame(frame.n - 1));
+%                     frame.step = 1;
+%                     break;
+%                 case 1:
+%                     frame.result = returnValue;
+%                     stack.add(new StackFrame(frame.n - 2));
+%                     frame.step = 2;
+%                     break;
+%                 case 2:
+%                     frame.result += returnValue;
+%                     returnValue = frame.result;
+%                     stack.pop();
+%             }
+%         }
+%         return returnValue;
+%     }
+% }
+% \end{lstlisting}
+% \end{minipage}
+    \end{enumerate}
+\end{loesung}
+
+
+% \begin{aufgabe}{4}{Divide and Conquer}
+% \begin{enumerate}
+%     \item Gegeben $a, b \in \mathbb{N}$ kann $a^b$ naiv durch $a \cdot a \cdot \ldots \cdot a$ berechnet werden.
+%     Hierfür sind $\Theta(b)$ Multiplikationen nötig.
+%     Entwickeln Sie einen Algorithmus, mit dem $a^b$ schneller berechnet werden kann. Welche Laufzeit hat Ihr Algorithmus?
+
+%     \item Gegeben sind zwei Polynome mit Grad $n$: $a(x) = \sum\limits_{i=0}^n a_i x^i$ und $b(x) = \sum\limits_{i=0}^n a_i x^i$.
+%     Es soll das Polynom $a(x) \cdot b(x)$ berechnet werden.
+%     % \sum\limits_{i=0}^{2n} \sum\limits_{j=0}^i a_j b_{i - j} x^i
+%     Der naive Algorithmus schafft das in $T(n) = \Theta(n^2)$.
+%     Es soll ein effizienterer Algorithmus gefunden werden.
+
+%     Sei dazu $k = \lfloor \frac{n}{2} \rfloor$ und sei:
+%     \begin{equation*}
+%         a(x) = a_l\cdot x^k + a_r = \left(\sum\limits_{i=k}^n a_i x^{i - k}\right) \cdot x^k + \left(\sum\limits_{i=0}^{k - 1} a_i x^i\right)
+%     \end{equation*}
+%     Analog sei $b(x) = b_l \cdot x^k + b_r$. Dann lässt sich $a(x) \cdot b(x)$ wie folgt berechnen:
+%     \begin{equation*}
+%         a(x) \cdot b(x) = (a_l x^k + a_r) \cdot (b_l x^k + b_r)
+%         = a_l b_l x^{2k} + (a_l b_r + a_r b_l) x^k + a_r b_r = c_l x^{2k} + c_m x^k + c_r
+%     \end{equation*}
+%     Durch cleveres Wiederverwenden von Zwischenergebnissen lassen sich $c_l, c_m, c_r$ in nur 3 statt 4 Multiplikationen berechnen:
+%     \begin{enumerate}[label=\arabic*.]
+%         \item $c_l = a_l \cdot b_l$
+%         \item $c_r = a_r \cdot b_r$
+%         \item $c_m = (a_l + a_r) \cdot (b_l + b_r) - c_l - c_r$
+%     \end{enumerate}
+%     Entwickeln Sie auf Basis der obigen Überlegungen einen Divide-and-Conquer-Algorithmus, der zwei Polynome in $o(n^2)$ multipliziert. 
+%     Polynome vom Grad $n$ können Sie dafür beispielsweise durch Arrays mit Länge $n+1$ repräsentieren.
+%     Welche Laufzeit hat Ihr Algorithmus?
+% \end{enumerate}
+
+
+% \end{aufgabe}
+
+\end{document}
