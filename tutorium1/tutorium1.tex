@@ -365,23 +365,23 @@ boolean binarySearchIt(int[] numbers, int value) {
 \item Speicherbelegung: $1 \rightarrow n, 2 \rightarrow a, 3 \rightarrow b, 4 \rightarrow c$\\
 \begin{minipage}{\linewidth}
 \begin{lstlisting}
-01 INP 01 // Eingabe: n
-02 LDK 01
-03 STA 02 // a = 1
-04 STA 03 // b = 1
-05 LDA 02 
-06 SUB 01
-07 JLE 09 // while (a <= n)
-08 HLT 00 // Schleifenabbruch
-09 OUT 02 // print(a)
-10 LDA 02
-11 ADD 03
-12 STA 04 // c = a + b
-14 LDA 03
-15 STA 02 // a = b
-16 LDA 04
-17 STA 03 // b = c
-18 JMP 05 // Schleifenende
+INP 01 // Eingabe: n
+LDK 01
+STA 02 // a = 1
+STA 03 // b = 1
+LDA 02 // while (true) {
+SUB 01
+JLE 09 
+HLT 00 // if (!(a <= n)) return
+OUT 02 // print(a)
+LDA 02
+ADD 03
+STA 04 // c = a + b
+LDA 03
+STA 02 // a = b
+LDA 04
+STA 03 // b = c
+JMP 05 // }
 \end{lstlisting}
 \end{minipage}
 \newpage
@@ -392,37 +392,37 @@ Der Wert für Zahl $i$ steht also an Adresse $i + 3$.
 0 steht dabei für prim, 1 für nicht-prim.\\
 \begin{minipage}{\linewidth}
 \begin{lstlisting}
-01 INP 01 // Eingabe: n
-02 LDK 02
-03 STA 02 // i = 2
-04 LDK 03 // while (true) {
-05 ADD 02
-06 STA 04
-07 LDI 04
-08 JEZ 16 // if (arr[i] == 0) subroutine()
-09 LDK 01
-10 ADD 02
-11 STA 02 // i = i + 1
-12 LDA 02
-13 SUB 01 
-14 JLE 04 // if (i <= n) continue
-15 HLT 00 // return }
-16 OUT 02 // function subroutine() { print(i)
-17 LDA 02
-18 ADD 02
-19 STA 03 // j = i + i
-20 LDA 03 // while (true) {
-21 SUB 01
-22 JGZ 09 // if (j > n) return
-23 LDK 03
-24 ADD 03
-25 STA 04
-26 LDK 01
-27 STI 04 // arr[j] = 1
-28 LDA 03
-29 ADD 02
-30 STA 03 // j = j + i
-31 JMP 20 // } }
+INP 01 // Eingabe: n
+LDK 02
+STA 02 // i = 2
+LDK 03 // while (true) {
+ADD 02
+STA 04
+LDI 04
+JEZ 16 // if (arr[i] == 0) subroutine()
+LDK 01
+ADD 02
+STA 02 // i = i + 1
+LDA 02
+SUB 01 
+JLE 04 // if (i <= n) continue
+HLT 00 // return }
+OUT 02 // function subroutine() { print(i)
+LDA 02
+ADD 02
+STA 03 // j = i + i
+LDA 03 // while (true) {
+SUB 01
+JGZ 09 // if (j > n) return
+LDK 03
+ADD 03
+STA 04
+LDK 01
+STI 04 // arr[j] = 1
+LDA 03
+ADD 02
+STA 03 // j = j + i
+JMP 20 // } }
 \end{lstlisting}
 \end{minipage}
 \end{enumerate}
