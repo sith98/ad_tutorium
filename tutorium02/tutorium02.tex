@@ -26,18 +26,18 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
 \begin{enumerate}
     \item Lösen Sie folgende Rekursionsgleichungen mithilfe der Master-Methode oder begründen Sie, warum die Master-Methode nicht anwendbar ist.
     \begin{enumerate}[label=\roman*)]
-        \item $T(n) = 2T(n / 6) + \sqrt[3]{n}$
+        \item $T(n) = 2T(n / 8) + \sqrt[3]{n}$
         \item $T(n) = n / 2 \cdot T(n / 2) + 1$
         \item $T(n) = T(3n / 4) + n$
         \item $T(n) = 4T(n / 2) + n^2 \log(n)$
         \item $T(n) = 4T(n / 3) + \frac{n}{\log(n)}$ ($n \geq 2$)
-        \item $T(n) = 3T(n / 3) + \frac{n}{\log(n)}$ ($n \geq 2$)
+        \item \textbf{schwer:} $T(n) = 3T(n / 3) + \frac{n}{\log(n)}$ ($n \geq 2$)
     \end{enumerate}
 
     \item Lösen Sie folgende Rekursionsgleichungen mithilfe der Iterationsmethode:
     \begin{enumerate}[label=\roman*)]
         \item $T(1) = 2, \,\,\,\, T(n) = T(n - 1) + n - 1$
-        \item $T(1) = 1, \,\,\,\, T(2) = 1, \,\,\,\, T(3) = 1, \,\,\,\, T(n) = 3T(n / 3 + 2) + n$
+        \item $T(1) = 1, \,\,\,\, T(n) = 9T(n / 3) + n^2$
         \item $T(1) = 3, \,\,\,\, T(n) = 3T(n / 2) + 1$
         \item $T(1) = 1, \,\,\,\, T(n) = T(n / 2) + \log(n)$
         \item $T(1) = 1, \,\,\,\, T(n) = 2T(n / 4) + n$
@@ -57,8 +57,8 @@ void example(int n) {
     else example(n / 2);
 }
     \end{lstlisting}
-    Geben die erwartete Laufzeit als Rekursionsgleichung an.
-    Zeigen Sie mittels Substitutionsmethode, dass diese erwartete Laufzeit durch $O(n)$ beschränkt werden kann.
+    Geben die durchschnittliche Laufzeit als Rekursionsgleichung an.
+    Zeigen Sie mittels Substitutionsmethode, dass diese durchschnittliche Laufzeit durch $O(n)$ beschränkt werden kann.
 
     \item
     Lösen Sie folgende Rekursionsgleichung:
@@ -76,17 +76,18 @@ void example(int n) {
 \begin{enumerate}
     \item
     \begin{enumerate}[label=\roman*)]
-        \item $a = 2$ und $b = 6$: $n^{\log_6(2)} = \sqrt[3]{n} = \Theta(\sqrt[3]{n}) \Rightarrow$ Fall 2:
+        \item $a = 2$ und $b = 8$: $n^{\log_8(2)} = n^{1/3}=\sqrt[3]{n} = f(n)$.
+        Daher lässt sich Fall 2 anwenden: 
         $T(n) = \Theta(\sqrt[3]{n} \log n)$
 
         \item $T(n)$ ist nicht in der Form $a T(n / b) + f(n)$, da $a = n / 2$ keine Konstante ist. Deswegen ist die Master-Methode nicht anwendbar.
 
         \item $a = 1$ und $b = 1 / (3 / 4) = 4 / 3$:
         $n^{\log_{4/3}(1)} = n^0 = \Theta(1)$. Da $f(n) = n = \Omega(n^{0 + \epsilon})$
-        und außerdem gilt $a f(n / b) = 3/4 n \leq c n = c f(n)$ mit $c = 3/4 < 1$, 
+        und außerdem gilt $a f(n / b) = 3n/4 \leq c n = c f(n)$ mit $c = 3/4 < 1$, 
         lässt sich Fall 3 der Master-Methode anwenden und $T(n) = \Theta(n)$.
 
-        \item $n^{\log_2(4)} = n^2$.
+        \item $a=4$ und $b=2$: $n^{\log_2(4)} = n^2$.
         Da $f(n) = n^2 \log(n) \neq O(n^2)$, können Fälle 1 und 2 nicht angewendet werden.
         Jedoch gilt auch $n^2 \log(n) \neq \Omega(n^{2 + \epsilon})$.
         \begin{proof}
@@ -95,20 +96,34 @@ void example(int n) {
                 n^2 \log(n) &\geq n^{2 + \epsilon} &\mid \, : n^2 \\
                 \log(n) &\geq n^\epsilon = \Omega(n^\epsilon)
             \end{align*}
-            Jedoch steigt $\log(n)$ langsamer als jede Potenz.
+            Jedoch steigt $\log(n)$ langsamer als $n^\epsilon$ für beliebiges $\epsilon$.
                 % ($\lim\limits_{n \rightarrow \infty} \frac{n^a}{\log(n)}
                 % \overset{\text{L'Hosptial}}{=} \lim\limits_{n \rightarrow \infty} \frac{a n^{a - 1}}{\frac{1}{n}}
                 % = \lim\limits_{n \rightarrow \infty} a n^a = \infty$).
             Daher ist $\log(n) \neq \Omega(n^\epsilon)$. Widerspruch!
         \end{proof}
-        Also ist auch Fall 3 und damit die gesamte Master-Methode nicht anwendbar.
+        Also ist auch Fall 3 nicht anwendbar.
+        Jedoch ist Fall 2b (zwischen 2 und 3) anwendbar, da $f(n) = n^2 \log n = \Theta(n^2 (\log n)^k)$ mit $k = 1$. Also ist $T(n) = \Theta(n^2 (\log n)^2)$
 
-        \item $n^{\log_3(4)} \approx n^{1.26}$. Da $\frac{n}{\log(n)} = O(n) = O(n^{\log_3(4) - \epsilon})$, 
-        lässt sich Fall 1 anwenden: $T(n) = \Theta(n^{\log_3(4)})$
+        \item $a = 4$ und $b = 4$: $n^{\log_3(4)} \approx n^{1.26}$. Da $f(n) = \frac{n}{\log(n)} = O(n^1)$, gilt $f(n) = O(n^{\log_3(4) - \epsilon})$. 
+        Somit lässt sich Fall 1 anwenden: $T(n) = \Theta(n^{\log_3(4)})$
 
-        \item $n^{\log_3(3)} = n^1 = n$.
-        Da $\lim\limits_{n \rightarrow \infty} \log(n) = \infty$, gibt es keine positiven Konstanten $n_0$ und $c$ mit $c \geq \frac{1}{\log(n)}$ für $n \geq n_0$. Daher ist $\frac{n}{\log(n)} \neq \Omega(n)$, weshalb Fälle 2 und 3 nicht anwendbar sind.
-        Jedoch gilt auch $\frac{n}{\log(n)} \neq O(n^{1 - \epsilon})$.
+        \item $a = 3$ und $b = 3$: $n^{\log_3(3)} = n^1 = n$.
+        Es gilt $f(n) = \frac{n}{\log(n)} \neq \Omega(n)$.
+        \begin{proof}
+            Angenommen $\frac{n}{\log n} = \Omega(n)$.
+            Dann gilt für positive Konstanten $n_0$ und $c$ sowie $n \geq n_0$: 
+            \begin{align*}
+                \frac{n}{\log(n)} &\geq cn &\mid \, : n \\
+                \frac{1}{\log(n)} &\geq c &\mid \square^{-1} \\
+                \log(n) &\leq \frac{1}{c}
+            \end{align*}
+            Allerdings gilt $\lim\limits_{n \rightarrow \infty} \log(n) = \infty$.
+            Daher kann die letzte Ungleichung für keine Konstante $c' = \frac{1}{c}$ zutreffen.
+            Widerspruch!
+        \end{proof}
+        Da $\frac{n}{\log(n)} \neq \Omega(n)$, sind Fälle 2 und 3 nicht anwendbar.
+        Desweiteren gilt allerdings $\frac{n}{\log(n)} \neq O(n^{1 - \epsilon})$.
         \begin{proof}
             Angenommen, $\frac{n}{\log(n)} = O(n^{1 - \epsilon})$ für ein $\epsilon > 0$.
             Dann gilt für positive Konstanten $n_0$ und $c$ sowie $n \geq n_0$: 
@@ -118,11 +133,15 @@ void example(int n) {
                 \log(n) &\geq c n^{\epsilon} &\mid \, : c \\
                 n^\epsilon &\leq \frac{1}{c} \log(n) = O(\log n)
             \end{align*}
-            Jedoch steigt $\log(n)$ langsamer als jede Potenz.
+            Jedoch steigt $\log(n)$ langsamer als $n^\epsilon$ für beliebiges $\epsilon$.
             % Jedoch steigt $\log(n)$ langsamer als jede Potenz (siehe oben).
             Daher ist $n^\epsilon \neq O(\log n)$. Widerspruch!
         \end{proof}
-        Also ist auch Fall 1 und damit die gesamte Master-Methode nicht anwendbar.
+        Also ist auch Fall 1 nicht anwendbar.
+        Bleibt noch Fall 2b: $f(n) = \frac{n}{\log(n)} = n \log(n)^{-1} = \Theta(n (\log n)^{k})$ mit $k = -1$.
+        Allerdings ist $k \geq 0$ Voraussetzung für Fall 2b.
+        Daher ist auch dieser Fall nicht anwendbar.
+        Da keiner der Fälle angewendet werden kann, ist die Master-Methode nicht anwendbar.
     \end{enumerate}
 
     \item
@@ -133,7 +152,7 @@ void example(int n) {
         %     &= T(n - 3) + (n - 2)^2 + (n - 1)^2 + n^2 = \ldots \\
         %     &= T(n - i) + \sum\limits_{k = 0}^{i - 1} (n - k)^2
         % \end{align*}
-        % Aus $T(n - i) = T(1)$ folgt $i = n - 1$. Substituieren:
+        % Aus $T(n - i) = T(1)$ folgt $i = n - 1$. Einsetzen liefert:
         % \begin{align*}
         %     T(n) &= T(n - (n - 1)) + \sum\limits_{k=0}^{n - 2} (n - k)^2
         %     = T(1) + \big( n^2 + (n - 1)^2 + \ldots + 3^2 + 2^2 \big) \\
@@ -144,76 +163,145 @@ void example(int n) {
             &= T(n - 2) + 2n - 1 - 2 = \big(T(n - 3) + n - 3\big) + 2n - 1 - 2 \\
             &= T(n - 3) + 3n - 1 - 2 - 3 = \big(T(n - 4) + n - 4\big) + 3n - 1 - 2 - 3 \\
             &= T(n - 4) + 4n - 1 - 2 - 3 - 4 = \ldots \\
-            &= T(n - i) + in - \sum\limits_{k = 1}^{i} k \overset{\text{Gaußsumme}}{=} T(n - i) + in - \frac{(i + 1)i}{2}
+            \text{$i$-ter Schritt: } &= T(n - i) + i \cdot n - \sum\limits_{k = 1}^{i} k \overset{\text{Gaußsumme}}{=} T(n - i) + i \cdot n - \frac{i \cdot (i + 1)}{2}
         \end{align*}
-        Aus $T(n - i) = T(1)$ folgt $i = n - 1$. Substituieren:
+        Aus $T(n - i) = T(1)$ folgt $i = n - 1$. Einsetzen liefert:
         \begin{align*}
-            T(n) &= T(1) + (n - 1) \cdot n - \frac{n(n - 1)}{2} \\
-            &= 2 + \frac{n(n - 1)}{2} = \frac{n^2}{2} - \frac{n}{2} + 2 = \Theta(n^2)
+            T(n) &= T(1) + (n - 1) \cdot n - \frac{(n - 1) \cdot n}{2} \\
+            &= 2 + \frac{(n - 1) \cdot n}{2} = \frac{n^2}{2} - \frac{n}{2} + 2 = \Theta(n^2)
+        \end{align*}
+        Probe durch Einsetzen in ursprüngliche Gleichung:
+        \begin{align*}
+            T(n) &= T(n - 1) + n - 1
+            = \left(\frac{(n - 1)^2}{2} - \frac{n - 1}{2}  + 2\right) + n - 1 \\
+            &= \frac{(n - 1)^2 - n + 1 + 4 + 2n - 2}{2} 
+            = \frac{n^2 - 2n + 1 - n + 1 + 4 + 2n - 2}{2} \\
+            &= \frac{n^2 - n + 4}{2} = \frac{n ^2}{2} - \frac{n}{2} + 2
         \end{align*}
 
         \item
         \begin{align*}
-            T(n) &= 3T(n / 3 + 2) + n = 3\big(3T(n / 9 + 2) + n / 3\big) + n \\
-            &= 9T(n / 9 + 2) + 2n = 9\big(3T(n / 27 + 2) + n / 9\big) + 2n \\
-            &= 27T(n / 27 + 2) + 3n = \ldots \\
-            &= 3^i T(n / 3^i + 2) + i n 
+            T(n) &= 9T(n / 3) + n^2 = 9 \left(9T(n / 3^2) + \left(\frac{n}{3}\right)^2 \right) + n = 9^2 T(n / 3^2) + 9 \cdot \frac{n^2}{3^2} + n^2 \\
+            &= 9^2 T(n / 3^2) + 2 n^2 
+            = 9^2\left(9T(n / 3^3) + \left(\frac{n}{3^2}\right)^2\right) + 2n^2
+            = 9^3T(n / 3^3) + 9^2 \cdot \frac{n^2}{9^2} + 2n^2 \\
+            &= 9^3T(n / 3^2) = 3n^2 = \ldots \\
+            \text{$i$-ter Schritt: } &= 9^i T(n / 3^i) + i n^2
         \end{align*}
-        Aus $T(n / 3^i + 2) = T(3)$ folgt $i = \log_3(n)$. Substituieren:
+        Aus $T(n / 3^i) = T(1)$ folgt $n = 3^i$ und $i = \log_3(n)$. Nebenrechnung:
         \begin{align*}
-            T(n) &= 3^{\log_3(n)} T(3) + \log_3(n)n = n + \log_3(n) n = \Theta(n \log n)
+            9^{\log_3(n)} = \left(3^2\right)^{\log_3(n)} = \left(3^{\log_3(n)}\right)^{2} = n^2
         \end{align*}
+        Einsetzen liefert:
+        \begin{align*}
+            T(n) &= 9^{\log_3(n)} T(1) + \log_3(n) \cdot n^2 = n^2 + \log_3(n) \cdot n^2 = \Theta(n^2 \log n)
+        \end{align*}
+        Probe durch Einsetzen in ursprüngliche Gleichung:
+        \begin{align*}
+            T(n) &= 9T(n / 3) + n^2 = 9\left(\left(\frac{n}{3}\right)^2 + \log_3\left(\frac{n}{3}\right) \cdot \left(\frac{n}{3}\right)^2 \right) + n^2 \\
+            &= 9\left(\left(\frac{n}{3}\right)^2 + \left(\log_3(n) - \underbrace{\log_3(3)}_{=1} \right) \cdot \left(\frac{n}{3}\right)^2 \right) + n^2 \\
+            &= 9 \left( \log_3(n) \cdot \left(\frac{n}{3}\right)^2 \right) + n^2 
+            = \log_3(n) \cdot n^2 + n^2
+        \end{align*}
+        % \begin{align*}
+        %     T(n) &= 3T(n / 3 + 2) + n - 2 = 3\big(3T(n / 3^2 + 2) + n / 3 + 2 - 2\big) + n - 2\\
+        %     &= 3^2T(n / 3^2 + 2) + 2n - 2 = 3^2\big(3T(n / 3^3 + 2) + n / 3^2 + 2 - 2\big) + 2n - 2\\
+        %     &= 3^3T(n / 3^3 + 2) + 3n - 2= \ldots \\
+        %     \text{$i$-ter Schritt: } &= 3^i T(n / 3^i + 2) + i n - 2
+        % \end{align*}
+        % Aus $T(n / 3^i + 2) = T(3)$ folgt $n / 3^i = 1$, $n = 3^i$ und schließlich $i = \log_3(n)$. Einsetzen liefert:
+        % \begin{align*}
+        %     T(n) &= 3^{\log_3(n)} T(3) + \log_3(n) \cdot n = n + n \cdot \log_3(n) = \Theta(n \log n)
+        % \end{align*}
+        % Probe durch Einsetzen in ursprüngliche Gleichung:
+        % \begin{align*}
+        %     T(n) &= 3T(n / 3 + 2) + n = 3\left(\frac{n}{3} + 2 + \left(\frac{n}{3} + 2\right) \cdot \log_3\left(\frac{n}{3} + 2\right) \right) + n \\
+        %     &= 3\left(\frac{n + 6}{3} + \frac{n + 6}{3} \cdot \log_3\left(\frac{n + 6}{3}\right) \right) + n \\
+        %     &= n + 6 + (n + 6) \cdot (\log_3(n + 6) - \underbrace{\log_3(3)}_{=1}) + n \\
+        %     &= (n + 6) \cdot \log_3(n + 6) + n
+        % \end{align*}
+    
 
         \item
         \begin{align*}
-            T(n) &= 3T(n / 2)) + 1 = 3\big(3T(n / 4) + 1\big) + 1 \\
-            &= 9T(n / 4) + 1 + 3 = 9\big(3T(n / 8) + 1\big) + 1 + 3 \\
-            &= 9T(n / 4) + 1 + 3 + 9 = \ldots \\
-            &= 3^i T(n / 2^i) + \sum\limits_{k = 0}^{i} 3^i \overset{\text{geom. Reihe}}{=} 
-            3^i T(n / 2^i) + \frac{3^{i + 1} - 1}{2}
+            T(n) &= 3T(n / 2) + 1 = 3\big(3T(n / 2^2) + 1\big) + 1 \\
+            &= 3^2T(n / 2^2) + 1 + 3 = 3^2\big(3T(n / 2^3) + 1\big) + 1 + 3 \\
+            &= 3^3T(n / 2^3) + 1 + 3 + 3^2 = \ldots \\
+            \text{$i$-ter Schritt: } &= 3^i T(n / 2^i) + \sum\limits_{k = 0}^{i - 1} 3^i \overset{\text{geom. Reihe}}{=} 
+            3^i T(n / 2^i) + \frac{3^{i} - 1}{3 - 1}
         \end{align*}
-        Aus $T(n / 2^i) = T(1)$ folgt $i = \log_2(n)$. Nebenrechnung:
+        Aus $T(n / 2^i) = T(1)$ folgt $n = 2^i$ und $i = \log_2(n)$. Nebenrechnung:
         \begin{align*}
             3^{\log_2(n)} = \left(2^{\log_2(3)}\right)^{\log_2(n)} = 
             \left(2^{\log_2(n)}\right)^{\log_2(3)} = n ^{\log_2(3)}
         \end{align*}
-        Substituieren:
+        Einsetzen liefert:
         \begin{align*}
-            T(n) &= 3^{\log_2(n)}T(1) + \frac{3^{\log_2(n) + 1} - 1}{2}
-            = 3n^{\log_2(3)} + \frac{3 \cdot 3^{\log_2(n)} - 1}{2} \\
-            &= 3n^{\log_2(3)} + \frac{3 \cdot n^{\log_2(3)} - 1}{2}
+            T(n) &= 3^{\log_2(n)}T(1) + \frac{3^{\log_2(n)} - 1}{2}
+            = 3n^{\log_2(3)} + \frac{n^{\log_2(3)} - 1}{2} \\
+            &= \frac{6n^{\log_2(3)}}{2} + \frac{n^{\log_2(3)} - 1}{2}
+            = \frac{7}{2} n^{\log_2(3)} - \frac{1}{2}
             = \Theta(n^{\log_2(3)})
         \end{align*}
-
-        \item
+        Probe durch Einsetzen in ursprüngliche Gleichung:
         \begin{align*}
-            T(n) &= T(n/2) + \log(n) = \big(T(n / 4) + \log(n / 2)\big) + \log(n) \\
-            &= \Big(\big(T(n / 8) + \log(n / 4)\big) + \log(n / 2)\Big) + \log(n) = \ldots \\
-            &= T(n / 2^i) + \sum\limits_{k = 0}^{i - 1} \log(n / 2^k)
-            = T(n / 2^i) + \sum\limits_{k = 0}^{i - 1} \log(n) - \sum\limits_{k = 0}^{i - 1} k\log(2) \\
-            &= T(n / 2^i) + i \cdot \log(n) - \sum\limits_{k=0}^{i - 1} k
-            = T(n / 2^i) + i \cdot \log(n) - \frac{(i - 1) \cdot i}{2}
-        \end{align*}
-        Aus $T(n / 2^i) = T(1)$ folgt $i = \log(n)$. Substituieren:
-        \begin{align*}
-            T(n) &= T(1) + \log(n)^2 - \frac{(\log(n) - 1) \cdot \log(n)}{2} \\
-            &= 1 + \log(n)^2 - \frac{1}{2} \log(n)^2 + \frac{1}{2} \log(n) = \operatorname{\Theta}\left(\log(n)^2\right) = \Theta(\log^2 n)
+            T(n) &= 3T(n / 2) + 1
+            = 3\left( \frac{7}{2} \left(\frac{n}{2}\right)^{\log_2(3)} - \frac{1}{2} \right) + 1 \\
+            &= 3\left(\frac{7}{2} \cdot \frac{n^{\log_2(3)}}{2^{\log_2(3)}} - \frac{1}{2}\right) + 1
+            = \frac{7}{2} \cdot \frac{3 n^{\log_2(3)}}{3} - \frac{3}{2} + 1 \\
+            &= \frac{7}{2} n^{\log_2(3)} - \frac{1}{2}
         \end{align*}
 
         \item
         \begin{align*}
-            T(n) &= 2T(n / 4) + n = 2\big(2T(n / 16) + n / 4\big) + n \\
-            &= 4T(n / 16) + \frac{3}{2} n = 4\big(2T(n / 64) + n / 16\big) + \frac{3}{2}n \\
-            &= 8T(n / 64) + \frac{7}{4} n = \ldots \\
-            &= 2^i T(n / 4^i) + \frac{2^i - 1}{2^{i - 1}} n 
-            = 2^i T(n / 4^i) + \left(2 - \frac{2}{2^i}\right) \cdot n
+            T(n) &= T(n/2) + \log(n) = \big(T(n / 2^2) + \log(n / 2)\big) + \log(n) \\
+            &= \Big(\big(T(n / 2^3) + \log(n / 2^2)\big) + \log(n / 2)\Big) + \log(n) = \\
+            &= T(n / 2^3) + \log(n / 2^2) + \log(n / 2^1) + \log(n / 2^0) = \ldots \\
+            \text{$i$-ter Schritt: } &= T(n / 2^i) + \sum\limits_{k = 0}^{i - 1} \log(n / 2^k)
+            = T(n / 2^i) + \sum\limits_{k = 0}^{i - 1} \log(n) - \sum\limits_{k = 0}^{i - 1} k \underbrace{\log(2)}_{= 1} \\
+            &= T(n / 2^i) + \sum\limits_{k = 0}^{i - 1} \log(n) - \sum\limits_{k = 0}^{i - 1}  k
+            \overset{\text{Gaußsumme}}{=} T(n / 2^i) + i \cdot \log(n) - \frac{(i - 1) \cdot i}{2}
+        \end{align*}
+        Aus $T(n / 2^i) = T(1)$ folgt $n = 2^i$ und $i = \log(n)$. Einsetzen liefert:
+        \begin{align*}
+            T(n) &= T(1) + (\log(n))^2 - \frac{(\log(n) - 1) \cdot \log(n)}{2} \\
+            &= 1 + (\log(n))^2 - \frac{1}{2} (\log(n))^2 + \frac{1}{2} \log(n) 
+            = \frac{1}{2} (\log(n))^2  + \frac{1}{2} \log(n) + 1\\
+            &= \operatorname{\Theta}\left((\log(n))^2\right) = \Theta(\log^2(n))
+        \end{align*}
+        Probe durch Einsetzen in ursprüngliche Gleichung:
+        \begin{align*}
+            T(n) &= T(n / 2) + \log(n) = \frac{1}{2} \left(\log\left(\frac{n}{2}\right)\right)^2 + \frac{1}{2} \log\left( \frac{n}{2} \right) + 1 + \log(n) \\
+            &= \frac{1}{2} \left(\log(n) - \log(2)\right)^2 + \frac{1}{2} \left( \log(n) - \log(2) \right) + 1 + \log(n) \\
+            &= \frac{1}{2} ((\log(n))^2 - 2\log(n) + 1) + \frac{1}{2} \left( \log(n) - 1 \right) + 1 + \log(n) \\
+            % &= \frac{1}{2}(\log(n))^2 - \log(n) + \frac{1}{2} + \frac{1}{2} \log(n) - \frac{1}{2} + 1 + \log(n) \\
+            &= \frac{1}{2} (\log(n))^2  + \frac{1}{2} \log(n) + 1\\
+        \end{align*}
+
+        \item
+        \begin{align*}
+            T(n) &= 2T(n / 4) + n = 2\big(2T(n / 4^2) + n / 4\big) + n \\
+            &= 2^2T(n / 4^2) + n + \frac{n}{2} = 2^2\big(2T(n / 4^3) + n / 4^2\big) + n + \frac{n}{2}\\
+            &= 2^3T(n / 4^3) + n + \frac{n}{2} + \frac{n}{4} = \ldots \\
+            \text{$i$-ter Schritt: } &= 2^i T(n / 4^i) + \sum\limits_{k = 0}^{i - 1} \frac{n}{2^k} \\
+            &= 2^i T(n / 4^i) + n \sum\limits_{k = 0}^{i - 1} \left(\frac{1}{2}\right)^k
+            \overset{\text{geom. Reihe}}{=} 2^i T(n / 4^i) + n \cdot \frac{\left(\frac{1}{2}\right)^i - 1}{\frac{1}{2} - 1} \\
+            &= 2^i T(n / 4^i) + n \cdot (-2) \cdot \left(\left(\frac{1}{2}\right)^i - 1\right)
+            = 2^i T(n / 4^i) + 2n \cdot \left(1 - \frac{1}{2^i}\right)
+            % = 2^i T(n / 4^i) + \left(2 - \frac{2}{2^i}\right) \cdot n
             % &= 2^i T(n / 4^i + 2) + \frac{2^i - 1}{2^{i - 1}} n
         \end{align*}
-        Aus $T(n / 4^i) = T(1)$ folgt $i = \log_4(n)$. Substituieren:
+        Aus $T(n / 4^i) = T(1)$ folgt $n = 4^i$ und $i = \log_4(n)$. Einsetzen liefert:
         \begin{align*}
-            T(n) &= 2^{\log_4(n)} \cdot T(1) + \left(2 - \frac{2}{2^{\log_4(n)}}\right) \cdot n  \\
-            &= \sqrt{n} + 2n - \frac{2n}{\sqrt{n}} = \sqrt{n} + 2n - 2\sqrt{n}
+            T(n) &= 2^{\log_4(n)} \cdot T(1) + 2n \cdot \left(1 - \frac{1}{2^{\log_4(n)}}\right) \\
+            &= \sqrt{n} \cdot 1 + 2n - \frac{2n}{\sqrt{n}} = \sqrt{n} + 2n - 2\sqrt{n}
             = 2n - \sqrt{n} = \Theta(n)
+        \end{align*}
+        Probe durch Einsetzen in ursprüngliche Gleichung:
+        \begin{align*}
+            T(n) &= 2T(n / 4) + n = 2\left(\frac{2n}{4} - \sqrt{\frac{n}{4}}\right) + n
+            = \frac{4n}{4} - \frac{2\sqrt{n}}{\sqrt{4}} + n \\
+            &= 2n - \sqrt{n}
         \end{align*}
     \end{enumerate}
 
@@ -221,8 +309,8 @@ void example(int n) {
     \begin{proof}
         Beweis durch Induktion:
         \begin{description}
-            \item[IA] $T(1) = 1 = 1 \log(1) + 1$
-            \item[IV] $T(i) = i \log(i) + i$ für alle $i < n$
+            \item[IA] $T(1) = 1 = 1 \cdot \log(1) + 1$
+            \item[IV] $T(k) = k \log(k) + k$ für $k = \frac{n}{2}$
             \item[IS] 
             \begin{align*}
                 T(n) &= 2T\left(\frac{n}{2}\right) + n
@@ -236,6 +324,7 @@ void example(int n) {
                 % \overset{\text{für }c \geq 2}{\leq}c n \log n - dn
             \end{align*}
         \end{description}
+        Nach dem Prinzip der vollständigen Induktion gilt die Aussage $T(n) = n\log(n) + n$ somit für alle $n \geq 1$.
     \end{proof}
 
     \item
@@ -249,7 +338,7 @@ void example(int n) {
         Zeige induktiv, dass $T(n) \leq cn$:
         \begin{description}
             \item[IA] $T(1) = 1 \leq c \cdot 1$
-            \item[IV] $T(i) \leq ci$ für alle $i < n$
+            \item[IV] $T(k) \leq ck$ für $k \in \{n - 1, \frac{n}{2}\}$
             \item[IS]
             \begin{align*}
                 T(n) &= \frac{1}{2}\left(T(n - 1) + T\left(\frac{n}{2}\right)\right) + n
@@ -260,6 +349,7 @@ void example(int n) {
                 \overset{c \geq 4}{\leq} cn
             \end{align*} 
         \end{description}
+        Nach dem Prinzip der vollständigen Induktion gilt die Aussage $T(n) \leq cn$ somit für alle $n \geq 1$.
     \end{proof}
     \item 
     Aus $m = \log(n)$ folgt $n = 2^m$. Also gilt:
@@ -270,7 +360,7 @@ void example(int n) {
     \begin{equation*}
         S(m) = S\left(\frac{m}{2}\right) + 1
     \end{equation*}
-    Lösung mittels Master-Methode: $n^{\log_2(1)} = n^0 = \Theta(1) \Rightarrow$ Fall 2.
+    Lösung mittels Master-Methode: $a = 1$, $b = 2$, $f(n) = 1$, $n^{\log_2(1)} = n^0 = \Theta(1) \Rightarrow$ Fall 2.
     Somit ergibt sich $S(m) = \Theta(\log m)$.
     Da $m = \log(n)$, gilt:
     \begin{equation*}
