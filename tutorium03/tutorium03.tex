@@ -1,0 +1,103 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{gastex}
+\usepackage{etoolbox}
+
+% \newcommand{\showLoesung}{2} %<---als Schalter
+%\newcommand{\showInhalt}{1} %<---als Schalter
+
+\input{../skel/uebmacsPNG}
+
+\usepackage{enumitem}
+
+\begin{document}
+\thispagestyle{empty}
+
+\Uebung{3}{4}{Simon Thelen}{28. Oktober 2021}  % FIXME: Blattnummer, Datum, Zeit
+\ifcsdef{showLoesung}{
+\textbf{Bitte beachten Sie:} Die Lösungen können trotz sorgfältiger Prüfung Fehler enthalten.
+Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in Tutorien, Übungen oder nach Vorlesungen.
+}{}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{aufgabe}{1}{Anpassen von Sortieralgorithmen}
+    \begin{enumerate}
+        \item Gegeben sei folgende Funktion:
+        \begin{lstlisting}
+void swap(int[] arr, int i, int j) {
+    int temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+} 
+        \end{lstlisting}
+        Verändern Sie Ihre Implementierung von \textbf{Insertionsort}, sodass Ihre neue Implementierung ausschließlich die Funktion \texttt{swap} aufruft, um das Array zu modifizieren. Leseopeartionen sind natürlich weiterhin erlaubt.
+        Zeigen Sie, dass der modifizierte Algorithmus weiterhin korrekt ist und sich die Laufzeit asymptotisch nicht ändert.
+        Warum ist die neue Variante wahrscheinlich trotzdem langsamer als die alte?
+
+        \item Betrachten Sie folgendes Array: $(2, 4, 5, 7, 8, 1, 9)$. Zeigen Sie, dass diese Zahlen beim Aufruf von \textbf{Bubble\-sort} bereits nach einer Iteration der äußeren Schleife sortiert sein werden und sich die Reihenfolge danach nicht mehr ändern wird.
+        Modifizieren Sie Ihre Bubblesort-Implementierung, sodass der Algorithmus in diesem Fall und in ähnlichen Fällen vorzeitig abbricht.
+        Wie lautet die Best-Case- sowie die Worst-Case-Laufzeit des modifizierten Algorithmus.
+
+        \item Verändern Sie die \texttt{preparePartion}-Funktion Ihrer \textbf{Quicksort}-Implementierung, indem sie nun von rechts nach links über das Array laufen und die beiden Partionen von rechts nach links aufbauen.
+    \end{enumerate}
+\end{aufgabe}
+
+\begin{aufgabe}{2}{Qucksort und Duplikate}
+    \begin{enumerate}
+        \item Angenommen, im Eingabearray für Quicksort sind viele Zahlen mehrfach enthalten.
+        Weshalb kann dies ein Problem darstellen?
+        Zeigen Sie anhand eines Beispiels, dass sich die Laufzeit bei vielen gleichen Werten stark verschlechtern kann.
+        \item Schlagen Sie eine mögliche Lösung für dieses Problem vor.
+        \item Modifizieren Sie Ihre Quicksort-Implementierung, sodass die Laufzeit der neuen Implementierung bei einem Eingabearray mit vielen gleichen Werten mindestens genau so gut ist wie bei einem Array, in dem alle Werte verschieden sind.
+    \end{enumerate}
+\end{aufgabe}
+
+\ifcsdef{showLoesung}{}{\newpage}
+
+\begin{aufgabe}{3}{Inversionen}
+    Gegeben ein Array $(a_1, a_2, a_3, \ldots a_{n - 1}, a_n)$ mit $n$ Elementen ist eine Inversion definiert als ein Paar $(a_i, a_j)$ von zwei Elementen des Arrays, die in absteigender Reihenfolge im Array liegen.
+    Die Menge aller Inversionen eines Arrays ist also gegeben durch $I = \{(a_i, a_j) \mid 1 \leq i < j \leq n \wedge a_j  < a_i \}$
+    \begin{enumerate}
+        \item Wie viele Inversionen enthalten die Arrays $(1, 2, 4, 3, 5, 6)$, $(2, 4, 5, 6, 8, 1)$ und $(6, 5, 4, 3, 2, 1)$?
+
+        \item Wie viele Inversionen kann ein Array mit $n$ Elmenten maximal enthalten?
+
+        \item Wie viele Inversionen enthält ein Array mit $n$ paarweise verschiedenen Elementen im Durchschnitt unter der Voraussetzung, dass jede der $n!$ Permutationen gleich wahrscheinlich ist?
+        \begin{description}
+            \item[Tipp:] Sei $p_{ij}$, die Wahrscheinlichkeit, dass $(a_i, a_j)$ eine Inversion ist. Dann ist die durchschnittliche Anzahl der Inversionen gegeben durch die Summe über alle $p_{ij}$.
+        \end{description}
+
+        \item Sei in einem Array das Paar $(a_i, a_{i + 1})$ eine Inversion. Zeigen Sie, dass das Vertauschen von $a_i$ und $a_{i + 1}$ die Anzahl der Inversionen um genau 1 reduziert.
+        
+        \item Gegeben ein Array mit $n$ Elementen und $k$ Inversionen. Zeigen Sie, dass die Laufzeit von Insertionsort $\Theta(n + k)$ ist.
+
+        \item Gegeben ein Array mit $n$ Elementen und $k$ Inversionen. Zeigen Sie, dass die Laufzeit des modifizierten Bubblesort-Algorithmus aus Aufgabe 1b $\Omega(n + k)$ ist.
+    \end{enumerate}
+\end{aufgabe}
+
+\begin{aufgabe}{4}{Quickselect}
+    Gegeben ein Array mit $n$ Zahlen, sei das $k$-kleinste Element gesucht, wobei $k = 1$ dem kleinsten Element entspricht, $k = 2$ dem zweitkleinsten und so weiter.
+    $k = n$ meint dementsprechend also das größte Element.
+    % Das $k$-kleinste Element entspricht also dem Wert, welcher nach dem Sortieren des Arrays an Index $k$ stünde (mit $k \in \{0, 1, \ldots, n - 1\}$).
+    \begin{enumerate}
+        \item Geben Sie einen Algorithmus an, der das $k$-kleinste Element mittels Quicksort findet. Welches Laufzeitverhalten hat der Algorithmus.
+
+        \item Beim Aufruf von Quicksort wird Zeit aufgewendet, um Teile des Arrays zu sortieren, die zum Finden des $k$-kleinsten Elements gar nicht nötig sind.
+        Wird etwa nach dem zweitkleinsten Element gesucht, macht es keinen Sinn, die rechte Hälfte des Arrays zu sortieren.
+        Entwickeln und Implementieren Sie den Algorithmus \textsc{QuickSelect}, indem Sie Quicksort modifizieren, sodass der neue Algorithmus nur den Teil des Arrays sortiert, der zum Finden des $k$-kleinsten Elements nötig ist.
+        \begin{description}
+            \item[Tipp:] Benötigen Sie beide rekursiven Aufrufe von Quicksort?
+        \end{description}
+
+        \item Was ist die Worst- und Best-Case-Laufzeit von \textsc{QuickSelect}?
+
+        \item Angenommen, das Pivot-Element läge nach dem Partitionieren immer in der Mitte des aktuellen Teil\-arrays. Welche Laufzeit hätte \textsc{QuickSelect} dann im Worst Case?
+
+        \item Stellen Sie eine Vermutung darüber an, welche Durchschnittslaufzeit \textsc{QuickSelect} in der Praxis hat.
+    \end{enumerate}
+\end{aufgabe}
+
+
+\end{document}
