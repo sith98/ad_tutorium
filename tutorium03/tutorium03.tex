@@ -3,7 +3,7 @@
 \usepackage{gastex}
 \usepackage{etoolbox}
 
-% \newcommand{\showLoesung}{2} %<---als Schalter
+\newcommand{\showLoesung}{2} %<---als Schalter
 %\newcommand{\showInhalt}{1} %<---als Schalter
 
 \input{../skel/uebmacsPNG}
@@ -24,35 +24,283 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{aufgabe}{1}{Anpassen von Sortieralgorithmen}
     \begin{enumerate}
+        \item Verändern Sie die \texttt{preparePartition}-Funktion Ihrer \textbf{Quicksort}-Implementierung, indem Sie statt von links nach rechts nun von rechts nach links über das Array laufen und die beiden Partitionen von rechts nach links aufbauen.
+
         \item Gegeben sei folgende Funktion:
         \begin{lstlisting}
-void swap(int[] arr, int i, int j) {
+void swap(int arr[], int i, int j) {
     int temp = arr[i];
     arr[i] = arr[j];
     arr[j] = temp;
 } 
         \end{lstlisting}
-        Verändern Sie Ihre Implementierung von \textbf{Insertionsort}, sodass Ihre neue Implementierung ausschließlich die Funktion \texttt{swap} aufruft, um das Array zu modifizieren. Leseopeartionen sind natürlich weiterhin erlaubt.
-        Zeigen Sie, dass der modifizierte Algorithmus weiterhin korrekt ist und sich die Laufzeit asymptotisch nicht ändert.
+        Verändern Sie Ihre Implementierung von \textbf{Insertionsort}, sodass der modifizierte Algorithmus ausschließlich die Funktion \texttt{swap} aufruft, um das Array zu modifizieren. Leseopeartionen sind natürlich weiterhin erlaubt.
+        Zeigen Sie, dass der modifizierte Algorithmus weiterhin korrekt ist und dass sich die Laufzeit asymptotisch nicht ändert.
         Warum ist die neue Variante wahrscheinlich trotzdem langsamer als die alte?
 
         \item Betrachten Sie folgendes Array: $(2, 4, 5, 7, 8, 1, 9)$. Zeigen Sie, dass diese Zahlen beim Aufruf von \textbf{Bubble\-sort} bereits nach einer Iteration der äußeren Schleife sortiert sein werden und sich die Reihenfolge danach nicht mehr ändern wird.
         Modifizieren Sie Ihre Bubblesort-Implementierung, sodass der Algorithmus in diesem Fall und in ähnlichen Fällen vorzeitig abbricht.
+        Argumentieren Sie, dass der modifizierte Algorithmus weiterhin korrekt ist.
         Wie lautet die Best-Case- sowie die Worst-Case-Laufzeit des modifizierten Algorithmus.
-
-        \item Verändern Sie die \texttt{preparePartion}-Funktion Ihrer \textbf{Quicksort}-Implementierung, indem sie nun von rechts nach links über das Array laufen und die beiden Partionen von rechts nach links aufbauen.
+        Sie dürfen ein beliebiges Element als Pivot-Element verwenden.
     \end{enumerate}
 \end{aufgabe}
+
+\begin{loesung}
+    Alle Algorithmen dieser Lösung verwenden die Version aus den Vorlesungsfolien als Basis (das gilt auch für alle folgenden Aufgaben).
+    \begin{enumerate}
+        \item
+        Am Einfachsten ist das zu erreichen, wenn man das letzte statt das erste Element als Pivot verwendet. Dann reicht es aus, in der \texttt{preparePartition}-Funktion jedes \texttt{l} durch ein \texttt{f} zu ersetzen und umgekehrt, jedes \texttt{+} durch ein \texttt{-} zu ersetzen und umgekehrt sowie jedes \texttt{<} durch ein \texttt{>} zu ersetzen und umgekehert:
+        \begin{lstlisting}
+void preparePartition(int a[], int f, int l, int &p) {
+    int pivot = a[l];
+    int p = l + 1;
+    for (int i = l; i >= f; i--) {
+        if (a[i] >= pivot) {
+            p--;
+            swap(a[i], a[p]);
+        }
+    }
+    swap(a[l], a[p]);
+}
+        \end{lstlisting}
+
+        \item Ursprungsalgorithmus:
+        \begin{lstlisting}
+void insertionsort(int a[], int n) {
+    int i, j, key;
+    for (j = 1; j < n; j++) {
+        key = a[j];
+        i = j - 1;
+        while (i >= 0 && a[i] > key) { // Elemente verschieben
+            a[i + 1] = a[i];
+            i = i - 1;
+        }
+        a[i + 1] = key;
+    }
+} 
+        \end{lstlisting}
+        
+        In der ursprünglichen Implementierung werden die einzelnen Werte jeweils eine Position nach rechts geschrieben und schließlich einmal am Ende das einzusortierende Element an die freie Position geschrieben.
+        Mit Swaps wird das einzusortierende Element durch das Vertauschen nach jedem Vergleich sofort an die freigewordene Stelle geschrieben.
+        \begin{lstlisting}
+void insertionsort(int a[], int n) {
+    int i, j, key;
+    for (j = 1; j < n; j++) {
+        key = a[j];
+        i = j - 1;
+        while (i >= 0 && a[i] > key) {
+            swap(a, i + 1, i);
+            i = i - 1;
+        }
+    }
+}
+        \end{lstlisting}
+        Der neue Algorithmus ist korrekt.
+        \begin{proof}
+            Um die Korrektheit zu zeigen, genügt es zu zeigen, dass der Inhalt des Arrays nach jedem Durchlauf der äußeren Schleife für beide Algorithmen übereinstimmt, da in diesem Fall der Korrektheitsbeweis für den ursprünglichen Algorithmus auch für die neue Variante gilt.
+            Durch den Aufruf gilt nach Zeile 7 die Bedingung \texttt{a[i + 1] == a[i]}, was mit dem Verhalten des Ursprungsalgorithmus übereinstimmt.
+            Der Inhalt des Arrays unterscheidet sich im Vergleich zum Ursprungsalgorithmus nur dahingehend, dass nach Zeile 7 im neuen Algorithmus an Stelle \texttt{a[i]} nun das ursprüngliche \texttt{a[i + 1]} steht.
+            Da aber \texttt{i} in jedem Schleifendurchlauf dekrementiert wird, wird auf diese Stelle des Arrays nie mehr lesend zugegriffen.
+            Daher ist dieser Unterschied für die Korrektheit unerheblich.
+
+            Im Vergleich zum Ursprungsalgorithmus fehlt die Anweisung \texttt{a[i + 1] = key} in Zeile 10.
+            Diese ist aufgrund der folgenden Schleifeninvariante nicht nötig: 
+            \begin{center}
+                \textit{Vor und nach jedem Durchlauf der inneren Schleife gilt }\texttt{a[i + 1] == key}\textit{.}
+            \end{center}
+            Beweis durch Induktion:
+            \begin{description}
+                \item[IA] Vor dem ersten Durchlauf gilt \texttt{i == j - 1} und damit \texttt{key == a[j] == a[i + 1]}.
+                \item[IV] Die Schleifeninvariante gilt nach Durchlauf $n - 1$.
+                \item[IS] Laut \textbf{IV} gilt vor dem $n$-ten Durchlauf \texttt{a[i + 1] == key}. Nach dem Aufruf von \texttt{swap} in Zeile 7 gilt daher \texttt{a[i] == key}. Durch das Dekrementieren von \texttt{i} in Zeile 8 gilt nach Zeile 8 dann \texttt{key == a[i}$_{\text{alt}}$\texttt{] == a[i + 1]}.
+            \end{description}
+            Nach dem Prinzip der vollständigen Induktion gilt daher die Schleifeninvariante nach jedem Durchlauf.
+
+            Der Einfluss auf \texttt{a} innerhalb eines Durchlaufs der äußeren Schleife ist also für beide Algorithmen identisch.
+            Deshalb stimmt der Inhalt des Arrays nach jedem Durchlauf überein.
+        \end{proof}
+
+        Der Zeitaufwand ändert sich nur um einen konstanten Wert in der äußeren und um einen konstanten Wert in der inneren Schleife. Das Laufzeitverhalten bleibt daher unverändert (Best-Case: $\Theta(n))$, Average- und Worst-Case: $\Theta(n^2)$).
+
+        Der neue Algorithmus ist vermutlich trotzdem langsamer, da er insgesamt mehr Zuweisungen benötigt, da jeder Aufruf von \texttt{swap} 3 Zuweisungen umfasst.
+        Innerhalb eines Durchlaufs der äußeren Schleife benötigt der Ursprungsalgorithmus für $k$ Durchläufe der inneren Schleife insgesamt $3 + 2k$ Zuweisungen, der neue jedoch $2 + 4k$ Zuweisungen.
+        Dies entspricht für große Eingaben also etwa doppelt so vielen Zuweisungen.
+        Alle anderen Operationen (Leseoperationen, Vergleiche) bleiben jedoch unverändert.
+
+        \item
+        Ursprungsalgorithmus:
+        \begin{lstlisting}
+void bubblesort(int a[], int n) {
+    for (int i = 0; i < n; i++)  {
+        for (int j = n - 2; j >=i; j--) {
+            if (a[j] > a[j + 1]) {
+                int h  = a[j];
+                a[j] = a[j + 1];
+                a[j + 1] = h;
+            }
+        }
+    }
+} 
+        \end{lstlisting}
+        Im ersten Durchlauf der äußeren Schleife ist die Zahl 1 bei jedem Vergleich ab dem zweiten die kleinere Zahl und wird daher ganz nach links gezogen, während die Zahlen 2, 4, 5, 7 und 8 jeweils eine Position nach rechts wandern.
+        Damit liegt das Array nach dem ersten Durchlauf der äußeren Schleife in sortierter Reihenfolge vor.
+        Da das Array nun sortiert ist, wird der Vergleich \texttt{a[j] > a[j + 1]} stets \textit{falsch} liefern.
+        Die Reihenfolge wird sich also nicht mehr ändern.
+
+        Wenn in einem Durchlauf der äußeren Schleife die Bedingung \texttt{a[j] > a[j + 1]} nie zutrifft und keine Werte mehr vertauscht werden, dass für alle $j \in \{i, i + 1, \ldots, n - 2\}$ gilt: \texttt{a[j] }$\leq$\texttt{ a[j + 1]}
+        Das bedeutet, dass alle Werte \texttt{a[i]}, \texttt{a[i + 1]}, $\ldots$, \texttt{a[n - 1]} in sortierter Reihenfolge vorliegen.
+        Aus der Korrektheit von Bubblesort folgt außerdem, dass die Werte \texttt{a[0]}, \texttt{a[1]}, $\ldots$, \texttt{a[i - 1]} ebenfalls sortiert und alle kleiner als \texttt{a[i]} sind.
+        Also ist das gesamte Array sortiert.
+        Um diese Eigenschaft auszunutzen, reicht es aus, zu zählen, wie oft die \texttt{if}-Bedingung innerhalb eines Durchlaufs der äußeren Schleife den Wert \textit{wahr} geliefert hat.
+        Ist die Anzahl 0, ist nach obiger Argumentation das Array sortiert und der Algorithmus kann abgebrochen werden.
+        \begin{lstlisting}
+void bubblesort(int a[], int n) {
+    for (int i = 0; i < n; i++)  {
+        int count = 0;
+        for (int j = n - 2; j >=i; j--) {
+            if (a[j] > a[j + 1]) {
+                int h  = a[j];
+                a[j] = a[j + 1];
+                a[j + 1] = h;
+                count++;
+            }
+        }
+        if (count == 0) {
+            return;
+        }
+    }
+} 
+        \end{lstlisting}
+        Im besten Fall ist das Array bereits sortiert.
+        Das heißt, im ersten Durchlauf der äußeren Schleife kann bereits abgebrochen werden.
+        In diesem Fall muss die innere Schleife nur einmal ausgeführt werden: Laufzeit $\Theta(n)$.
+
+        Die Worst-Case-Laufzeit ist natürlich die gleiche wie beim Ursprungsalgorithmus, in dem nie vorzeitig abgebrochen wurde: $\Theta(n^2)$.
+        Der Worst-Case tritt zum Beispiel dann ein, wenn der größte Wert am Anfang des Arrays steht.
+        Dieser Wert bewegt sich bei jedem Mal nur eine Position nach rechts.
+        Daher müssen die vollen $n$ Iterationen der äußeren Schleife durchlaufen werden.
+    \end{enumerate}
+\end{loesung}
 
 \begin{aufgabe}{2}{Qucksort und Duplikate}
     \begin{enumerate}
         \item Angenommen, im Eingabearray für Quicksort sind viele Zahlen mehrfach enthalten.
         Weshalb kann dies ein Problem darstellen?
-        Zeigen Sie anhand eines Beispiels, dass sich die Laufzeit bei vielen gleichen Werten stark verschlechtern kann.
-        \item Schlagen Sie eine mögliche Lösung für dieses Problem vor.
-        \item Modifizieren Sie Ihre Quicksort-Implementierung, sodass die Laufzeit der neuen Implementierung bei einem Eingabearray mit vielen gleichen Werten mindestens genau so gut ist wie bei einem Array, in dem alle Werte verschieden sind.
+        Zeigen Sie anhand eines Beispiels, dass die Laufzeit bei vielen gleichen Werten sehr schlecht sein kann, selbst bei optimalen Pivotelementen.
+        \item Schlagen Sie eine Modifikation von Quicksort vor, die das Problem löst, sodass die Laufzeit bei einem Eingabearray mit vielen gleichen Werten mindestens so gut ist wie bei einem Array, in dem alle Werte verschieden sind.
+        \item Implementieren Sie Ihre Modifikation aus Teilaufgabe b.
     \end{enumerate}
 \end{aufgabe}
+
+\begin{loesung}
+    \begin{enumerate}
+        \item Obwohl Quicksort bei vielen gleichen Elementen weiterhin korrekt sortiert, kann die Laufzeit massiv beeinträchtigt sein.
+        Das passiert immer dann, wenn eine Zahl Pivotelement wird, die viele weitere Male im Array vorkommt.
+        
+        Der Extremfall ist ein Array mit $n$ gleichen Werten.
+        In diesem Fall wird das Pivotelement, unabhängig davon, welcher Wert zum Pivotelement wird, garantiert an der letzten Stelle im Array einsortiert.
+        Je nach konkreter \texttt{preparePartition}-Implementierung kann es auch an erster Stelle sein.
+        In jedem Fall entspricht die Laufzeit bei $n$ gleichen Werten daher dem Worst Case $\Theta(n^2)$.
+
+        \item Es folgen zwei mögliche Modifikationen, die das Problem lösen
+        \begin{enumerate}[label=\roman*)]
+            \item Beim Partitionieren wird das Array in drei Partitionen unterteilt: alle Werte, die kleiner als das Pivotelement sind; alle Werte, die gleich dem Pivotelement sind; und alle Werte, die größer als das Pivotelement sind.
+            Die Elemente der mitteleren Partition (also die Werte, die gleich dem Pivotelement sind) müssen nicht mehr sortiert werden.
+            Dadurch kann nicht nur das Pivotelement aus dem weiteren Sortierverlauf ausgenommen werden, sondern potentiell viel mehr Elemente.
+            Beim Extremfall von $n$ gleichen Elementen wäre die Laufzeit des modifizierten Algorithmus sogar $\Theta(n)$.
+
+            \item Allen zu sortierenden Zahlen wird eine eindeutige Nummer zugeordnet, zum Beispiel nach der ursprünglichen Reihenfolge im Array.
+            Werden nun zwei gleiche Zahlen verglichen, gilt diejenige mit der kleineren Nummer als die kleinere.
+            Auf diese Weise ist das Laufzeitverhalten bei gleichen Zahlen identisch wie bei verschiedenen Zahlen, da es nun praktisch keine gleichen Zahlen mehr gibt.
+
+        \end{enumerate}
+
+        \item Es folgen Implementierungen zu den obigen Modifikationen:
+        \begin{enumerate}[label=\roman*)]
+            \item Der Einfachheit halber verwendet die folgende, modifizierte \texttt{preparePartition}-Implementierung ein temporäres Array, in das Werte zwischenzeitlich kopiert werden.
+            Eine Implementierung ohne zusätzlichen Speicher finden Sie \href{https://en.wikipedia.org/wiki/Dutch_national_flag_problem}{hier}. Als Pivotelement dient zur Vereinfachung immer der erste Wert.
+            \begin{lstlisting}
+void preparePartition(int arr[], int temp[], int f, int l, int &p1, int &p2) {
+    int pivot = arr[f];
+    p1 = f;
+    p2 = l;
+    for (int i = f; i <= l; i++) {
+        if (arr[i] < pivot) {
+            temp[p1 - f] = arr[i];
+            p1++;
+        }
+        if (arr[i] > pivot) {
+            temp[p2 - f] = arr[i];
+            p2--;
+        }
+    }
+    for (int i = f; i <= l; i++) {
+        if (i >= p1 && i <= p2) {
+            arr[i] = pivot;
+        } else {
+            arr[i] = temp[i - f];
+        }
+    }
+} 
+void quicksort(int a[], int temp[], int f, int l) {
+    int part1, part2;
+    if (f < l) {
+        preparePartition(a, temp, f, l, part1, part2);
+        quicksort(a, temp, f, part1 - 1);
+        quicksort(a, temp, part2 + 1, l);
+    }
+}
+void quicksort(int a[], int n) {
+    int *temp = new int[n];
+    quicksort(a, temp, 0, n - 1);
+    delete[] temp;
+}
+            \end{lstlisting}
+
+            \item 
+            Die Nummerierung der einzelnen Arraywerte wird in einem separaten Array verwaltet.
+            Sobald Werte im zu sortierenden Array vertauscht werden, müssen auch die entsprechenden Nummern im anderen Array vertauscht werden.
+            \begin{lstlisting}
+void swap(int &a, int &b) {
+    int h = b;
+    b = a;
+    a = h;
+}
+void preparePartition(int a[], int nums[], int f, int l, int &p) {
+    int pivot = a[f];
+    int pivotNum = nums[f];
+    p = f - 1;
+    for (int i = f; i <= l; i++) {
+        if (a[i] < pivot || a[i] == pivot && nums[i] <= pivotNum) {
+            p++;
+            swap(a[i], a[p]);
+            swap(nums[i], nums[p]);
+        }
+    }
+    swap(a[f], a[p]);
+    swap(nums[f], nums[p]);
+}
+void quicksort(int a[], int nums[], int f, int l) {
+    int part;
+    if (f < l) {
+        preparePartition(a, nums, f, l, part);
+        quicksort(a, nums, f, part - 1);
+        quicksort(a, nums, part + 1, l);
+    }
+}
+void quicksort(int a[], int n) {
+    int *nums = new int[n];
+    for (int i = 0; i < n; i++) {
+        nums[i] = i;
+    }
+    quicksort(a, nums, 0, n - 1);
+    delete[] nums;
+}
+            \end{lstlisting}
+        \end{enumerate}
+    \end{enumerate}
+\end{loesung}
 
 \ifcsdef{showLoesung}{}{\newpage}
 
@@ -73,9 +321,105 @@ void swap(int[] arr, int i, int j) {
         
         \item Gegeben ein Array mit $n$ Elementen und $k$ Inversionen. Zeigen Sie, dass die Laufzeit von Insertionsort $\Theta(n + k)$ ist.
 
-        \item Gegeben ein Array mit $n$ Elementen und $k$ Inversionen. Zeigen Sie, dass die Laufzeit des modifizierten Bubblesort-Algorithmus aus Aufgabe 1b $\Omega(n + k)$ ist.
+        \item Gegeben ein Array mit $n$ Elementen und $k$ Inversionen. Zeigen Sie, dass die Laufzeit des modifizierten Bubblesort-Algorithmus aus Aufgabe 1c $\Omega(n + k)$ ist.
     \end{enumerate}
 \end{aufgabe}
+
+\begin{loesung}
+    \begin{enumerate}
+        \item $(1, 2, 4, 3, 5, 6)$ enthält eine Inversion: $(4, 3)$ 
+
+        $(2, 4, 5, 6, 8, 1)$ enthält 5 Inversionen: $(2, 1)$, $(4, 1)$, $(5, 1)$, $(6, 1)$ und $(8, 1)$ 
+
+        $(6, 5, 4, 3, 2, 1)$ enthält 15 Inversionen: $(6, 5)$, $(6, 4)$, $(6, 3)$, $(6, 2)$, $(6, 1)$, $(5, 4)$, $(5, 3)$, $(5, 2)$, $(5, 1)$, $(4, 3)$, $(4, 2)$, $(4, 1)$, $(3, 2)$, $(3, 1)$ und $(2, 1)$
+
+        \item Bei einem absteigend sortierten Array bildet jedes Paar eine Inversion. Macht insgesamt $\binom{n}{2} = \frac{n (n - 1)}{2}$ Inversionen.
+
+        \item Wenn jede mögliche Permutationen gleich wahrscheinlich ist, ist die Wahrscheinlichkeit, dass ein Paar $(a_i, a_j)$ eine Inversion bildet 50\%. Bei $\binom{n}{2}$ Paaren macht das 
+        \begin{equation*}
+            \sum\limits_{i = 1}^{n - 1} \sum\limits_{j = i + 1}^{n} \frac{1}{2} = \frac{1}{2} \binom{n}{2} = \frac{n (n - 1)}{4} = \Theta(n^2)
+        \end{equation*}
+        Inversionen im Durchschnitt.
+
+        \item 
+        Durch das Vertauschen von $a_i$ und $a_{i + 1}$ bleiben die Positionen und damit die Reihenfolgen der anderen Elemente unverändert. Daher bleiben ändern sich die Inversionen unter den Paaren 
+        \begin{equation*}
+            \{(a_j, a_k) \mid j, k \in \{1, 2, \ldots, i - 1\} \cup \{i + 2, i + 3, \ldots, n\}\}
+        \end{equation*}
+        erhalten.
+        Da aber nach dem Vertauschen sowohl $a_i$ als auch $a_{i + 1}$ weiterhin nach $a_1, a_2, \ldots a_{i - 1}$ stehen und vor $a_{i + 2}, a_{i + 3}, \ldots, a_n$, bleiben auch Inversionen der Form
+        \begin{equation*}
+            \{(a_j, a_k) \mid j \in \{i, i + 1\}, k \in \{1, 2, \ldots, i - 1\} \cup \{i + 2, i + 3, \ldots, n\}\}
+        \end{equation*}
+        unangetastet.
+        Das heißt, die einzige Inversion, die sich durch das Vertauschen ändert, ist $(a_i, a_{i + 1})$. 
+        Da $a_{i + 1} \geq a_i$, bilden die beiden Elemente nach dem Vertauschen keine Inversion mehr.
+        Die Anzahl der Inversionen wird durch das Vertauschen also genau um 1 kleiner.
+
+        \item
+        Gegeben die Insertionsort-Implementierung aus der Vorlesung:
+        \begin{lstlisting}
+void insertionsort(int a[], int n) {
+    int i, j, key;
+    for (j = 1; j < n; j++) {
+        key = a[j];
+        i = j - 1; 
+        while (i >= 0 && a[i] > key) { 
+            a[i + 1] = a[i];
+            i = i-1;
+        }
+        a[i + 1] = key;
+    }
+} 
+        \end{lstlisting}
+        \textit{Behauptung.} Die Anzahl der Durchläufe der äußeren Schleife von Insertionsort ist $\Theta(n)$, die insgesamte Anzahl der Durchläufe der inneren Schleife ist $\Theta(k)$.
+        \begin{proof}
+            Die äußere Schleife durchläuft genau $n - 1 = \Theta(n)$ Iterationen.
+
+            Jeder Durchlauf der inneren Schleife bewirkt im Wesentlichen das Vertauschen von zwei nebeneinander liegenden Elementen des Arrays (siehe dazu auch Aufgabe 1a).
+            Eine Iteration der inneren Schleife wird jedoch nur durchgeführt, wenn die beiden Werte in der falschen Reihenfolge vorliegen (\texttt{a[i] > key}).
+            Das bedeutet, nach der Aussage aus Teilaufgabe d wird die Anzahl der Inversionen nach jedem Durchlauf um 1 kleiner.
+            Da die ursprüngliche Anzahl der Inversionen $k$ beträgt und sich die Anzahl der Inversionen nirgendwo sonst im Algorithmus ändern kann, beträgt die Anzahl der Durchläufe der inneren Schleife genau $k = \Theta(k)$.
+        \end{proof}
+        Die Aussage, dass die Laufzeit von Insertionsort $\Theta(n + k)$ beträgt, folgt sofort aus der Behauptung.
+
+        \item
+        Gegeben die Bubblesort-Implementierung aus Aufgabe 1c.
+        \begin{lstlisting}
+void bubblesort(int a[], int n) {
+    for (int i = 0; i < n; i++)  {
+        int count = 0;
+        for (int j = n - 2; j >=i; j--) {
+            if (a[j] > a[j + 1]) {
+                int h  = a[j];
+                a[j] = a[j + 1];
+                a[j + 1] = h;
+                count++;
+            }
+        }
+        if (count == 0) {
+            return;
+        }
+    }
+} 
+        \end{lstlisting}
+        Die Argumentation verläuft ähnlich wie in der vorherigen Teilaufgabe.
+
+        \textit{Behauptung. } Die Anzahl der Durchläufe der inneren Schleife ist $\Omega(n)$. Zeilen 6 bis 9 werden $\Theta(k)$ oft ausgeführt.
+        \begin{proof}
+            Innerhalb der ersten Iteration der äußeren Schleife durchläuft die innere Schleife $n - 1$ Iterationen.
+            Da der Algorithmus zum ersten Mal am Ende des ersten Durchlaufs der äußeren Schleife vorzeitig abgebrochen werden kann, werden diese $n - 1$ Durchläufe der inneren Schleife sicher durchgeführt. Damit ist die insgesamte Anzahl der Durchläufe der inneren Schleife mindestens $n - 1 = \Omega(n)$.
+
+            Zeilen 6 bis 9 werden genau dann ausgeführt, wenn die \texttt{if}-Bedingung \textit{wahr} liefert.
+            Das bedeutet, dass in Zeile 6 $a_j > a_{j + 1}$ und deshalb $(a_j, a_{j + 1})$ eine Inversion bilden.
+            Zeilen 6 - 8 vertauschen $a_j$ und $a_{j + 1}$.
+            Laut Teilaufgabe d wird die Anzahl der Inversionen also bei jeder Ausführung der Zeilen 6 - 8 um 1 kleiner.
+            Aus der Korrektheit des Algorithmus folgt, dass zum Zeitpunkt, wenn der Algorithmus beendet wird, die Anzahl der Inversionen 0 beträgt.
+            Da sich die Anzahl der Inversionen nirgendwo sonst im Algorithmus ändern kann, werden Zeilen 6 - 9 daher exakt $k = \Theta(k)$ mal ausgeführt.
+        \end{proof}
+        Sowohl die Anzahl der Durchläufe der inneren Schleife als auch die Anzahl der Ausführungen von Zeilen 6 - 9 haben einen linearen Einfluss auf die Gesamtlaufzeit des Algorithmus. Daher folgt die Aussage, dass die Laufzeit $\Omega(n + k)$ beträgt, direkt aus der Behauptung.
+    \end{enumerate}
+\end{loesung}
 
 \begin{aufgabe}{4}{Quickselect}
     Gegeben ein Array mit $n$ Zahlen, sei das $k$-kleinste Element gesucht, wobei $k = 1$ dem kleinsten Element entspricht, $k = 2$ dem zweitkleinsten und so weiter.
@@ -95,9 +439,74 @@ void swap(int[] arr, int i, int j) {
 
         \item Angenommen, das Pivot-Element läge nach dem Partitionieren immer in der Mitte des aktuellen Teil\-arrays. Welche Laufzeit hätte \textsc{QuickSelect} dann im Worst Case?
 
-        \item Stellen Sie eine Vermutung darüber an, welche Durchschnittslaufzeit \textsc{QuickSelect} in der Praxis hat.
+        \item Stellen Sie eine begründete Vermutung darüber an, welche Durchschnittslaufzeit \textsc{QuickSelect} in der Praxis hat.
     \end{enumerate}
 \end{aufgabe}
+
+\begin{loesung}
+    
+    \begin{enumerate}
+        \item Sortieren und anschließend das $k$-te Element ablesen:
+        \begin{lstlisting}
+int quickselect(int a[], int n, int k) {
+    quicksort(a, 0, n - 1);
+    return a[k - 1];
+}
+        \end{lstlisting}
+        Da der Algorithmus neben Quicksort nur zusätzlichen konstanten Aufwand benötigt, ist das Laufzeitverhalten identisch zu Quicksort: Worst-Case $\Theta(n^2)$, Best- und Average-Case $\Theta(n \log n)$.
+
+        \item
+        Nach dem Partitionieren ist bekannt, wie viele Elemente größer und wie viele kleiner als das Pivotelement sind.
+        Daher ist auch bekannt, auf welcher der beiden Seiten sich das $k$-kleinste Element befinden muss.
+        Deshalb ist nur ein rekursiver Aufruf nötig, nämlich auf eben dieser Seite.
+        Auf diese Weise gilt stets die Invariante $f \leq k \leq l$.
+        Darum muss, wenn $f = l$, $f = k = l$ gelten und das $k$-te Element wurde gefunden.
+        Eine weitere Abbruchbedinung besteht, wenn das Pivotelement das $k$-te ist.
+        \begin{lstlisting}
+int quickselect(int a[], int f, int l, int k) {
+    int part;
+    // If there is only one element left, it has to be the k-th
+    if (f == l) {
+        return a[f];
+    }
+    // for n > 1, the l > f case is impossible and therefore unhandled
+    preparePartition(a, f, l, part);
+    if (k == part) {
+        return a[part];
+    }
+    if (k < part) {
+        return quickselect(a, f, part - 1, k);
+    } else {
+        return quickselect(a, part + 1, l, k);
+    }
+}
+int quickselect(int a[], int n, int k) {
+    return quickselect(a, 0, n - 1, k - 1);
+}
+        \end{lstlisting}
+
+        \item
+        Der Best-Case tritt ein, wenn das erste Pivotelement das gesuchte, $k$-kleinste ist.
+        In diesem Fall wird der Algorithmus nach dem ersten Partitionieren abgebrochen.
+        Die Laufzeit entspricht also der Laufzeit für einmaliges Paritionieren: $\Theta(n)$.
+        Im Worst Case ist das kleinste Element gesucht aber jedes Mal das aktuell größte Element als Pivotelement verwendet.
+        In diesem Fall ist die Laufzeit durch $T(n) + T(n - 1) + n$ gegeben, der Worst-Case-Laufzeit von Quicksort: $\Theta(n^2)$.
+
+        \item
+        Wenn das Pivotelement immer in der Mitte liegt, tritt der Worst-Case zum Beispiel dann ein, wenn nach dem kleinsten Element gesucht wird.
+        Die Laufzeit ist in diesem Fall durch die Rekursionsgleichung $T(n) = T(n / 2) + n$ gegeben. Die Master-Methode ($a = 1$, $b = 2$, $f(n) = n$ $\Rightarrow$ Fall 3, $\frac{1}{2} n \leq cn$ für $c < 1$) liefert $T(n) = \Theta(n)$.
+
+        \item Da \textsc{QuickSelect} an Quicksort angelehnt ist, liegt die Vermutung nahe, dass die Average-Case-Laufzeit nahe am Best-Case liegt, was im Falle von \textsc{QuickSelect} $\Theta(n)$ entspricht.
+        Teilaufgabe c hat bereits gezeigt, dass bei optimalen Pivots (genau in der Mitte) diese Laufzeit im Worst-Case erreicht würde.
+        Bei zufälliger Eingabe oder bei zufällig gewählten Pivots ist jede mögliche Pivot-Position gleich wahrscheinlich.
+        Das bedeutet, dass das Pivot wenigstens mit 50\% Wahrscheinlichkeit in der mittleren Hälfte des Teilarrays landet und damit das Teilarray im Verhältnis von $\frac{1}{4}$ zu $\frac{3}{4}$ bis $\frac{3}{4}$ zu $\frac{1}{4}$ und teilt. 
+        Dies entspricht einer Teilung, die zumindest ungefähr gleichmäßig erfolgt.
+        Wenn man davon ausgeht, dass das gesuchte $k$-kleinste Element immer in der größeren, also der \glqq{}schlechteren\grqq{} Hälfte liegt, wäre die Worst-Case-Laufzeit durch $T(n) = T(3n / 4) + n$ gegeben, was (mittels Master-Methode) immer noch $T(n) = \Theta(n)$ liefert.
+        Die Laufzeit bleibt sogar für deutlich schlechtere Aufteilungen linear, solange die Aufteilung in einem konstanten Verhältnis erfolgt~(zum Beispiel ergibt $T(n) = T(99n / 100) + n$ immer noch $T(n) = \Theta(n)$).
+
+        Man kann mittels Substitutionsmethode zeigen, dass die durchschnittliche Laufzeit von \textsc{QuickSelect} tatsächlich $\Theta(n)$ ist (siehe Cormen, Kapitel 9.2).
+    \end{enumerate}
+\end{loesung}
 
 
 \end{document}
