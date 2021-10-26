@@ -2,6 +2,7 @@
 
 \usepackage{gastex}
 \usepackage{etoolbox}
+\usepackage{placeins}
 
 % \newcommand{\showLoesung}{2} %<---als Schalter
 %\newcommand{\showInhalt}{1} %<---als Schalter
@@ -85,7 +86,7 @@ void swap(int arr[], int i, int j) {
         Erläutern Sie informell, warum Ihr modifizierter Algorithmus weiterhin korrekt ist.
         % Argumentieren Sie, dass der modifizierte Algorithmus weiterhin korrekt ist.
         Wie lautet die Best-Case- sowie die Worst-Case-Laufzeit des modifizierten Algorithmus.
-        Geben Sie für jeweils eine Beispiel für eine Best-Case- und eine Worst-Case-Eingabe an.
+        Geben Sie für jeweils ein Beispiel für eine Best-Case- und eine Worst-Case-Eingabe an.
     \end{enumerate}
 \end{aufgabe}
 
@@ -285,13 +286,16 @@ void bubblesort(int a[], int n) {
             \begin{lstlisting}[language=c++]
 void preparePartition(int arr[], int temp[], int f, int l, int &p1, int &p2) {
     int pivot = arr[f];
+    // stores first and last element of middle partition
     p1 = f;
     p2 = l;
     for (int i = f; i <= l; i++) {
+        // copy smaller values to the left of the temp array
         if (arr[i] < pivot) {
             temp[p1 - f] = arr[i];
             p1++;
         }
+        // copy larger values to the right of the temp array
         if (arr[i] > pivot) {
             temp[p2 - f] = arr[i];
             p2--;
@@ -299,8 +303,10 @@ void preparePartition(int arr[], int temp[], int f, int l, int &p1, int &p2) {
     }
     for (int i = f; i <= l; i++) {
         if (i >= p1 && i <= p2) {
+            // all elements in the middle are "pivots"
             arr[i] = pivot;
         } else {
+            // copy values back
             arr[i] = temp[i - f];
         }
     }
@@ -309,6 +315,7 @@ void quicksort(int a[], int temp[], int f, int l) {
     int part1, part2;
     if (f < l) {
         preparePartition(a, temp, f, l, part1, part2);
+        // exclude entire middle partition
         quicksort(a, temp, f, part1 - 1);
         quicksort(a, temp, part2 + 1, l);
     }
@@ -334,13 +341,16 @@ void preparePartition(int a[], int nums[], int f, int l, int &p) {
     int pivotNum = nums[f];
     p = f - 1;
     for (int i = f; i <= l; i++) {
+        // new comparison relation: if elements equal, compare by "num"
         if (a[i] < pivot || a[i] == pivot && nums[i] <= pivotNum) {
             p++;
             swap(a[i], a[p]);
+            // "nums" order must match sorted array
             swap(nums[i], nums[p]);
         }
     }
     swap(a[f], a[p]);
+    // "nums" order must match sorted array
     swap(nums[f], nums[p]);
 }
 void quicksort(int a[], int nums[], int f, int l) {
@@ -353,6 +363,7 @@ void quicksort(int a[], int nums[], int f, int l) {
 }
 void quicksort(int a[], int n) {
     int *nums = new int[n];
+    // use original indexes as tie-breakers
     for (int i = 0; i < n; i++) {
         nums[i] = i;
     }
@@ -431,15 +442,21 @@ void insertionsort(int a[], int n) {
     }
 } 
         \end{lstlisting}
-        \textit{Behauptung.} Die Anzahl der Durchläufe der äußeren Schleife von Insertionsort ist $\Theta(n)$, die insgesamte Anzahl der Durchläufe der inneren Schleife ist $\Theta(k)$.
+        \textit{Behauptung.} Die Anzahl der Durchläufe der äußeren Schleife von Insertionsort ist $n - 1$, die insgesamte Anzahl der Durchläufe der inneren Schleife ist $k$.
         \begin{proof}
-            Die äußere Schleife durchläuft genau $n - 1 = \Theta(n)$ Iterationen.
-            Jeder Durchlauf der inneren Schleife bewirkt im Wesentlichen das Vertauschen von zwei nebeneinander liegenden Elementen des Arrays, siehe dazu auch Aufgabe 2b).
+            Die äußere Schleife durchläuft $\sum_{j = 1}^{n - 1} 1 = n - 1$ Iterationen.
+
+            Jeder Durchlauf der inneren Schleife bewirkt im Wesentlichen das Vertauschen von zwei nebeneinander liegenden Elementen des Arrays.
+            Siehe dazu auch Aufgabe 2b).
             Eine Iteration der inneren Schleife wird jedoch nur durchgeführt, wenn die beiden Werte in der falschen Reihenfolge vorliegen (\texttt{a[i] > key}).
-            Das bedeutet, nach der Aussage aus Teilaufgabe d) wird die Anzahl der Inversionen nach jedem Durchlauf um 1 kleiner.
-            Da die ursprüngliche Anzahl der Inversionen $k$ beträgt und sich die Anzahl der Inversionen nirgendwo sonst im Algorithmus ändern kann, beträgt die Anzahl der Durchläufe der inneren Schleife genau $k = \Theta(k)$.
+            Das bedeutet, nach der Aussage aus Teilaufgabe c) wird die Anzahl der Inversionen nach jedem Durchlauf um 1 kleiner.
+            Da die ursprüngliche Anzahl der Inversionen $k$ beträgt und sich die Anzahl der Inversionen nirgendwo sonst im Algorithmus ändern kann, beträgt die Anzahl der Durchläufe also der inneren Schleife genau $k$.
         \end{proof}
-        Die Aussage, dass die Laufzeit von Insertionsort $\Theta(n + k)$ beträgt, folgt sofort aus der Behauptung.
+        Die Laufzeit von Insertionsort ist gegeben durch: 
+        \begin{align*}
+            T(n) &= \Theta(1) + \text{\glqq{}Iterationen außen\grqq{}} \cdot \Theta(1) + \text{\glqq{}Iterationen innen\grqq{}} \cdot \Theta(1) \\
+            &= \Theta(1) + (n - 1) \cdot \Theta(1) + k \cdot \Theta(1) = \Theta(n + k)
+        \end{align*}
 
 %         \item
 %         Gegeben die Bubblesort-Implementierung aus Aufgabe 2c.
@@ -509,7 +526,7 @@ void insertionsort(int a[], int n) {
 \begin{loesung}
     
     \begin{enumerate}
-        \item Sortieren und anschließend das $k$-te Element ablesen:
+        \item Sortieren und anschließend das $k$-te Element ablesen (Array-Indezes beginnen bei 0, daher $k - 1$):
         \begin{lstlisting}[language=c++]
 int quickselect(int a[], int n, int k) {
     quicksort(a, 0, n - 1);
@@ -534,9 +551,11 @@ int quickselect(int a[], int f, int l, int k) {
     }
     // for n > 1, the l > f case is impossible and therefore unhandled
     preparePartition(a, f, l, part);
+    // if pivot happens to be the desired element, return it
     if (k == part) {
         return a[part];
     }
+    // recursive call only on the partition that contains k-th element
     if (k < part) {
         return quickselect(a, f, part - 1, k);
     } else {
@@ -552,6 +571,7 @@ int quickselect(int a[], int n, int k) {
         Nach dem ersten Partionieren wird die Funktion rekursiv auf der rechten Hälfte aufgerufen (6 bis 9), da sich dort das gesuchte Element befindet.
         Anschließend auf der linken Hälfte (6 bis 8) und schließlich auf der linken Hälfte (6).
         An dieser Stelle bleibt nur das gesuchte Element übrig, die erste \texttt{if}-Bedingung trifft zu und der Algorithmus terminiert.
+
         \begin{table}[h!]
             \centering
             \begin{tabular}{|c|}
@@ -563,6 +583,7 @@ int quickselect(int a[], int n, int k) {
                 $(2, 1, 4, 3, 5, 6, 7, 8, 9)$ \\ \hline
             \end{tabular}
         \end{table}
+        \FloatBarrier
 
         \item
         Der Best-Case tritt ein, wenn das erste Pivotelement das gesuchte, $k$-kleinste ist.
@@ -576,7 +597,7 @@ int quickselect(int a[], int n, int k) {
         Die Laufzeit ist in diesem Fall durch die Rekursionsgleichung $T(1) = 1, T(n) = T(n / 2) + n$ gegeben. Die Master-Methode ($a = 1$, $b = 2$, $f(n) = n$ $\Rightarrow$ Fall 3, $\frac{1}{2} n \leq cn$ für $c < 1$) liefert $T(n) = \Theta(n)$.
 
         \item Da \textsc{QuickSelect} an Quicksort angelehnt ist, liegt die Vermutung nahe, dass die Average-Case-Laufzeit nahe am Best-Case liegt, was im Falle von \textsc{QuickSelect} $\Theta(n)$ entspricht.
-        Teilaufgabe c) hat bereits gezeigt, dass bei optimalen Pivots (genau in der Mitte) diese Laufzeit im Worst-Case erreicht würde.
+        Teilaufgabe e) hat bereits gezeigt, dass bei optimalen Pivots (genau in der Mitte) diese Laufzeit im Worst-Case erreicht würde.
         Bei zufälliger Eingabe oder bei zufällig gewählten Pivots ist jede mögliche Pivot-Position gleich wahrscheinlich.
         Das bedeutet, dass das Pivot wenigstens mit 50\% Wahrscheinlichkeit in der mittleren Hälfte des Teilarrays landet und damit das Teilarray im Verhältnis von $\frac{1}{4}$ zu $\frac{3}{4}$ bis $\frac{3}{4}$ zu $\frac{1}{4}$ teilt. 
         Dies teilt das Array in zumindest ähnlich große Teile.
