@@ -3,7 +3,7 @@
 \usepackage{gastex}
 \usepackage{etoolbox}
 
-% \newcommand{\showLoesung}{2} %<---als Schalter
+% newcommand{\showLoesung}{2} %<---als Schalter
 %\newcommand{\showInhalt}{1} %<---als Schalter
 
 \input{../skel/uebmacsPNG}
@@ -181,7 +181,8 @@ void example(int n) {
 
         \item
         \begin{align*}
-            T(n) &= 9T(n / 3) + n^2 = 9 \left(9T(n / 3^2) + \left(\frac{n}{3}\right)^2 \right) + n = 9^2 T(n / 3^2) + 9 \cdot \frac{n^2}{3^2} + n^2 \\
+            T(n) &= 9T(n / 3) + n^2 = 9 \left(9T(n / 3^2) + \left(\frac{n}{3}\right)^2 \right) + n^2
+            = 9^2 T(n / 3^2) + 9 \cdot \frac{n^2}{3^2} + n^2 \\
             &= 9^2 T(n / 3^2) + 2 n^2 
             = 9^2\left(9T(n / 3^3) + \left(\frac{n}{3^2}\right)^2\right) + 2n^2
             = 9^3T(n / 3^3) + 9^2 \cdot \frac{n^2}{9^2} + 2n^2 \\
