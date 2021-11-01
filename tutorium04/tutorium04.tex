@@ -1,0 +1,97 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{gastex}
+\usepackage{etoolbox}
+% newcommand{\showLoesung}{2} %<---als Schalter
+%\newcommand{\showInhalt}{1} %<---als Schalter
+
+\input{../skel/uebmacsPNG}
+
+\usepackage{enumitem}
+
+\begin{document}
+\thispagestyle{empty}
+
+\Uebung{2}{3}{Simon Thelen}{21. Oktober 2021}  % FIXME: Blattnummer, Datum, Zeit
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifcsdef{showLoesung}{
+\textbf{Bitte beachten Sie:} Die Lösungen können trotz sorgfältiger Prüfung Fehler enthalten.
+Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in Tutorien, Übungen oder nach Vorlesungen.
+}{}
+
+
+\begin{aufgabe}{1}{Heap-Operationen}
+    \begin{enumerate}[label=\alph*)]
+        \item \label{it:ex} Gegeben sei folgendes Array: $(32, 15, 12, 71, 32, 66, 19, 4)$. Führen Sie händisch \textsc{BuildMaxHeap} auf diesem Array aus. Entfernen Sie anschließend (wieder von Hand) mittels \textsc{Heapify} die drei größten Elemente des Heaps.
+        \item Erweitern Sie die Heap-Datenstruktur um weitere Operationen:
+        \begin{itemize}
+            \item \textsc{Remove}: Entfernt den Wert mit gegebenen Index aus dem Heap.
+            \item \textsc{Insert}: Fügt einen einzelnen Wert in einen bestehenden Heap ein.
+        \end{itemize}
+        Überlegen Sie sich, wie diese Operationen mit Worst-Case-Laufzeit $\Theta(\log n)$ umgesetzt werden können.
+        Probieren Sie die Operationen an dem Heap aus Teilaufgabe a) aus, unmittelbar nach dem Aufruf von \textsc{BuildMaxHeap}.
+        Entfernen Sie dafür von Hand die Zahl 66 aus dem Heap und fügen Sie anschließend wieder in den Heap ein.
+    \end{enumerate}
+\end{aufgabe}
+
+\begin{aufgabe}{2}{Optimierungen von Mergesort}
+    \begin{enumerate}
+        \item Sortieren Sie händisch das Array aus Aufgabe 1a) mittels Mergesort.
+        \item Um zwei Arrays mit jeweils $n$ Elementen mit der Merge-Operation aus der Vorlesung zu vereinigen, ist ein zusätzliches Array mit Länge $2n$ nötig.
+        Verändern Sie die Merge-Operation, sodass Sie nur noch ein Array der Länge $n$ benötigen. Die Laufzeit von $O(n)$ soll sich dabei nicht ändern.
+        \begin{description}
+            \item[Tipp:] Kopieren Sie zunächst einen Teil der Eingabe in das temporäre Array und vereinigen Sie dann in das ursprüngliche Array hinein.
+        \end{description}
+        \item Wie sieht eine Best-Case- und wie eine Worst-Case-Eingabe für Mergesort aus?
+
+        Verändern Sie die Merge-Operation.
+        Prüfen Sie dafür vor jedem Merge-Aufruf mit einer passenden Bedingung in konstanter Zeit, ob ein Merge notwendig überhaupt notwendig ist.
+        Falls kein Merge notwendig ist, da dieser Teil des Arrays bereits sortiert ist, überspringen Sie diesen.
+
+        Wie sieht jetzt eine Best- und wie eine Worst-Case-Eingabe aus?
+        Wie lautet nun die Best- und die Worst-Case-Laufzeit?
+    \end{enumerate}
+    
+\end{aufgabe}
+
+\ifcsdef{showLoesung}{}{\newpage}
+
+\begin{aufgabe}{3}{Finden der $k$ größten Elemente in einem Array}
+    Gegeben sei ein Array mit $n$ paarweise verschiedenen Elementen. Es sollen die $k$ größten Werte in diesem Array in absteigend sortierter Reihenfolge ausgegeben werden.
+
+    \textit{Beispiel:} Bei dem Array $(67, 94, 3, 95, 49, 72, 24, 54, 65)$ und $k = 3$ sollte die Ausgabe $(95, 94, 72)$ lauten.
+
+    Entwickeln Sie drei Algorithmen für dieses Problem, indem Sie jeweils die folgenden Hilfsmittel verwenden:
+    \begin{enumerate}
+        \item Mergesort
+        \item Ein Max-Heap mit den Operationen \textsc{BuildMaxHeap} und \textsc{ExtractMax} (Entfernt mittels \textsc{Heapify} den größten Wert aus dem Heap)
+        \item Mergesort, \texttt{preparePartition} sowie der Algorithmus \textsc{QuickSelectLinear}, welcher Ihnen in Worst-Case-Laufzeit $\Theta(n)$ das $k$-größte Element in einem Array von $n$ Werten liefert.
+    \end{enumerate}
+
+    Beschreiben Sie Ihre drei Algorithmen in Pseudocode. Geben Sie außerdem jeweils die Worst-Case-Laufzeit in $\Theta$-Notation abhängig von $n$ und $k$ an.
+
+    Angenommen $k = 10$. Wie lauten dann die Worst-Case-Laufzeiten der Algorithmen abhängig von $n$?
+
+    Angenommen $k = n / 2$. Wie lauten dann die Worst-Case-Laufzeiten der Algorithmen abhängig von $n$?
+\end{aufgabe}
+
+\begin{aufgabe}{4}{Algorithmus zum Finden der Anzahl von Inversionen in einem Array}
+    \textit{Hinweis:} Die folgende Aufgabe baut auf die Aufgabe zum Thema Inversionen vom vorherigen Tutoriumsblatt auf.
+    Es ist hilfreich, diese Aufgabe vorher zu bearbeiten.
+
+    Gegeben ein Array $(a_1, a_2, a_3, \ldots a_{n - 1}, a_n)$ mit $n$ Elementen ist eine Inversion definiert als ein Paar $(a_i, a_j)$ von zwei verschiedenen Elementen des Arrays, die in absteigender Reihenfolge im Array liegen.
+    Die Menge aller Inversionen eines Arrays ist also gegeben durch $I = \{(a_i, a_j) \mid 1 \leq i < j \leq n \wedge a_i > a_j \}$.
+
+    Entwickeln Sie einen Algorithmus, der in $\Theta(n \log n)$ die Anzahl der Inversionen in einem Array berechnet.
+    \begin{description}
+        \item[Tipp:] Sortieren Sie das Array mittels Mergesort und zählen Sie die Inversionen während des Sortierens.
+        \item[Tipp 2:] Wenn Sie ein Array in der Mitte in zwei Hälften teilen, liegen die beiden Werte einer Inversion entweder beide in der linken Hälfte, beide in der rechten Hälfte oder ein Wert in der linken und ein Wert in der rechten Hälfte.
+        Im letzten Fall bleibt die Inversion bestehen, selbst wenn die linke und die rechte Hälfte separat sortiert werden. 
+    \end{description}
+\end{aufgabe}
+
+
+
+\end{document}
