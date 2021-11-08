@@ -1,0 +1,159 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{gastex}
+\usepackage{etoolbox}
+% \newcommand{\showLoesung}{2} %<---als Schalter
+%\newcommand{\showInhalt}{1} %<---als Schalter
+
+\input{../skel/uebmacsPNG}
+
+\usepackage{enumitem}
+\usepackage{algpseudocode}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{placeins}
+\usepackage{multicol}
+
+\begin{document}
+\thispagestyle{empty}
+
+\Uebung{5}{6}{Simon Thelen}{11. November 2021}  % FIXME: Blattnummer, Datum, Zeit
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifcsdef{showLoesung}{
+\textbf{Bitte beachten Sie:} Die Lösungen können trotz sorgfältiger Prüfung Fehler enthalten.
+Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in Tutorien, Übungen oder nach Vorlesungen.
+}{}
+
+\begin{aufgabe}{1}{Countsort}
+    \begin{enumerate}
+        \item
+        13 Schülerinnen und Schüler haben an einer Prüfung teilgenommen.
+        Hier die Notenergebnisse:
+        \begin{table}[h!]
+            \centering
+            \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+                \hline
+                \textbf{A} & \textbf{B} & \textbf{C} & \textbf{D} & \textbf{E} & \textbf{F} & \textbf{G} & \textbf{H} & \textbf{I} & \textbf{J} & \textbf{K} & \textbf{L} & \textbf{M} \\
+                \hline
+                3 & 2 & 4 & 2 & 4 & 3 & 3 & 1 & 2 & 2 & 4 & 6 & 3 \\
+                \hline
+            \end{tabular}
+        \end{table}
+        \ \\
+        Sortieren sie von Hand die Einträge aufsteigend nach Note mittels Countsort (mögliche Schulnoten sind 1, 2, 3, 4, 5 und 6).
+        Geben Sie für das Ausgabearray an, in welcher Reihenfolge die einzelnen Werte eingefügt wurden.
+        Geben Sie außerdem, jeweils nach den drei \texttt{for}-Schleifen, den Inhalt des Hilfsarrays an.
+        \item
+        Ist Countsort stabil?
+        Falls ja, begründen Sie dies.
+        Falls nein, wie könnte man den Algorithmus anpassen, damit er stabil ist?
+    \end{enumerate}
+\end{aufgabe}
+
+\begin{aufgabe}{2}{Mapsort}
+    \begin{enumerate}
+        \item 
+        Sortieren sie das Array (45, 13, 8, 0, 91, 93, 100, 60, 41, 69, 32) von Hand mittels Mapsort ($c = 1.0$).
+        Geben Sie nach dem Einfügen jedes neuen Wertes den Inhalt des temporären Arrays an.
+        \item
+        Betrachten Sie folgende Variante von Mapsort:
+        Statt konkreten Werten werden im temporären Array (doppelt) verkettete Listen verwaltet.
+        Wenn sich beim Einfügen an der entsprechenden Stelle bereits ein Wert befindet, wird der neue Wert an die zugehörige Liste angehängt.
+
+        An welchen Stellen muss die Implementierung aus der Vorlesung dann angepasst werden, um auf diese Weise Zahlen sortieren zu können?
+        
+        \emph{Zusatzaufgabe:} Wie muss der neue Algorithmus angepasst werden, um eine Worst-Case-Laufzeit von $O\big(n \log(n)\big)$ zu garantieren.
+    \end{enumerate}
+\end{aufgabe}
+
+\begin{aufgabe}{3}{Verkettete Listen}
+    \begin{enumerate}
+        \item 
+        Welche der folgenden Algorithmen sind auch auf doppelt verketteten Listen ohne Laufzeiteinbußen im $O$-Kalkül umsetzbar?
+        Begründen Sie jeweils Ihre Entscheidung.
+        \begin{multicols}{3}
+        \begin{itemize}
+            \item Binäre Suche
+            \item Insertionsort
+            \item Bubblesort
+            \item Mergesort
+            \item Heapsort
+            \item Countsort
+        \end{itemize}
+        \end{multicols}
+        \item Implementieren Sie die Operationen \texttt{pop} und \texttt{push} der Datenstruktur \glqq{}Stack\grqq{} mithilfe einer einfach verketteten Liste in Pseudocode oder einer Programmiersprache Ihrer Wahl.
+        Jede Operation soll nur konstante Laufzeit benötigen.
+        \item Implementieren Sie die Operationen \texttt{enqueue} und \texttt{dequeue} der Datenstruktur \glqq{}Queue\grqq{} mithilfe einer einfach verketteten Liste in Pseudocode oder einer Programmiersprache Ihrer Wahl.
+        Jede Operation soll nur konstante Laufzeit benötigen.
+    \end{enumerate}
+\end{aufgabe}
+
+\begin{aufgabe}{4}{Binäre, verkettete Bäume}
+    \begin{enumerate}
+        \item Gegeben sei ein binärer, verketteter Baum mit Preorder-Darstellung (a, b, c, d, e, f, g, h, i) und Inorder-Darstellung (c, d, b, e, a, h, g, i, f).
+        Wie sieht der Baum aus?
+        \item Gegeben sei ein binärer, verketteter Suchbaum mit Postorder-Darstellung (15, 28, 12, 33, 41, 37, 30, 50, 42).
+        Wie sieht der Baum aus?
+        \item Gegeben sei ein linksvoller, binärer, verketteter Baum mit Inorder-Darstellung (9, 8, 7, 6, 5, 4, 3, 2, 1).
+        Wie sieht der Baum aus?
+        \item Sei ein Knoten eines binären, verketteten Suchbaums durch folgende Datenstruktur definiert:
+        \begin{lstlisting}[language=c++]
+class Node {
+    int value;
+    Node *left, *right, *parent;
+} 
+        \end{lstlisting}
+        Geben Sie einen Algorithmus in Pseudocode oder einer Programmiersprache Ihrer Wahl an, welcher Ihnen bei einem gegebenen Knoten den nächsten Knoten in Inorder-Reihenfolge liefert.
+        \item
+        Gegeben sei ein aufsteigend sortiertes Array mit $n$ ganzen Zahlen.
+        Geben Sie einen Algorithmus mit Laufzeit $O(n)$ in Pseudocode oder einer Programmiersprache Ihrer Wahl an, welcher einen binär verketteten Suchbaum zurückgibt, der die gleichen Elemente wie das Array enthält.
+    \end{enumerate}
+\end{aufgabe}
+
+\begin{aufgabe}{5}{Stacks}
+    \begin{enumerate}
+        \item
+        Gegeben sei ein Array mit $n$ ganzen Zahlen.
+        Geben Sie einen Algorithmus in Pseudocode oder einer Programmiersprache Ihrer Wahl an, der mithilfe eines Stacks die Reihenfolge der Werte im Array umkehrt.
+
+        Beispiel: \texttt{reverse(\{4, 2, 5, 3, 6, 1\}) = \{1, 6, 3, 5, 2, 4\})}
+
+        \emph{Zusatzaufgabe:} Schaffen Sie es auch ohne einen Stack und mit nur konstantem Speicherbedarf.
+
+        \item Gegeben sei folgende kontextfreie Grammatik:
+        \begin{equation*}
+            S \rightarrow
+            \epsilon \mid
+            \text{\texttt{(}}S\text{\texttt{)}} \mid
+            \text{\texttt{[}}S\text{\texttt{]}} \mid
+            \text{\texttt{\{}}S\text{\texttt{\}}}
+        \end{equation*}
+        Sei $L$ die durch diese Grammatik definierte Sprache.
+        Geben Sie einen effizienten Algorithmus an (in Pseudocode oder einer Programmiersprache Ihrer Wahl), welcher bei einem gegebenen Wort $w \in \{\text{\texttt{()[]\{\}}}\}^n$ in Laufzeit $O(n)$ entscheidet, ob $w \in L$.
+
+        Beispiele: $\text{\texttt{"([]\{[()]\})"}} \in L$, $\text{\texttt{"[\{(\})]"}} \not\in L$
+
+        \item
+        Manchmal wissen Sie im Vorhinein nicht, wie groß das zugrundeliegende Array eines Stacks sein soll.
+        Deshalb beginnnt man häufig mit einem \glqq{}kleinen\grqq{} Array und vergrößert es dynamisch, wenn kein Platz für neue Elemente übrig ist.
+        Vergrößern bedeutet hierbei: Allokiere Speicherplatz für ein größeres Array und kopiere die bestehenden Werte in das neue Array.
+        Wir nehmen im folgenden an, dass ein Vergrößern lineare Laufzeit in der Größe des neuen Array benötigt.
+        Ein Push ohne Vergrößern benötigt dagegen nur konstante Laufzeit.
+
+        Vergleichen wir zwei mögliche Vorgehensweisen für das Vergrößern.
+        \begin{enumerate}[label=(\roman*)]
+            \item Das Array wird mit Länge 8 initialisiert.
+            Jedes Mal, wenn bei einem \texttt{push} kein Platz für das neue Element vorhanden ist, wird das Array um 8 Elemente vergrößert.
+            \item Das Array wird mit Länge 8 initialisiert.
+            Jedes Mal, wenn bei einem \texttt{push} kein Platz für das neue Element vorhanden ist, wird die Länge des Array verdoppelt.
+        \end{enumerate}
+
+        Angenommen, es werden solange Elemente auf den Stack gepusht, bis der Stack $2^n$ Elemente enthält ($n \geq 3$).
+        Welche Laufzeit benötigen diese $2^n$ Push-Operationen bei Vorgehen a) und bei Vorgehen b) insgesamt?
+        Welche Laufzeit hat jeweils eine der $2^n$ Operationen im Durchschnitt?
+    \end{enumerate}
+\end{aufgabe}
+
+\end{document}
