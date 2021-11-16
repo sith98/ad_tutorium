@@ -1,0 +1,166 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{gastex}
+\usepackage{etoolbox}
+% \newcommand{\showLoesung}{2} %<---als Schalter
+%\newcommand{\showInhalt}{1} %<---als Schalter
+
+\input{../skel/uebmacsPNG}
+
+\usepackage{enumitem}
+\usepackage{algpseudocode}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{placeins}
+\usepackage{multicol}
+
+\begin{document}
+\thispagestyle{empty}
+
+\Uebung{6}{7}{Simon Thelen}{18. November 2021}  % FIXME: Blattnummer, Datum, Zeit
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifcsdef{showLoesung}{
+\textbf{Bitte beachten Sie:} Die Lösungen können trotz sorgfältiger Prüfung Fehler enthalten.
+Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in Tutorien, Übungen oder nach Vorlesungen.
+}{}
+
+
+\begin{aufgabe}{1}{Binäre, verkettete Bäume}
+    \begin{enumerate}
+        \item Gegeben sei ein binärer, verketteter Baum mit Preorder-Darstellung (a, b, c, d, e, f, g, h, i) und Inorder-Darstellung (c, d, b, e, a, h, g, i, f).
+        Wie sieht der Baum aus?
+        \item Angenommen Sie haben die Preorder- und die Postorder-Darstellung eines binären Baumes gegeben.
+        Können Sie (wie bei der vorherigen Teilaufgabe) den Baum eindeutig rekonstruieren?
+        Falls ja, begründen Sie dies.
+        Falls nein, geben Sie ein Gegenbeispiel an.
+        \item Betrachten Sie folgende Implementierung eines Inorder-Durchlaufs über einen binären, verketteten Baum:
+        \begin{lstlisting}[language=c++]
+void inorder(Node *node) {
+    if (node->left != NULL) inorder(node->left);
+    cout << node->value << " ";
+    if (node->right != NULL) inorder(node->right);
+}
+        \end{lstlisting}
+        Begründen Sie, dass die Laufzeit dieser Funktion für einen Baum mit $n$ Elementen $O(n)$ beträgt, indem Sie einen Zusammenhang zwischen Kanten des Baumes und den rekursiven Aufrufen des Algorithmus herstellen.   
+        % \item
+        % Implementieren Sie einen Preorder-Durchlauf über einen binären, verketten Baum (in Pseudocode oder einer Programmiersprache Ihrer Wahl), der auf Rekursion verzichtet, aber stattdessen einen Stack verwendet.
+        \item 
+        Geben Sie einen Algorithmus in Pseudocode oder einer Programmiersprache Ihrer Wahl an, welcher einen binären, verketteten Baum schichtweise ausgibt.
+        Also zunächst den Wurzelknoten, dann die Kindknoten der Wurzel von links nach rechts, dann alle Enkelknoten der Wurzel von links nach rechts und so weiter.
+        \begin{description}
+            \item[Tipp:] Verwenden Sie eine Queue.
+        \end{description}
+        \item
+        Der Abstand von zwei Knoten in einem Baum ist die Anzahl an Kanten, die mindestens traversiert werden müssen, um von einem Knoten zum anderen zu gelangen.
+        \emph{Beispiel:} Die Knoten 3 und 13 im Baum aus Aufgabe 2\ref*{insert_delete} haben Abstand 6.
+
+        Geben Sie einen Algorithmus in Pseudocode oder einer Programmiersprache Ihrer Wahl an, welcher einen binären, verketteten Baum als Eingabe erhält und den größten Abstand von zwei Knoten im Baum liefert.
+        Eine einfache Lösung hat Laufzeit $O(n^2)$.
+        Schaffen Sie es sogar in $O(n)$?
+    \end{enumerate}
+\end{aufgabe}
+\begin{loesung}
+    \begin{enumerate}
+        \item \ \\
+        \begin{figure}[h!]
+            \centering
+            \includegraphics[width=0.3\textwidth]{img/1a}
+        \end{figure}
+        \FloatBarrier
+        \item Eine eindeutige Rekonstruktion ist allein bei gegebener Preorder- und Postorder-Darstellung im Allgemeinen nicht möglich.
+        Das kleinste Gegenbeispiel ist Preorder (1, 2) und Postorder (2, 1).
+        Beide der folgenden Bäume haben genau diese Darstellung:
+        \begin{figure}[h!]
+            \centering
+            \begin{subfigure}[b]{0.23\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/a1}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.23\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/a2}
+            \end{subfigure}
+        \end{figure}
+        \FloatBarrier
+        Das kleinste Gegenbeispiel ist Preorder (1, 2) und Postorder (2, 1).
+        Ein Beispiel ist Preorder (1, 2, 3, 4) und Postorder (4, 3, 2, 1).
+        Sämtliche entarteten Bäume (Bäume, bei denen jeder Knoten maximal einen Nachfolger hat) mit 4 Knoten passen auf diese Darstellung.
+        So etwa die 
+    \end{enumerate}
+\end{loesung}
+
+\begin{aufgabe}{2}{Binäre, verkettete Suchbäume}
+    \begin{enumerate}[label=\alph*)]
+        \item Gegeben sei ein binärer, verketteter Suchbaum mit Postorder-Darstellung (15, 28, 12, 33, 41, 37, 30, 50, 42).
+        Wie sieht der Baum aus?
+        % Quelle: Cormen 12.2-1
+        \item Angenommen, Sie suchen den Wert 75 in einem binären, verketteten Suchbaum.
+        Welche der folgenden Pfade von der Wurzel bis zum gesuchten Knoten ist nicht möglich: (51, 52, 97, 80, 72, 76, 75) oder (89, 80, 24, 63, 81, 69, 75)?
+        Begründen Sie Ihre Entscheidung.
+        \item Gegeben seien die Werte (29, 33, 45, 50, 77, 86, 96).
+        Geben Sie binäre, verkette Suchbäume mit Höhe 2, 3, 4, 5 und 6 an, die jeweils genau diese Elemente enthalten.
+        \item\label{insert_delete} Gegeben sei folgender binärer, verketteter Suchbaum:
+        \begin{figure}[h!]
+            \centering
+            \includegraphics[width=0.3\textwidth]{img/2a}
+        \end{figure}
+        \FloatBarrier
+        \ \\
+        Führen Sie nacheinander folgende Operationen durch: \textsc{Delete(15), Delete(1), Delete(9), Insert(1), Insert(12)}.
+        Geben Sie alle Zwischenschritte an.
+        \item 
+        Geben Sie einen Algorithmus in Pseudocode oder einer Programmiersprache Ihrer Wahl an, der einen binären, verketteten Suchbaum sowie zwei Werte $l$ und $h$ als Eingabe erhält und anschließend alle Werte $x$ des Baumes ausgibt, für die $l \leq x \leq h$ gilt.
+        Versuchen Sie so gut wie möglich, nur selektiert über den Teil des Baumes zu iterieren, der für die Ausgabe relevant ist.
+    \end{enumerate}
+\end{aufgabe}
+
+\begin{aufgabe}{3}{AVL-Bäume}
+    \begin{enumerate}
+        \item Gegeben sei folgender AVL-Baum:
+        \begin{figure}[h!]
+            \centering
+            \includegraphics[width=0.3\textwidth]{img/2b}
+        \end{figure}
+        \FloatBarrier
+        \ \\
+        Führen Sie nacheinander folgende Operationen durch: \textsc{Insert(5), Insert(3), Insert(38), Insert(2), Delete(3), Delete(38), Delete(42)}.
+        Geben Sie alle Zwischenschritte und Rotationen an.
+        % Quelle: Cormen Aufgabe 12.1-1
+        \item Begründen Sie oder widerlegen Sie die folgende Aussage:
+        \begin{center}
+            \emph{Bei jedem }\textsc{Insert}\emph{-Aufruf ist maximal eine (Doppel-)Rotation notwendig}
+        \end{center}
+        \item Geben Sie ein Beispiel für das Löschen eines Knotens an, bei dem mehr als eine (Doppel-)Rotation benötigt wird.
+        \begin{description}
+            \item[Tipp:] Sie können zum Beispiel den minimalen AVL-Baum der Höhe 4 verwenden.
+        \end{description}
+        \item Implementieren Sie die folgenden Operationen, die Sie im Rahmen der Heap-Datenstruktur kennen gelernt haben, mithilfe eines AVL-Baumes (in Pseudocode oder einer Programmiersprache Ihrer Wahl).
+        Geben Sie außerdem an, wie Sie die AVL-Datenstruktur aus der Vorlesung erweitern müssen, um die angegebenen Laufzeiten zu erreichen.
+        \begin{table}[h!]
+            \centering
+            \begin{tabular}{|l|l|l|}
+            \hline
+            \multicolumn{1}{|c|}{\textbf{Operation}}  & \multicolumn{1}{c|}{\textbf{Laufzeit}} & \multicolumn{1}{c|}{\textbf{Beschreibung}}\\ \hline
+            \textsc{GetMaximum} & $O(1)$      & Gibt den größten Wert im Baum zurück.\\ \hline
+            \textsc{ExtractMax} & $O(\log n)$ & Entfernt den größten Wert aus dem Baum. \\ \hline
+            \textsc{Insert}     & $O(\log n)$ & Fügt einen neuen Wert in den Baum ein. \\ \hline
+            \end{tabular}
+        \end{table}
+    \end{enumerate}
+\end{aufgabe}
+
+\begin{loesung}
+    \begin{enumerate}
+        \item \ \\
+        \begin{figure}[h!]
+            \centering
+            \includegraphics[width=0.3\textwidth]{img/1b}
+        \end{figure}
+        \FloatBarrier
+    \end{enumerate}
+\end{loesung}
+
+
+\end{document}
