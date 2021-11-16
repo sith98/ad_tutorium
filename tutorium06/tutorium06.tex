@@ -198,12 +198,12 @@ int maxDistanceLinear(Node *node, int &height) {
         return INT_MIN;
     }
     int leftHeight, rightHeight;
-    int result = std::max(
+    int result = max(
         maxDistanceLinear(node->left, leftHeight),
         maxDistanceLinear(node->right, rightHeight)
     );
-    height = 1 + std::max(leftHeight, rightHeight);
-    return std::max(result, 2 + leftHeight + rightHeight);
+    height = 1 + max(leftHeight, rightHeight);
+    return max(result, 2 + leftHeight + rightHeight);
 }
 int maxDistanceLinear(Tree *tree) {
     int height;
@@ -240,6 +240,109 @@ int maxDistanceLinear(Tree *tree) {
     \end{enumerate}
 \end{aufgabe}
 
+\begin{loesung}
+    \begin{enumerate}
+        \item \ \\
+        \begin{figure}[h!]
+            \centering
+            \includegraphics[width=0.3\textwidth]{img/2a}
+        \end{figure}
+        \FloatBarrier
+
+        \item Der zweite Pfad (89, 80, 24, 63, 81, 69, 75) ist nicht möglich.
+
+        Der zweite besuchte Knoten ist 80, was größer als die gesuchte 75 ist.
+        Deshalb wurde die Kante zum linken Nachfolger 24 gewählt.
+        Da der Baum ein Suchbaum ist, müssen alle Werte im Teilbaum unter 24 kleiner als 80 sein.
+        Jedoch wird später auf dem Pfad der Knoten 81 erreicht, was nicht möglich ist, wenn es sich um einen Suchbaum handelt.
+        
+        \item \ \\
+        \begin{figure}[h!]
+            \centering
+            \begin{subfigure}[b]{0.3\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/2c_1}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.3\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/2c_2}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.3\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/2c_3}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.3\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/2c_4}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.3\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/2c_5}
+            \end{subfigure}
+        \end{figure}
+        \FloatBarrier
+        \item \ \\
+        \begin{figure}[h!]
+            \centering
+            \begin{subfigure}[b]{0.3\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/2d_1}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.3\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/2d_2}
+            \end{subfigure}
+            \\
+            \begin{subfigure}[b]{0.3\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/2d_3}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.3\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/2d_4}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.3\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/2d_5}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.3\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/2d_6}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.3\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/2d_7}
+            \end{subfigure}
+        \end{figure}
+        \FloatBarrier
+
+        \item 
+        Prinzipiell würde ein Preorder-, Postorder- oder Inorder-Durchlauf genügen, nur dass ausschließlich die Werte $x$ ausgegeben werden, die der Bedingung $l \leq x \leq h$ genügen.
+        Jedoch wird hierbei potentiell über große Bereiche des Baumes iteriert, die für die Ausgabe irrelevant.
+        Daher macht es Sinn, vor jedem rekursiven Aufruf zu überprüfen, ob dieser überhaupt nötig ist.
+        Wird zum Beispiel im Baum aus der Aufgabenstellung von 2\ref*{insert_delete} nach allen Werten zwischen 5 und 12 gesucht, ergibt es beim Untersuchen des Knotens 14 keinen Sinn, dessen rechten Nachfolger noch zu prüfen, da alle Knoten dieses Teilbaums mindestens 14 und damit sicher größer als 12 sind.
+        \begin{lstlisting}[language=c++]
+void rangeQuery(Node *node, int l, int h) {
+    if (node == NULL) return;
+    if (l <= node->value) rangeQuery(node->left, l, h);
+    if (l <= node->value && node->value <= h) {
+        cout << node->value << " ";
+    }
+    if (node->value <= h) rangeQuery(node->right, l, h);
+}
+void rangeQuery(Tree *tree, int l, int h) {
+    return rangeQuery(tree->root, l, h);
+}
+        \end{lstlisting}
+        In dieser Lösung wird der Baum in Inorder-Reihenfolge durchlaufen.
+        Das ist nicht zwangsläufig notwendig.
+        Jedoch werden die gesuchten Werte auf diese Weise in aufsteigend sortierter Reihenfolge ausgegeben.
+
+        Ohne Beweis: Wenn der Baum Höhe $h$ hat und $k$ Werte der Such-Bedingung genügen, besitzt obiger Algorithmus Laufzeit $O(h + k)$.
+    \end{enumerate}
+\end{loesung}
+
+
 \begin{aufgabe}{3}{AVL-Bäume}
     \begin{enumerate}
         \item Gegeben sei folgender AVL-Baum:
@@ -274,17 +377,6 @@ int maxDistanceLinear(Tree *tree) {
         \end{table}
     \end{enumerate}
 \end{aufgabe}
-
-\begin{loesung}
-    \begin{enumerate}
-        \item \ \\
-        \begin{figure}[h!]
-            \centering
-            \includegraphics[width=0.3\textwidth]{img/2a}
-        \end{figure}
-        \FloatBarrier
-    \end{enumerate}
-\end{loesung}
 
 
 \end{document}
