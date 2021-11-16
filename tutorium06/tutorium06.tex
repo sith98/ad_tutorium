@@ -2,7 +2,7 @@
 
 \usepackage{gastex}
 \usepackage{etoolbox}
-% \newcommand{\showLoesung}{2} %<---als Schalter
+\newcommand{\showLoesung}{2} %<---als Schalter
 %\newcommand{\showInhalt}{1} %<---als Schalter
 
 \input{../skel/uebmacsPNG}
@@ -70,25 +70,149 @@ void inorder(Node *node) {
         \end{figure}
         \FloatBarrier
         \item Eine eindeutige Rekonstruktion ist allein bei gegebener Preorder- und Postorder-Darstellung im Allgemeinen nicht möglich.
-        Das kleinste Gegenbeispiel ist Preorder (1, 2) und Postorder (2, 1).
-        Beide der folgenden Bäume haben genau diese Darstellung:
+        Das kleinste Gegenbeispiel sind die folgenden, beiden Bäume:
         \begin{figure}[h!]
             \centering
             \begin{subfigure}[b]{0.23\textwidth}
                 \centering
-                \includegraphics[width=\textwidth]{img/a1}
+                \includegraphics[width=\textwidth]{img/1b_1}
             \end{subfigure}
             \begin{subfigure}[b]{0.23\textwidth}
                 \centering
-                \includegraphics[width=\textwidth]{img/a2}
+                \includegraphics[width=\textwidth]{img/1b_2}
             \end{subfigure}
         \end{figure}
         \FloatBarrier
-        Das kleinste Gegenbeispiel ist Preorder (1, 2) und Postorder (2, 1).
-        Ein Beispiel ist Preorder (1, 2, 3, 4) und Postorder (4, 3, 2, 1).
-        Sämtliche entarteten Bäume (Bäume, bei denen jeder Knoten maximal einen Nachfolger hat) mit 4 Knoten passen auf diese Darstellung.
-        So etwa die 
+        Beide haben Preorder-Darstellung (1, 2) und Postorder-Darstellung (2, 1).
+
+        Das gleiche gilt für andere entartete Bäume (Bäume, bei denen jeder Knoten maximal einen Nachfolger hat).
+        Nummeriert man die Knoten eines entarteten Baumes mit $n$ Knoten von Wurzel zum Blatt durch, hat der Baum die Preorder-Darstellung (1, 2, $\ldots$, $n - 1$, $n$) und Postorder-Darstellung ($n$, $n - 1$, $\ldots$, 2, 1).
+        Das gilt für alle entarteten Bäume mit gleich vielen Knoten, obwohl es insgesamt $2^n$ solcher Bäume gibt.
+
+        \item
+        Jeder Binärbaum ist zusammenhängend.
+        Das heißt, alle Knoten des Baumes werden erreicht.
+        Jeder Binärbaum ist außerdem zyklenfrei.
+        Das bedeutet, dass kein Knoten doppelt untersucht wird (es gibt keine Kante, die nach oben im Baum führt).
+        Daraus folgt, dass für jede der $n - 1$ Kanten des Baumes genau ein rekursiver Aufruf von \texttt{inorder} durchgeführt wird.
+        Dazu kommt noch der initiale Aufruf auf die Wurzel des Baumes.
+        Macht insgesamt $n$ Aufrufe.
+        Jeder Aufruf benötigt offensichtlich nur konstante Laufzeit.
+        Die Laufzeit eines Inorder-Durchlaufs beträgt daher $O(n)$.
+
+%         Angenommen, die Implementierung sähe aus:
+%         \begin{lstlisting}[language=c++]
+% void inorder(Node *node) {
+%     if (node == NULL) return;
+%     inorder(node->left);
+%     cout << node->value << " ";
+%     inorder(node->right);
+% }
+%         \end{lstlisting}
+%         Hier werden die Prüfungen auf \texttt{NULL} sozusagen auf die nächsttiefere Rekursionsebene verschoben.
+%         Die Laufzeit ist augenscheinlich größer, da mehr rekursive Aufrufe nötig sind.
+%         Andererseits ist leicht zu sehen, dass der Algorithmus praktisch identisch zur ursprünglichen Variante ist.
+        \item Die Idee ist, zunächst nur den Wurzelknoten in dei Queue einzufügen und anschließend über alle Knoten in der Queue zu iterieren.
+        Jedes Knoten, der untersucht wird, wird aus der Queue entfernt und ausgeben.
+        Anschließend werden alle Nachfolger des Knotens (von links nach rechts) in die Queue eingefügt.
+        \begin{lstlisting}[language=c++]
+void layerTraversal(Tree *tree) {
+    queue q(tree->n);
+    if (tree->root != NULL) q.enqueue(tree->root);
+    while (!q.isEmpty()) {
+        Node *node = q.dequeue();
+        cout << node->value << " ";
+        if (node->left != NULL) q.enqueue(node->left);
+        if (node->right != NULL) q.enqueue(node->right);
+    }
+}            
+        \end{lstlisting}
+        Man kann sich überlegen, dass in dem Moment, wenn alle Knoten aus Schicht $k$ abgearbeitet wurden, die Queue genau die Knoten aus Schicht $k + 1$ enthält und zwar von links nach rechts.
+        \begin{proof}
+            Beweis durch vollständig Induktion über die Anzahl der Schichten
+            \begin{description}
+                \item[IA] Zu Beginn ist nur der Wurzelknoten in der Queue.
+                Im ersten Schleifendurchlauf wird dieser aus der Queue entfernt und seine Nachfolger von links nach rechts eingefügt.
+                Die Aussage ist also für Schicht 1 korrekt. 
+                \item[IV] Sei die Aussage wahr für $k - 1$.
+                \item[IS]
+                Dann werden durch das FIFO-Prinzip der Queue alle Knoten aus Schicht $k$ von links nach rechts abgearbeitet, bevor Knoten aus tieferen Schichten untersucht werden.
+                Da außerdem für jeden Knoten seine Nachfolger von links nach rechts in die Queue eingefügt werden, liegen, nachdem alle Knoten aus Schicht $k$ untersucht wurden, alle Knoten aus Schicht $k + 1$ von links nach rechts in der Queue.
+                Da zu untersuchende Knoten aus der Queue entfernt werden und aufgrund der Induktionsvoraussetzung keine anderen Knoten in der Queue liegen können, liegen, nachdem die Knoten aus Schicht $k$ untersucht wurden, genau die Knoten aus Schicht $k + 1$ in der Queue und zwar von links nach rechts.
+            \end{description}
+            Nach dem Prinzip der vollständigen Induktion gilt obige Aussage für alle $k$.
+        \end{proof}
+        Aus der gerade bewiesen Aussage folgt, dass alle Knoten des Baumes schichtweise durchlaufen und somit ausgegeben werden.
+
+        Da jeder Knoten genau einmal in die Queue eingefügt wird und pro Knoten in der Queue konstanter Zeitaufwand besteht, ist die Laufzeit des obigen Algorithmus $O(n)$.
+
+        Der beschriebene Algorithmus entspricht einer Breitensuche (Breadth First Search).
+        Diese wird später in der Vorlesung näher behandelt.
+
+        \item
+        Der größte Abstand zweier Knoten entspricht dem längsten (einfachen, also zyklenfreien) Pfad zwischen zwei Knoten im Baum.
+        Es soll über alle Knoten iteriert werden und für jeden Knoten die Länge des längsten Pfades im Teilbaum unter diesem gefunden werden.
+        Die Länge des längsten Pfades im Teilbaum unter dem Wurzelknoten ist die gesuchte Antwort.
+        Dabei gilt für jeden Knoten, dass der längste Pfad im entsprechen Teilbaum
+        \begin{enumerate}[label=\arabic*.]
+            \item sich entweder im Teilbaum unter dem linken Nachfolger befindet,
+            \item sich im Teilbaum unter dem rechten Nachfolger befindet
+            \item oder durch den Knoten selbst läuft.
+        \end{enumerate}
+        Die ersten beiden Fällen können durch die Rekursion abgedeckt werden, die beim Durchlaufen des Baumes sowieso nötig ist.
+        Anschließend wird der dritte Fall behandelt:
+        Der längste Pfad durch den Knoten startet im linken Teilbaum und zwar so weit unten wie möglich, läuft hoch bis zum Knoten und dann in den rechten Teilbaum, wieder so tief wie möglich.
+        Der Abstand vom einem Knoten zum \glqq{}tiefsten\grqq{} Kind ergibt sich die Höhe des Teilbaums:
+        \begin{lstlisting}[language=c++]
+int height(Node *node) {
+    if (node == NULL) return -1;
+    return 1 + max(height(node->left), height(node->right));
+}
+        \end{lstlisting}
+        Es wird also die Höhe des linken und die des rechten Teilbaumes berechnet.
+        Dazu kommen noch die zwei Kanten \glqq{}Wurzel linker Teilbaum zum Knoten\grqq{} und \glqq{}Knoten zur Wurzel rechter Teilbaum\grqq{}.
+        Die Länge des Pfades ergibt sich also durch \texttt{2 + height(left) + height(right)}.
+        \begin{lstlisting}[language=c++]
+int maxDistance(Node *node) {
+    if (node == NULL) return INT_MIN;
+    return max(
+        max(maxDistance(node->left), maxDistance(node->right)),
+        2 + height(node->left) + height(node->right)
+    );
+}
+int maxDistance(Tree *tree) {
+    return maxDistance(tree->root);
+}
+        \end{lstlisting}
     \end{enumerate}
+    Pro Knoten wird die Laufzeit von den beiden \texttt{height}-Aufrufen dominiert.
+    Die Wurzel benötigt den größten zeitlichen Aufwand, da die beiden \texttt{height}-Aufrufe zusammen den gesamten restlichen Baum durchlaufen, was Zeitaufwand $\Theta(n)$ allein für die Wurzel bedeutet.
+    Da es insgesamt $n$ Knoten gibt, beträgt der Gesamtaufwand für den Algorithmus $O(n^2)$.
+    Dieser wird in der Praxis auch tatsächlich erreicht (Es ist leicht zu sehen, dass die Laufzeit bei einem entarteten Baum durch die Gauß-Summe gegeben ist).
+
+    Die wesentliche Überlegung, um Gesamtlaufzeit $O(n)$ zu erreichen, ist, dass Höhe und maximale Distanz der Teilbäume parallel berechnet und anschließend zwischengespeichert werden kann, um sich unnötige, doppelte Berechnungen zu sparen.
+    \begin{lstlisting}[language=c++]
+int maxDistanceLinear(Node *node, int &height) {
+    if (node == NULL) {
+        height = -1;
+        return INT_MIN;
+    }
+    int leftHeight, rightHeight;
+    int result = std::max(
+        maxDistanceLinear(node->left, leftHeight),
+        maxDistanceLinear(node->right, rightHeight)
+    );
+    height = 1 + std::max(leftHeight, rightHeight);
+    return std::max(result, 2 + leftHeight + rightHeight);
+}
+int maxDistanceLinear(Tree *tree) {
+    int height;
+    maxDistanceLinear(tree->root, height);
+}
+    \end{lstlisting}
+    In dieser Lösung wird die maximale Distanz per \texttt{return} zurückgegeben und die Höhe mittels Referenz-Parameter \texttt{height}.
+    Pro Knoten ist abgesehen von den rekursiven Aufrufen nur noch konstante Laufzeit nötig.
+    Heißt, die Gesamtlaufzeit beträgt nun $O(n)$.
 \end{loesung}
 
 \begin{aufgabe}{2}{Binäre, verkettete Suchbäume}
