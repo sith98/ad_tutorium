@@ -69,7 +69,7 @@ void inorder(Node *node) {
             \includegraphics[width=0.3\textwidth]{img/1a}
         \end{figure}
         \FloatBarrier
-        \item Eine eindeutige Rekonstruktion ist allein bei gegebener Preorder- und Postorder-Darstellung im Allgemeinen nicht möglich.
+        \item Wenn nur Preorder- und Postorder-Darstellung gegeben ist, ist eine eindeutige Rekonstruktion im Allgemeinen nicht möglich.
         Das kleinste Gegenbeispiel sind die folgenden, beiden Bäume:
         \begin{figure}[h!]
             \centering
@@ -112,7 +112,7 @@ void inorder(Node *node) {
 %         Hier werden die Prüfungen auf \texttt{NULL} sozusagen auf die nächsttiefere Rekursionsebene verschoben.
 %         Die Laufzeit ist augenscheinlich größer, da mehr rekursive Aufrufe nötig sind.
 %         Andererseits ist leicht zu sehen, dass der Algorithmus praktisch identisch zur ursprünglichen Variante ist.
-        \item Die Idee ist, zunächst nur den Wurzelknoten in dei Queue einzufügen und anschließend über alle Knoten in der Queue zu iterieren.
+        \item Die Idee ist, zunächst nur den Wurzelknoten in die Queue einzufügen und anschließend über alle Knoten in der Queue zu iterieren.
         Jedes Knoten, der untersucht wird, wird aus der Queue entfernt und ausgeben.
         Anschließend werden alle Nachfolger des Knotens (von links nach rechts) in die Queue eingefügt.
         \begin{lstlisting}[language=c++]
@@ -129,7 +129,7 @@ void layerTraversal(Tree *tree) {
         \end{lstlisting}
         Man kann sich überlegen, dass in dem Moment, wenn alle Knoten aus Schicht $k$ abgearbeitet wurden, die Queue genau die Knoten aus Schicht $k + 1$ enthält und zwar von links nach rechts.
         \begin{proof}
-            Beweis durch vollständig Induktion über die Anzahl der Schichten
+            Beweis durch vollständige Induktion über die Anzahl der Schichten
             \begin{description}
                 \item[IA] Zu Beginn ist nur der Wurzelknoten in der Queue.
                 Im ersten Schleifendurchlauf wird dieser aus der Queue entfernt und seine Nachfolger von links nach rechts eingefügt.
@@ -147,22 +147,22 @@ void layerTraversal(Tree *tree) {
         Da jeder Knoten genau einmal in die Queue eingefügt wird und pro Knoten in der Queue konstanter Zeitaufwand besteht, ist die Laufzeit des obigen Algorithmus $O(n)$.
 
         Der beschriebene Algorithmus entspricht einer Breitensuche (Breadth First Search).
-        Diese wird später in der Vorlesung näher behandelt.
+        Diese wird später im Laufe der Vorlesung näher behandelt.
 
         \item
         Der größte Abstand zweier Knoten entspricht dem längsten (einfachen, also zyklenfreien) Pfad zwischen zwei Knoten im Baum.
-        Es soll über alle Knoten iteriert werden und für jeden Knoten die Länge des längsten Pfades im Teilbaum unter diesem gefunden werden.
+        Es soll über alle Knoten iteriert werden und für jeden Knoten die Länge des längsten Pfades im Teilbaum unter diesem Knoten gefunden werden.
         Die Länge des längsten Pfades im Teilbaum unter dem Wurzelknoten ist die gesuchte Antwort.
-        Dabei gilt für jeden Knoten, dass der längste Pfad im entsprechen Teilbaum
+        Dabei gilt für jeden Knoten, dass der längste Pfad im entsprechenden Teilbaum
         \begin{enumerate}[label=\arabic*.]
             \item sich entweder im Teilbaum unter dem linken Nachfolger befindet,
             \item sich im Teilbaum unter dem rechten Nachfolger befindet
             \item oder durch den Knoten selbst läuft.
         \end{enumerate}
         Die ersten beiden Fällen können durch die Rekursion abgedeckt werden, die beim Durchlaufen des Baumes sowieso nötig ist.
-        Anschließend wird der dritte Fall behandelt:
+        Bleibt noch der dritte Fall:
         Der längste Pfad durch den Knoten startet im linken Teilbaum und zwar so weit unten wie möglich, läuft hoch bis zum Knoten und dann in den rechten Teilbaum, wieder so tief wie möglich.
-        Der Abstand vom einem Knoten zum \glqq{}tiefsten\grqq{} Kind ergibt sich die Höhe des Teilbaums:
+        Der Abstand vom einem Knoten zum \glqq{}tiefsten\grqq{} Kind ist entspricht der Höhe des Knotens:
         \begin{lstlisting}[language=c++]
 int height(Node *node) {
     if (node == NULL) return -1;
@@ -170,7 +170,7 @@ int height(Node *node) {
 }
         \end{lstlisting}
         Es wird also die Höhe des linken und die des rechten Teilbaumes berechnet.
-        Dazu kommen noch die zwei Kanten \glqq{}Wurzel linker Teilbaum zum Knoten\grqq{} und \glqq{}Knoten zur Wurzel rechter Teilbaum\grqq{}.
+        Dazu kommen für den vollständigen Pfad durch den betrachten Knoten noch zwei weitere Kanten, nämlich die vom linken Nachfolger zum Knoten und die vom Knoten zu seinem rechten Nachfolger.
         Die Länge des Pfades ergibt sich also durch \texttt{2 + height(left) + height(right)}.
         \begin{lstlisting}[language=c++]
 int maxDistance(Node *node) {
@@ -185,10 +185,10 @@ int maxDistance(Tree *tree) {
 }
         \end{lstlisting}
     \end{enumerate}
-    Pro Knoten wird die Laufzeit von den beiden \texttt{height}-Aufrufen dominiert.
+    Die beiden \texttt{height}-Aufrufe dominieren die Laufzeit für jeden Knoten.
     Die Wurzel benötigt den größten zeitlichen Aufwand, da die beiden \texttt{height}-Aufrufe zusammen den gesamten restlichen Baum durchlaufen, was Zeitaufwand $\Theta(n)$ allein für die Wurzel bedeutet.
-    Da es insgesamt $n$ Knoten gibt, beträgt der Gesamtaufwand für den Algorithmus $O(n^2)$.
-    Dieser wird in der Praxis auch tatsächlich erreicht (Es ist leicht zu sehen, dass die Laufzeit bei einem entarteten Baum durch die Gauß-Summe gegeben ist).
+    Da es insgesamt $n$ Knoten gibt, beträgt die Gesamtlaufzeit für den Algorithmus $O(n^2)$.
+    Diese wird in der Praxis auch tatsächlich erreicht (Es ist leicht zu sehen, dass die Laufzeit bei einem entarteten Baum durch die Gauß-Summe gegeben ist).
 
     Die wesentliche Überlegung, um Gesamtlaufzeit $O(n)$ zu erreichen, ist, dass Höhe und maximale Distanz der Teilbäume parallel berechnet und anschließend zwischengespeichert werden kann, um sich unnötige, doppelte Berechnungen zu sparen.
     \begin{lstlisting}[language=c++]
@@ -317,8 +317,8 @@ int maxDistanceLinear(Tree *tree) {
         \FloatBarrier
 
         \item 
-        Prinzipiell würde ein Preorder-, Postorder- oder Inorder-Durchlauf genügen, nur dass ausschließlich die Werte $x$ ausgegeben werden, die der Bedingung $l \leq x \leq h$ genügen.
-        Jedoch wird hierbei potentiell über große Bereiche des Baumes iteriert, die für die Ausgabe irrelevant.
+        Prinzipiell würde ein Preorder-, Postorder- oder Inorder-Durchlauf genügen, bei dem nur die Werte $x$ ausgegeben werden, die der Bedingung $l \leq x \leq h$ genügen.
+        Jedoch wird hierbei potentiell über große Bereiche des Baumes iteriert, die für die Ausgabe irrelevant sind.
         Daher macht es Sinn, vor jedem rekursiven Aufruf zu überprüfen, ob dieser überhaupt nötig ist.
         Wird zum Beispiel im Baum aus der Aufgabenstellung von 2\ref*{insert_delete} nach allen Werten zwischen 5 und 12 gesucht, ergibt es beim Untersuchen des Knotens 14 keinen Sinn, dessen rechten Nachfolger noch zu prüfen, da alle Knoten dieses Teilbaums mindestens 14 und damit sicher größer als 12 sind.
         \begin{lstlisting}[language=c++]
@@ -331,14 +331,14 @@ void rangeQuery(Node *node, int l, int h) {
     if (node->value <= h) rangeQuery(node->right, l, h);
 }
 void rangeQuery(Tree *tree, int l, int h) {
-    return rangeQuery(tree->root, l, h);
+    rangeQuery(tree->root, l, h);
 }
         \end{lstlisting}
         In dieser Lösung wird der Baum in Inorder-Reihenfolge durchlaufen.
         Das ist nicht zwangsläufig notwendig.
         Jedoch werden die gesuchten Werte auf diese Weise in aufsteigend sortierter Reihenfolge ausgegeben.
 
-        Ohne Beweis: Wenn der Baum Höhe $h$ hat und $k$ Werte der Such-Bedingung genügen, besitzt obiger Algorithmus Laufzeit $O(h + k)$.
+        Ohne Beweis: Wenn der Baum Höhe $h$ hat und $k$ Werte der Such-Bedingung genügen, besitzt obiger Algorithmus Laufzeit $O(h + k)$. Bei balancierten Bäumen (etwa AVL-Bäumen) ist die Laufzeit somit $O(\log n + k)$.
     \end{enumerate}
 \end{loesung}
 
@@ -377,6 +377,213 @@ void rangeQuery(Tree *tree, int l, int h) {
         \end{table}
     \end{enumerate}
 \end{aufgabe}
+
+\begin{loesung}
+    \begin{enumerate}
+        \item \ \\
+        \begin{figure}[h!]
+            \centering
+            \begin{subfigure}[b]{0.23\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/3a_1}
+                \caption*{}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.23\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/3a_2}
+                \caption*{}
+            \end{subfigure}
+            \\
+            \begin{subfigure}[b]{0.23\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/3a_3}
+                \caption*{}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.23\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/3a_4}
+                \caption*{Rechtsrotation}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.23\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/3a_5}
+                \caption*{}
+            \end{subfigure}
+            \\
+            \begin{subfigure}[b]{0.23\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/3a_6}
+                \caption*{}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.23\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/3a_7}
+                \caption*{Links-Rechts-Rotation}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.23\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/3a_8}
+                \caption*{}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.23\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/3a_9}
+                \caption*{}
+            \end{subfigure}
+            \\
+            \begin{subfigure}[b]{0.23\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/3a_10}
+                \caption*{}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.23\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/3a_11}
+                \caption*{Rechtsrotation}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.23\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/3a_12}
+                \caption*{}
+            \end{subfigure}
+            \\
+            \begin{subfigure}[b]{0.23\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/3a_13}
+                \caption*{}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.23\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/3a_14}
+                \caption*{}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.23\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/3a_15}
+                \caption*{}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.23\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/3a_16}
+                \caption*{}
+            \end{subfigure}
+            \\
+            \begin{subfigure}[b]{0.23\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/3a_17}
+                \caption*{}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.23\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/3a_18}
+                \caption*{Links-Rechts-Rotation}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.23\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/3a_19}
+                \caption*{}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.23\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/3a_20}
+                \caption*{}
+            \end{subfigure}
+        \end{figure}
+        \FloatBarrier
+
+        \item Die Aussage ist richtig.
+        \begin{proof}
+        Wann ist nach dem Einfügen eine Rotation nötig?
+        Betrachten wir einen Knoten auf dem Pfad vom eingefügten Knoten bis zur Wurzel während der Rückrichtung der Rekursion, also dann, wenn der die AVL-Eigenschaft überprüft wird.
+        % Wir nennen den Teilbaum unter dem linken Nachfolger des betrachteten Knoten \glqq{}linker Teilbaum\grqq{} und analog den Teilbaum unter dem rechten Nachfolger \glqq{}rechter Teilbaum\grqq{}.
+        Allgemein gilt, dass jeder Teilbaum des Baumes durch das Einfügen eines Knotens entweder gleich hoch bleibt oder um 1 höher wird.
+        Angenommen, der linke und der rechte Teilbaum des betrachteten Knotens sind gleich hoch.
+        Dann ist nach dem Einfügen im schlimmsten Fall einer der beiden um 1 höher als der andere.
+        Somit ist die AVL-Eigenschaft weiterhin erfüllt und keine Rotation nötig.
+
+        Wie sieht es aus, wenn einer der beiden Teilbäume bereits um 1 höher ist der andere?
+        Sei dies ohne Beschränkung der Allgemeinheit der linke Teilbaum.
+        Dann hat der rechte Teilbaum die Höhe $h$ und der linke $h + 1$.
+        Wird der einzufügende Knoten dann im rechten Teilbaum eingehängt, wird dieser im schlimmsten Fall um 1 höher und ist damit ebenfalls $h + 1$ hoch, genau wie der linke.
+        Somit ist die AVL-Eigenschaft weiterhin erfüllt und keine Rotation nötig.
+
+        Wenn der Knoten allerdings im linken Teilbaum eingehängt wird, kann es sein, dass dieser danach $h + 2$ hoch ist und damit 2 höher als der rechte.
+        In diesem Fall muss rotiert werden.
+        Durch die Rotation sinkt die Höhe des rechten Teilbaums um 1, während die des linken Teilbaums um 1 steigt.
+        Dies gilt sowohl bei einer Rechts- als auch einer Links-Rechts-Rotation (vergleiche Vorlesungsunterlagen).
+        Beide Teilbäume haben nach der Rotation also Höhe $h + 1$.
+        Da vorher der linke Teilbaum $h + 1$ hoch war und der rechte $h$, ändert sich die gesamte Höhe des Teilbaums unter dem betrachteten Knoten nicht.
+        Somit ändern sich die Höhen für alle Teilbäume unter Knoten, die auf dem Pfad vom betrachteten Knoten aus bis zur Wurzel liegen, nicht.
+        Die Knoten auf diesem Pfad sind jedoch genau die, bei denen die AVL-Eigenschaft (in der Rückrichtung der Rerkursion) noch überprüft wird.
+        Da die AVL-Eigenschaft vor dem Einfügen überall im Baum erfüllt war und sich die Höhen der Teilbäume durch das Einfügen nicht ändert, muss diese bei diesen Knoten auch weiterhin erfüllt sein.
+        Somit ist nach der ersten Rotation keine weitere nötig.
+        \end{proof}
+
+        \item In folgendem minimalen AVL mit Höhe 4 führt das Löschen des Knotens 1 zu zwei Rotationen einmal beim Knoten 2 und einmal beim Knoten 5:
+        \begin{figure}[h!]
+            \centering
+            \begin{subfigure}[b]{0.23\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/3c_1}
+                \caption*{}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.23\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/3c_2}
+                \caption*{}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.23\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/3c_3}
+                \caption*{}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.23\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{img/3c_4}
+                \caption*{Rechtsrotation}
+            \end{subfigure}
+        \end{figure}
+        \FloatBarrier
+        \item
+        Sowohl Einfügen als auch Löschen klappt in einem AVL-Baum in $O(\log n)$. 
+        Die wesentliche, noch fehlende Funktionalität ist das Finden des Maximums, was sich jedoch leicht (ebenfalls in $O(\log n)$) implementieren lässt:
+        \begin{lstlisting}[language=c++]
+Node *avlTree::findMaximum() {
+    Node *node = root;
+    while (node != NULL && node->right != NULL) {
+        node = node->right;
+    }
+    return node;
+}
+        \end{lstlisting}
+
+        Für \textsc{ExtractMax} würde diese Laufzeit reichen, jedoch ist es für $O(1)$ bei \textsc{GetMaximum} nicht ausreichend.
+        Daher muss die Baum-Datenstruktur so erweitert werden, dass sie eine Referenz auf den Knoten mit dem größten Wert vorhält (\texttt{maximum}), sodass der entsprechende Wert in konstanter Zeit zurückgegeben werden kann:
+        \begin{lstlisting}[language=c++]
+object avlTree::getMaximum() {
+    return maximum->val;
+}
+        \end{lstlisting}
+        \textsc{ExtractMax} und \textsc{Insert} ließen sich dann so implementieren:
+        % actual language is c++, not java, but c++ highlights "delete" as a keyword
+        \begin{lstlisting}[language=java]
+void avlTree::extractMax() {
+    delete(maximum);
+    maximum = findMaximum();
+}
+void avlTree::insert(object o) {
+    insert(root, o);
+    maximum = findMaximum();
+}
+        \end{lstlisting}
+        Somit wären die angegebenen Laufzeiten von $O(\log n)$ pro \textsc{ExtractMax} und \textsc{Insert} garantiert.
+        Natürlich kann man beide Operationen noch etwas optimieren.
+        So kann man bei \texttt{extractMax} den Knoten im Baum direkt ansteuern, anstatt ihn zu suchen.
+        Außerdem kann man bei \texttt{insert} den eingefügten Wert mit dem aktuellen Maximum vergleichen und dieses einfach direkt anpassen, falls der neue Wert größer ist.
+        Beide Optierungen haben jedoch keinen Einfluss auf die Laufzeit im $O$-Kalkül.
+    \end{enumerate}
+
+\end{loesung}
 
 
 \end{document}
