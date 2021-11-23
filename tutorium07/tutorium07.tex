@@ -1,0 +1,148 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{gastex}
+\usepackage{etoolbox}
+% \newcommand{\showLoesung}{2} %<---als Schalter
+%\newcommand{\showInhalt}{1} %<---als Schalter
+
+\input{../skel/uebmacsPNG}
+
+\usepackage{enumitem}
+\usepackage{algpseudocode}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{placeins}
+\usepackage{multicol}
+\usepackage{tikz}
+\usetikzlibrary{shapes}
+
+\begin{document}
+\thispagestyle{empty}
+
+\Uebung{7}{8}{Simon Thelen}{25. November 2021}  % FIXME: Blattnummer, Datum, Zeit
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifcsdef{showLoesung}{
+\textbf{Bitte beachten Sie:} Die Lösungen können trotz sorgfältiger Prüfung Fehler enthalten.
+Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in Tutorien, Übungen oder nach Vorlesungen.
+}{}
+
+\begin{aufgabe}{1}{Suchbäume}
+    \begin{enumerate}
+        % \item Gegeben sei ein AVL-Baum mit $n$ Knoten.
+        % Geben Sie geschlossene Formeln für die minimale und die maximale Höhe des Baumes an.
+        \item Gegeben seinen $n$ ganze Zahlen.
+        Es soll ein binär, verketter Suchbaum erzeugt werden, welcher genau die gegeben Zahlen enthält.
+        Zeigen Sie, dass dies im Allgemeinen nicht schneller als in $\Omega\big(n \log(n)\big)$ möglich ist, wenn das Erstellen des Suchbaums mithilfe von Vergleichen erfolgt.
+        \item Konvertieren Sie folgenden Suchbaum mittels Rechtsrotationen in einen entarteten Baum mit 1 als Wurzel.
+        \begin{figure}[h!]
+            \centering
+            \includegraphics[width=0.22\textwidth]{img/1c}
+        \end{figure}
+        \FloatBarrier
+        Wie viele Rechtsrotationen benötigen Sie?
+        Zeigen Sie, dass Sie bei einem Suchbaum mit $n$ Knoten maximal $n - 1$ Rotationen benötigen, um den Baum in einen entarteten Baum zu konvertieren.
+    \end{enumerate}
+\end{aufgabe}
+
+\begin{aufgabe}{2}{Rot-Schwarz-Bäume}
+    \begin{enumerate}
+        \item
+        Nennen Sie zwei Vorteile und zwei Nachteile von RS-Bäumen in der Praxis im Vergleich zu AVL-Bäumen.
+
+        \item Fügen Sie jeweils den Wert 7 in die folgenden RS-Bäume ein.
+        Fügen Sie dafür einen roten Knoten mit Wert 7 an die entsprechende Stelle gemäß der Suchbaumeigenschaft in den Baum ein.
+        Nutzen Sie anschließend jeweils die angegebenen Operationen, um alle RS-Baum-Eigenschaften wiederherzustellen.
+        Wie sehen die Bäume am Ende aus?
+
+        \begin{figure}[h!]
+            \centering
+            \begin{subfigure}[t]{0.3\textwidth}
+                \centering
+                \includegraphics[width=0.6\textwidth]{img/2a_1}
+                \caption*{i) Färbe 2 Knoten schwarz}
+            \end{subfigure}
+            \begin{subfigure}[t]{0.3\textwidth}
+                \centering
+                \includegraphics[width=0.6\textwidth]{img/2a_2}
+                \caption*{ii) 1 Rotation, färbe 1 Knoten rot, färbe 1 Knoten schwarz}
+            \end{subfigure}
+            \begin{subfigure}[t]{0.3\textwidth}
+                \centering
+                \includegraphics[width=0.6\textwidth]{img/2a_3}
+                \caption*{iii) 2 Rotationen, färbe 1 Knoten rot, färbe 1 Knoten schwarz}
+            \end{subfigure}
+        \end{figure}
+        \FloatBarrier
+
+        \item Wie viele Werte sind in einem RS-Baum mit Schwarz-Höhe $k$ mindestens gespeichert? Wie viele maximal?
+
+        \item Beweisen oder widerlegen Sie folgende Aussage: Bei jedem roten Knoten eines RS-Baumes sind entweder beide oder keiner der Nachfolger NIL.
+
+        \item Wenn Sie in einem RS-Baum jeden schwarzen Knoten mit seinem/seinen roten Nachfolger(n) verschmelzen und die Nachfolger des roten Knotens als Nachfolger des schwarzen Knotens übernehmen, erhalten Sie einen Baum, mit potentiell mehr als einem Wert und mehr als zwei Nachfolgern pro Knoten.
+        Beispiel:
+        \begin{figure}[h!]
+            \centering
+            \begin{subfigure}[c]{0.2\textwidth}
+                \centering
+                \includegraphics[width=0.8\textwidth]{img/2d_1}
+            \end{subfigure}
+            $\rightarrow$
+            \begin{subfigure}[c]{0.2\textwidth}
+                \centering
+                \includegraphics[width=0.8\textwidth]{img/2d_2}
+            \end{subfigure}
+        \end{figure}
+        \FloatBarrier
+        Welchen Baum erhalten Sie, wenn Sie beim folgendem RS-Baum jeden schwarzen Knoten mit seinem/seinen roten Nachfolger(n) verschmelzen?
+        \begin{figure}[h!]
+            \centering
+            \includegraphics[width=0.5\textwidth]{img/2d}
+        \end{figure}
+        \FloatBarrier
+        Welche Art von Bäumen erhalten Sie allgemein, wenn Sie die obige Transformation bei RS-Bäumen durchführen.
+        Begründen Sie Ihre Antwort?
+    \end{enumerate}
+    
+\end{aufgabe}
+
+\begin{aufgabe}{3}{B-Bäume}
+    \begin{enumerate}
+        \item
+        Nennen Sie zwei Vorteile und zwei Nachteile von B-Bäumen in der Praxis im Vergleich zu AVL-Bäumen.
+
+        \item Geben Sie alle B-Bäume mit Ordnung 4 an, die die Werte 1, 3, 4, 5 und 7 enthalten.
+
+        \item Gegeben sei ein leerer B-Baum der Ordnung 4. Fügen Sie sukzessiv folgende Elemente in den Baum ein: 
+        7, 3, 8, 18, 10, 14, 12, 13, 6, 15, 20.
+
+        \item
+        Entfernen Sie aus dem resultierenden Baum der vorherigen Teilaufgabe folgende Elemente:
+        3, 13, 6, 18, 20, 10.
+
+        \item
+        Gegeben sei folgender B-Baum der Ordnung 5 (Abbildung vorläufig):
+        \begin{figure}[h!]
+            \centering
+            \includegraphics[width=0.5\textwidth]{img/3d}
+        \end{figure}
+        \FloatBarrier
+        Führen Sie nacheinander folgende Operationen durch: 
+        \textsc{Insert(2)}, \textsc{Remove(11)}, \textsc{Insert(7)}, \textsc{Insert(30)}, \textsc{Remove(8)}, \textsc{Remove(15)}.
+        Geben Sie alle Zwischenschritte an.
+        
+        \item Angenommen, Sie haben einen B-Baum der Ordnung $t$ mit $n$ Werten im Arbeitsspeicher vorliegen:
+        \begin{lstlisting}[language=c++]
+class Node {
+    int nSucc; bool isLeaf;
+    int values[]; Node *succ[];
+}
+        \end{lstlisting}
+        Implementieren Sie die Suchoperation, die überprüft, ob ein bestimmter Wert im Baum enthalten ist, in Pseudocode oder einer Programmiersprache Ihrer Wahl, einmal mit linearer Suche innerhalb eines Knotens und einmal mit binärer Suche.
+
+        \item Geben Sie die Worst-Case-Laufzeiten der beiden Algorithmen der vorherigen Teilaufgabe abhängig von $t$ und $n$ an.
+    \end{enumerate}
+\end{aufgabe}
+
+\end{document}

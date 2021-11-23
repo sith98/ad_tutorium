@@ -1,0 +1,132 @@
+\csname othlogoloaded\endcsname
+\NeedsTeXFormat{LaTeX2e}
+\def\fileversion{v4.0.1}
+\def\filedate{2003/01/24}
+
+
+\newif\if@othLehrstuhlGerman
+\newif\if@othLehrstuhlLangfixed
+
+%\RequirePackage{epsfig}%
+\RequirePackage{graphicx}%
+
+\newif\if@othLehrstuhlUrl
+\@othLehrstuhlUrltrue
+\newif\if@othLehrstuhlFax
+\@othLehrstuhlFaxfalse
+
+\ProvidesPackage{oth-logo}[\filedate\space\fileversion\space
+                         Non-Standard LaTeX2e package]
+\DeclareOption{german}{\@othLehrstuhlGermantrue\@othLehrstuhlLangfixedtrue}
+\DeclareOption{international}{\@othLehrstuhlGermanfalse\@othLehrstuhlLangfixedtrue}
+\DeclareOption{url}{\@othLehrstuhlUrltrue\@othLehrstuhlFaxfalse}
+\DeclareOption{fax}{\@othLehrstuhlUrlfalse\@othLehrstuhlFaxtrue}
+\ProcessOptions
+
+\if@othLehrstuhlUrl
+  \RequirePackage{url}%
+\fi
+\def\oTHpicture{../skel/empty.png}
+\def\oTHLehrstuhlPicture{../skel/oth-logo.png}
+
+\AtBeginDocument{\if@othLehrstuhlLangfixed\else
+  \ifnum\language=\l@german\relax
+  \@othLehrstuhlGermantrue
+  \else
+  \@othLehrstuhlGermanfalse
+  \fi\fi
+  }
+
+\typeout{}
+\typeout{Package: `i=oth-logo'\space\fileversion\space\space <\filedate> (MM)}
+\if@othLehrstuhlLangfixed\if@othLehrstuhlGerman
+   \typeout{Telefonnummern/Adressen im deutschen Format}
+\else
+  \typeout{Phonenumbers/Addresses in international format}
+\fi\fi
+
+\def\@othLehrstuhlAreaphone{%
+  \if@othLehrstuhlGerman%
+  0941%
+  \else%
+  +49) (941%
+  \fi%
+  }
+
+\def\@othLehrstuhlAddress{}
+
+% \newfont{\sfb}{cmssbx10 scaled 1200}
+% \newfont{\sfblog}{cmss7}
+
+\newif\if@othLehrstuhlNofaxurl
+\def\othLehrstuhlLogo{\@ifstar{\@othLehrstuhlNofaxurltrue\@othLehrstuhlLogo}{\@othLehrstuhlNofaxurlfalse\@othLehrstuhlLogo}}
+\def\@othLehrstuhlLogo{\@ifnextchar[{\@@othLehrstuhlLogo}{\@@othLehrstuhlLogo[]}}
+\def\@@othLehrstuhlLogo[#1]{\@ifnextchar[{\@@@othLehrstuhlLogo[#1]}{\@@@othLehrstuhlLogo[#1][]}}
+\def\@@@othLehrstuhlLogo[#1][#2]{%
+  \@ifnextchar[%
+    {\@@@@othLehrstuhlLogo[#1][#2]}%
+    {\@@@@othLehrstuhlLogo[#1][#2][FAKULT\setbox0=\hbox{\"{A}}\setbox2=\hbox{A}\ht0=\ht2\box0{}T F\setbox0=\hbox{\"{U}}\setbox2=\hbox{U}\ht0=\ht2\box0{}R INFORMATIK UND MATHEMATIK]}%
+  }%
+\def\@@@@othLehrstuhlLogo[#1][#2][#3]{%
+  \bgroup%
+  \noindent%
+  \setbox0=\vbox{\scriptsize\sf\baselineskip=0.85\baselineskip%
+    \hbox{\vphantom{RHEINISCH-}}%
+    \hbox{\vphantom{WESTF\"ALISCHE}}%
+    \hbox{\vphantom{TECHNISCHE}}%
+    \hbox{\vphantom{HOCHSCHULE}}%
+    \hbox{\vphantom{AACHEN}}%
+    }%
+  \edef\hrlogo{\the\ht0}%
+%  \setbox0=\hbox{%
+%    \includegraphics[height=\hrlogo]{\oTHpicture}%
+%    ~\box0\relax%
+%    }%
+  \edef\wrlogo{\the\wd0}%
+  \setbox2=\hbox{%
+    ~~\includegraphics[height=\hrlogo]{\oTHLehrstuhlPicture}%
+    }%
+  \edef\wilogo{\the\wd2}%
+  \box0%
+  \dimen0=\textwidth%
+  \advance\dimen0 by-\wrlogo\relax%
+  \advance\dimen0 by-\wilogo\relax%
+  \setbox0=\vbox to \hrlogo{%
+    %\hbox to \dimen0{\hfill{\large\sffamily\bfseries#3}}%
+    \hbox to \dimen0{\large\sffamily\bfseries#3\hfill}%
+    \vss
+    %\vfill%
+    %\hbox to \dimen0{\hfill{\small\sf OTH Regensburg $\cdot$ D-93053 Regensburg\if@othLehrstuhlGerman\else{  $\cdot$ GERMANY}\fi}}%
+	\hbox to \dimen0{\small\sf OTH Regensburg $\cdot$ D-93053 Regensburg\if@othLehrstuhlGerman\else{  $\cdot$ GERMANY}\fi\hfill}%
+    \if@othLehrstuhlNofaxurl\else%
+      \if@othLehrstuhlFax
+        \vss
+        %\vfill%
+        %\hbox to \dimen0{\hfill{\footnotesize\sf Fax: (\@othLehrstuhlAreaphone) 943-1426}}
+		\hbox to \dimen0{footnotesize\sf Fax: (\@othLehrstuhlAreaphone) 943-1426}
+        \fi%
+      \if@othLehrstuhlUrl
+        \vss
+        %\vfill%
+        %\hbox to \dimen0{\hfill{\footnotesize\urlstyle{sf}\url{http://www.oth-regensburg.de/}}}
+		\hbox to \dimen0{\footnotesize\urlstyle{sf}\url{http://www.oth-regensburg.de/}}
+        \fi%
+    \fi%
+    }%
+  \box0\box2%
+  \\%
+  \begin{minipage}{\textwidth}%
+    \begin{flushright}%
+      {\strut\hrulefill\strut}%
+      \def\temp{#1}\ifx\temp\empty\else\strut\\{\sf\temp}\fi%
+      \def\temp{#2}\ifx\temp\empty\else\strut\\{\sf\temp}\fi%
+    \end{flushright}%
+  \end{minipage}%
+  \par\bigskip%
+  \egroup%
+}
+
+\expandafter\let\csname othlogoloaded\endcsname=\endinput
+\endinput
+
+
