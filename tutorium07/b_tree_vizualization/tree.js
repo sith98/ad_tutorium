@@ -215,7 +215,23 @@ document.querySelectorAll(".tree").forEach(el => {
     console.log(tree);
 
     el.innerHTML = "";
-    el.appendChild(canvas);
+    // el.appendChild(canvas);
+    document.querySelector(".output").appendChild(canvas);
+});
+const trees = document.querySelectorAll(".output canvas")
+trees.forEach(el => {
+    el.style.display = "none";
+});
+let index = 0;
+trees[index].style.display = "block";
+window.addEventListener("keydown", evt => {
+    trees[index].style.display = "none";
+    if (evt.key === "ArrowLeft") {
+        index = Math.max(index - 1, 0);
+    } else if (evt.key === "ArrowRight") {
+        index = Math.min(index + 1, trees.length - 1);
+    }
+    trees[index].style.display = "block";
 })
 
 document.querySelector("button").addEventListener("click", evt => {
