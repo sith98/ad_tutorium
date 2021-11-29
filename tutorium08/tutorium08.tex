@@ -1,0 +1,125 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{gastex}
+\usepackage{etoolbox}
+% \newcommand{\showLoesung}{2} %<---als Schalter
+%\newcommand{\showInhalt}{1} %<---als Schalter
+
+\input{../skel/uebmacsPNG}
+
+\usepackage{enumitem}
+\usepackage{algpseudocode}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{placeins}
+\usepackage{multicol}
+\usepackage{tikz}
+\usetikzlibrary{shapes}
+
+\begin{document}
+\thispagestyle{empty}
+
+\Uebung{8}{9}{Simon Thelen}{2. Dezember 2021}  % FIXME: Blattnummer, Datum, Zeit
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifcsdef{showLoesung}{
+\textbf{Bitte beachten Sie:} Die Lösungen können trotz sorgfältiger Prüfung Fehler enthalten.
+Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in Tutorien, Übungen oder nach Vorlesungen.
+}{}
+
+\begin{aufgabe}{1}{Hashing}
+    \begin{enumerate}
+        \item Gegeben sei eine Hashtabelle mit $m = 11$, die Hashing mit Verkettung verwendet.
+        Welchen Inhalt hat die Hashtabelle, wenn Sie die folgenden Werte einfügen, unter Verwendung der Divisionsmethode sowie unter Verwendung der Multiplikationsmethode (mit $x = \frac{\sqrt{5} - 1}{2}$):
+        92, 18, 17, 26, 71, 56, 4, 29?
+        % 14, 55, 92, 18, 17, 26, 71, 56, 4, 29?
+        \item Gegeben sei eine Hashtabelle mit $m = 13$ und Hashing mittels offener Adressierung.
+        Gegeben seien folgende Hashfunktionen:
+        \begin{enumerate}[label=\roman*)]
+            \item Lineares Sondieren: $h_1(s, i) = (s + i) \bmod m$
+            \item Quadratisches Sondieren: $h_2(s, i) = (s + \frac{1}{2} (i^2 + i)) \bmod m$
+            \item Doppeltes Hashing: $h_3(s, i) = (s + i \cdot h'_3(s)) \bmod m$, $h'_3(s) = 1 + s \bmod 7$
+        \end{enumerate}
+        Fügen Sie jeweils unter Verwendung der drei Hashfunktionen die folgenden Werte in die Hashtabelle ein:
+        24, 11, 50, 37, 40.
+        Geben Sie jeweils den Inhalt der Tabelle nach dem Einfügen aller Werte an.
+        \item
+        Gegeben sei eine Hashtabelle mit $m = 77$.
+        Begründen Sie jeweils für folgende Hashfunktionen, warum sie bei Verwendung von offener Adressierung nicht geeignet sind:
+        \begin{enumerate}[label=\roman*)]
+            \item $h_1(s, i) = (s + 7i) \bmod{m}$.
+            \item $h_2(s, i) = (s + h_2(s)) \bmod{m}$, $h_2(s) = s \bmod 5$
+            \item $h_3(s, i) = (s + h_2(s)) \bmod{m}$, $h'_2(s) = 1 + s \bmod{13}$
+        \end{enumerate}
+        \begin{description}
+            \item[Zur Erinnerung:] $\big(h(s, 0), h(s, 1), \ldots, h(s, m - 1)\big)$ soll eine Permutation der Menge $\{0, 1, \ldots, m - 1\}$ sein.
+        \end{description}
+        % \item Gegeben sei eine Hashfunktion $\hat{h} : U \rightarrow \{0, 1, \ldots m - 1\}$ sowie $h(s, i) = (\hat{h}(s) + 2i) \bmod{m}$.
+        % Welche Eigenschaft muss $m$ haben, damit $h$ eine geeignete Hashfunktion für Hashing mit offener Adressierung ist?
+    \end{enumerate}
+\end{aufgabe}
+
+\begin{aufgabe}{2}{Kollisionen}
+    Die folgenden Aufgaben verwenden stets Hashing mit Verkettung.
+    Außerdem können Sie davon ausgehen, dass die verwendeten Hashfunktionen Werte gleichmäßig auf alle Plätz verteilen (also jeder Platz der Tabelle gleich wahrscheinlich ist).
+    \begin{enumerate}
+        \item In eine Hashtabelle mit $m = 100$ werden $50$ Werte eingefügt.
+        Wie wahrscheinlich ist es, dass die ersten $10$ Plätze unbesetzt bleiben?
+        \item Gegeben sei eine Hashtable mit $m = 14$. Wie viele Werte müssen eingefügt werden, bis im Durchschnitt insgesamt 2 Kollisionen zu erwarten sind?
+        Wie viele sind es bei $m = 95$?
+        \item Wie viele Werte dürfen bei $m = 14$ und bei $m = 95$ maximal eingefügt werden werden, damit die Wahrscheinlichkeit, mindestens eine Kollision zu erhalten, höchstens 10\% beträgt?
+        \item Wie viele Elemente müssen in eine leere Hashtabelle mit $m = 10$ eingefügt werden, damit jeder Bucket im Durchschnitt ein Element enthält? Gehen Sie gemäß des \glqq{}5-Punkte-Plans\grqq{} aus der Vorlesung vor.
+    \end{enumerate}
+\end{aufgabe}
+
+\begin{aufgabe}{3}{Hashtabellen in der Praxis}
+    \begin{enumerate}
+        % \item Gegeben sei eine Hashtabelle mit $m$ Buckets (mit Verkettung).
+        % Angenommen, Sie achten bei jedem Einfügen eines neuen Wertes darauf, dass die Liste des entsprechenden Buckets sortiert bleibt.
+        % Welche durchschnittliche Laufzeit erhalten Sie für Suchen, Einfügen und Löschen abhängig von der Anzahl der Elemente in der Hashmap ($n$) und $\alpha = n / m$.
+        \item Nennen Sie zwei Vorteile und zwei Nachteile von Hashtabellen als Such-Datenstruktur im Vergleich zu balancierten Suchbäumen.
+        \item Nennen Sie zwei Vorteile und zwei Nachteile von Hashing mit offener Adressierung in der Praxis im Vergleich zu Hashing mit Verkettung.
+%         \item In der Praxis werden häufig Schlüssel-Wert-Paare in Hashtabellen verwaltet.
+%         Solche Tabellen unterstützen meist folgende Operationen:
+%         \begin{lstlisting}[language=c++]
+% void insert(key, value);
+% void remove(key);
+% bool contains(key);
+% value getValue(key);
+%         \end{lstlisting}
+%         Beschreiben Sie knapp, wie diese Operationen auf Basis der Operationen aus der Vorlesungen in durchschnittlich konstanter Laufzeit (bei kleinem Belegungsfaktor) umgesetzt werden können.
+        \item Um Strings in Hashtabellen verwalten zu können, muss zunächst jede Zeichenkette in eine natürliche Zahl konvertiert werden, auf die eine Hashfunktion angewendet werden kann.
+        Eine Möglichkeit dies zu tun, ist es, die einzelnen (ASCII-)Werte des Strings einfach aufzuaddieren.
+        Nennen Sie ein mögliches Problem dieses Verfahrens und machen Sie einen Vorschlag, wie man dieses Problem lösen könnte.
+    \end{enumerate}
+\end{aufgabe}
+
+\begin{aufgabe}{4}{Anwendung von Hashtabellen}
+    Gegeben sei ein Array $(a_1, a_2, \ldots, a_n)$ mit $a_i \in \mathbb{Z}$ für $1 \leq i \leq n$ sowie eine Zahl $s \in \mathbb{Z}$.
+    Gesucht sind zwei Elemente des Arrays $a_i$ und $a_j$ ($i \neq j$) mit $a_i + a_j = s$ (vgl. Aufgabe~2 aus Übungsblatt~5).
+    Implementieren Sie einen Algorithmus mit durchschnittlicher Laufzeit $\Theta(n)$ in Pseudocode oder einer Programmiersprache Ihrer Wahl, welcher überprüft, ob solche Elemente existieren, und, falls ja, $i$ und $j$ ausgibt.
+    Verwenden Sie eine Hash\-ta\-bel\-le~(z.B. \texttt{unordered\_map} in C++ oder \texttt{HashMap} in Java).
+\end{aufgabe}
+
+\begin{aufgabe}{5}{Universelles Hashing}
+    \begin{enumerate}[label=\alph*)]
+        \item Gegeben sei eine Hashtabelle mit $m = 23$, welche fürs die Divisionsmethode verwendet.
+        Geben Sie $n$ Werte an, die, eingefügt in die Hashtabelle, dafür sorgen würden, dass die Suchoperation im Erfolgsfall durchschnittlich Laufzeit $O(n)$ benötigt.
+        \item \label{universal}
+        Sei $p = 5$, $m = 3$ und $U = \{  1, 2, \ldots, p - 1\}$.
+        Sei nun $H_{p,m} = \{h_{a,b}(s) = ((as + b) \bmod{p}) \bmod{m} \mid a, b \in U\}$ eine Menge von Hashfunktionen über dem Universum $U$, aus der zufällig mit gleicher Wahrscheinlichkeit eine Funktion $h$ ausgewählt wird.
+        Mit welcher Wahrscheinlichkeit ist $h(1) = h(3)$?
+        \begin{description}
+            \item[Tipp:] Probieren Sie alle möglichen Werte für $a$ und $b$ aus. Für welche Werte erhalten Sie eine Kollision?
+        \end{description}
+        \item \label{universal2}
+        Schreiben Sie ein Programm in einer Programmiersprache Ihrer Wahl, welches $p$ und $m$ als Eingabe erhält und $\max\{P\big(h(s_1) = h(s_2)\big) \mid s_1, s_2 \in U, s_1 \neq s_2\}$ berechnet, unter der Voraussetzung, dass $h$ wie in Teilaufgabe \ref*{universal} aus $H_{p,m}$ ausgewählt wird.
+        \item 
+        Wenden Sie Ihr Programm aus Teilaufgabe \ref*{universal2} auf die Werte $p$ und $m$ aus Teilaufgabe \ref*{universal} an und begründen Sie anhand des Ergebnis Ihres Programms, dass $H_{5, 3}$ universell ist.  
+    \end{enumerate}
+\end{aufgabe}
+
+
+
+\end{document}
