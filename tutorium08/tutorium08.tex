@@ -100,24 +100,35 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         \end{table}
         \FloatBarrier
         \item 
+        In allen drei Fällen lässt sich zeigen, dass die Folge $\big(h(s, 0), h(s, 1), \ldots, h(s, m - 1)\big)$ für manche oder sogar alle möglichen Werte für $s$ keine Permutation der Menge $\{0, 1, \ldots, m - 1\}$ ist:
         \begin{enumerate}[label=\roman*)]
-            \item \label{addressing}Angenommen, $s = 0$. Da $s \equiv 0 \bmod 7$. gilt $s + 7i \equiv 0 \bmod{7}$ für alle $i \in \mathbb{N}_0$.
-            Da 7 ein Teiler von $m = 77$ ist, ist auch $(s \bmod 7i) \bmod m = 7i \bmod m$ stets 0 Modulo 7. 
-            Daher können alle Tabellenplätze $\{p \mid p \in \{0, 1, \ldots, 76\}, p \not\equiv 0 \bmod 7\}$, zum Beispiel 1, 2, 8 oder 76, nicht erreicht werden, egal welches $i$ man probiert.
-            Das gleiche gilt natürlich für andere $s$ mit $s \equiv 0 \bmod 7$.
-            Analog gilt außerdem das gleiche, wenn $s$ 1, 2, 3, 4, 5 oder 6 Modulo 7 ist.
-            Allgemein kann man sagen, dass alle Plätze $p$, für die $s \not\equiv p \bmod m$ gilt, nicht erreicht werden können.
+            \item \label{addressing}Angenommen, $s = 0$.
+            Es gilt $h_1(0, 0) = 0, h_1(0, 1) = 7, h_1(0, 2) = 14, \ldots, h(0, 10) = 70$ und schließlich $h(0, 11) = 0$.
+            Das bedeutet, die erreichbaren Tabellenplätze wiederholen sich bereits bei $i = 11$.
+            0 ist 0 Modulo 7.
+            Nur die Plätze, die ebenfalls 0 Modulo 7 sind, sind erreichbar.
+            Andere Plätze, wie 1, 2, 8 oder 76, können dagegen nicht erreicht werden, egal welches $i$ man probiert.
+            Allgemein ist für jedes $s$ ein Platz $p$ genau dann erreichbar, wenn $s \equiv p \bmod 7$.
+            Der Grund dafür ist, dass in jedem Schritt um 7 Plätze weitergegangen wird und 7 ein Teiler von $m = 77$ ist.
+            Da 7 quasi genau in 77 passt, wiederholt sich die Folge, bevor alle möglichen Plätze probiert wurden.
             Somit ist die Folge $\big(h_1(s, 0), h_1(s, 1), \ldots, h_1(s, m - 1)\big)$ für kein $s$ eine Permutation der Menge $\{0, 1, \ldots, m - 1\}$.
 
             \item Angenommen, $s \equiv 0 \bmod 5$.
             Dann ist $h'_2(s) = 0$ und damit $h_2(s, i) = s \bmod m$, unabhängig von $i$.
-            Somit sind alle Werte der Folge $\big(h_2(s, 0), h_2(s, 1), \ldots, h_2(s, m - 1)\big)$ und die Folge offensichtlich keine Permutation der Menge $\{0, 1, \ldots, m - 1\}$.
+            Alle Werte der Folge $\big(h_2(s, 0), h_2(s, 1), \ldots, h_2(s, m - 1)\big)$ sind gleich; es wird nie ein anderer Platz als der erste probiert.
+            Die Folge ist daher offensichtlich keine Permutation der Menge $\{0, 1, \ldots, m - 1\}$.
             
-            \item Angenommen, $s \equiv 10 \bmod 13$.
-            Dann ist $h'_3(s) = 1 + 10 = 11$ und $h_3(s, i) = (s + 11i) \bmod m$.
-            Da 11 ein Teiler von $m = 77$ ist, gilt analog zur Argumentation aus Teilaufgabe \ref*{addressing}, dass die Tabellenplätze $p$ mit $p \not\equiv s \bmod 11$ für kein $i$ erreicht werden können.
-            Somit ist die Folge $\big(h_1(s, 0), h_1(s, 1), \ldots, h_1(s, m - 1)\big)$ für kein $s$ eine Permutation der Menge $\{0, 1, \ldots, m - 1\}$.
+            \item Angenommen, $s \equiv 6 \bmod 13$.
+            Dann ist $h'_3(s) = 1 + 6 = 7$ und $h_3(s, i) = (s + 7i) \bmod m$.
+            In diesem Fall ist die Situation also genau wie bei Teilaufgabe \ref*{addressing}
+            Nach der gleichen Argumentation gilt, dass die Tabellenplätze $p$ mit $p \not\equiv s \bmod 7$ bei solchen $s$ für kein $i$ erreicht werden können (7 ist ein Teiler von $m = 77$).
+            Analog gilt das gleiche natürlich auch, wenn $s \equiv 10 \bmod 13$.
+            In diesem Fall ist $h_3(s, i) = (s + 11i) \bmod m$.
+            Da auch 11 ein Teiler von 77 ist, sind wieder viele Tabellenplätze nicht erreichbar.
+            Die Folge $\big(h_1(s, 0), h_1(s, 1), \ldots, h_1(s, m - 1)\big)$ ist also für bestimmte $s$ keine Permutation der Menge $\{0, 1, \ldots, m - 1\}$.
         \end{enumerate}
+        Die Tatsache, dass für bestimmte $s$ nicht alle Plätze erreicht werden, führt dazu, dass es beim Sondieren passieren kann, dass kein freier Platz gefunden wird, obwohl noch Plätze frei sind.
+        Da dies offensichtlich kein gewünschtes Verhalten ist, sind die drei Funktionen für Hashing mit offener Adressierung ungeeignet.
     \end{enumerate}
 \end{loesung}
 
@@ -131,7 +142,8 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         Wie viele sind es bei $m = 95$?
         \item Wie viele Werte dürfen bei $m = 14$ und bei $m = 95$ maximal eingefügt werden werden, damit die Wahrscheinlichkeit, mindestens eine Kollision zu erhalten, höchstens 10\% beträgt?
         Sie dürfen die Abschätzung $P(\text{\quotes{keine Kollision}}) \approx \mathrm{e}^{-\frac{n (n - 1)}{2m}}$ aus der Vorlesung verwenden.
-        \item Wie viele Elemente müssen in eine leere Hashtabelle mit $m = 10$ eingefügt werden, damit jeder Platz in der Tabelle im Durchschnitt ein Element enthält? Gehen Sie gemäß des \glqq{}5-Punkte-Plans\grqq{} vor.
+        \item Wie viele Elemente müssen in eine leere Hashtabelle mit $m = 10$ eingefügt werden, damit der Erwartungswert für die Anzahl der Elemente an der ersten Stelle in der Tabelle 2 beträgt?
+        Gehen Sie gemäß des \glqq{}5-Punkte-Plans\grqq{} aus der Vorlesung vor.
     \end{enumerate}
 \end{aufgabe}
 \begin{loesung}
@@ -141,7 +153,7 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         Die Wahrscheinlichkeit, dass dies 50 Mal hintereinander passiert, beträgt $\left(\frac{9}{10}\right)^{50} \approx 0.5\%$.
 
         \item Sei die Zufallsvariable $X$ gegeben, die die Gesamtanzahl der Kollisionen in der Hashtabelle beschreibt. 
-        Laut Aufgabenstellung soll gelten $E[X] = 2$.
+        Laut Aufgabenstellung soll $E[X] = 2$ gelten.
         Gemäß der Rechnung aus der Vorlesung beträgt $E[X] = \frac{n \cdot (n - 1)}{2m} = 2$.
         Durch Umformung erhält man die quadratische Gleichung $n^2 - n - 4m = 0$, welche man mithilfe der Lösungsformel für quadratische Gleichungen nach $n$ auflösen kann.
         Setzt man $m = 14$ ein, erhält man als Lösungen $n = -7$ und $n = 8$.
@@ -158,7 +170,7 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
             P(\text{\quotes{keine Kollision}}) &\geq 0.9 & \mid \text{Abschätzung}\\
             \mathrm{e}^{-\frac{n (n - 1)}{2m}} &\geq 0.9 & \mid \ln\\
             -\frac{n (n - 1)}{2m} &\leq \ln(0.9) & \mid \cdot \,(-2m) \\
-            n^2 - n &\leq -\ln(0.9) \cdot 2m & \mid \cdot - \ln(0.9) \cdot 2m\\
+            n^2 - n &\geq -\ln(0.9) \cdot 2m & \mid + \ln(0.9) \cdot 2m\\
             n^2 - n + \ln(0.9) \cdot 2m &\leq 0 
         \end{align*}
         Wie in der vorherigen Aufgabe erhalten wir wieder eine quadratische Gleichung, die mittels Lösungsformel nach $n$ aufgelöst werden kann, wobei wir uns nur für die positive Lösungen interessieren.
@@ -170,10 +182,12 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         Die maximale Anzahl an Werten bei $m = 95$ ist also 4 und nicht 5, wenn eine Kollisionswahrscheinlichkeit von $10\%$ nicht überschritten werden sollen.
         
         \item 
-        Uns interessiert die durchschnittliche Anzahl von Werten pro Tabellenplatz abhängig von der Gesamtanzahl der Werte in der Tabelle ($n$).
-        Betrachten wir zunächst einen bestimmten Platz (zum Beispiel den ersten) und nehmen wir an, wir kennen die erwartete Anzahl an Werten für diesen Platz abhängig von $n$.
-        Wenn diese erwartete Anzahl 1 beträgt, gilt dies auch für alle anderen Plätze, da ja alle Plätze gleich wahrscheinlich sind.
-        Daher ist für genau das $n$, bei dem dies geschiet, die durchschnittliche Anzahl der Werte pro Platz 1.
+        % Uns interessiert die durchschnittliche Anzahl von Werten pro Tabellenplatz abhängig von der Gesamtanzahl der Werte in der Tabelle ($n$).
+        % Betrachten wir zunächst einen bestimmten Platz (zum Beispiel den ersten) und nehmen wir an, wir kennen die erwartete Anzahl an Werten für diesen Platz abhängig von $n$.
+        % Wenn diese erwartete Anzahl 1 beträgt, gilt dies auch für alle anderen Plätze, da ja alle Plätze gleich wahrscheinlich sind.
+        % Daher ist für genau das $n$, bei dem dies geschiet, die durchschnittliche Anzahl der Werte pro Platz 1.
+        % Die Aussage, dass der erste Platz durchschnittlich 2 Elemente enthält, entspricht der Aussage, dass 2 der Erwartungswert für die Anzahl der Werte im ersten Platz ist.
+        Das Ziel wird sein, eine Formel für diesen Erwartungswert, abhängig von der Gesamtanzahl der Werte $n$, anzugeben, diese Formel gleich 2 zu setzen und die resultierende Gleichung nach $n$ aufzulösen.
         \begin{description}
             \item[Schritt 1: Definiere eine geeignete Zählvariable.]
             Wir wollen die Werte zählen, die in den ersten Platz der Tabelle eingefügt werden.
@@ -199,11 +213,11 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
             \begin{equation*}
                 E[X] = E\left[ \sum\limits_{i = 1}^n X_i \right]
                 \overset{\text{Linearität von $E$}}{=} \sum\limits_{i = 1}^n E[X_i]
-                = \sum\limits_{i = 1}^n \frac{1}{m} = \frac{n}{m}
+                \overset{\text{Schritt 3}}{=} \sum\limits_{i = 1}^n \frac{1}{m} = \frac{n}{m}
             \end{equation*}
         \end{description}
-        Aus $E[X] = \frac{n}{m} = 1$ folgt durch Umstellen $n = m$. 
-        Für $m = 10$ müssen daher 10 Werte eingefügt werden, damit durchschnittlich in jedem Tabellenplatz durchschnittlich ein Wert gespeichert wird.
+        Aus $E[X] = \frac{n}{m} = 2$ folgt durch Umstellen $n = 2m$. 
+        Für $m = 10$ müssen daher 20 Werte eingefügt werden, damit im ersten Tabellenplatz durchschnittlich 2 Werte gespeichert werden.
     \end{enumerate}
 \end{loesung}
 
@@ -234,35 +248,40 @@ value getValue(key);
         \item 
         \textbf{Vorteile:}
         \begin{itemize}
-            \item Such-, Einfüge- und Lösch-Operationen sind in der Praxis normalerweise schneller als bei einem Suchbaum ($O(1)$ vs. $O(\log n)$).
+            \item Such-, Einfüge- und Lösch-Operationen sind in der Praxis normalerweise schneller als bei einem balancierten Suchbaum ($O(1)$ vs. $O(\log n)$).
             \item Besseres Cache-Verhalten bei Verwendung von offener Adressierung: Werte liegen in einem zusammenhängenden Bereich im Speicher.
             Daher können mehr Werte gleichzeitig in den Cache geladen werden und es sind insgesamt weniger Speichderzugriffe nötig.
             Bei einem Suchbaum liegen Werte potentiell im Speicher verstreut.
             \item Um Suchbäume verwenden zu können, muss eine vollständige Ordnung für die Elemente im Baum vorliegen.
             In anderen Worten, die zu durchsuchenden Elemente müssen sortierbar sein.
+            Diese spezielle Einschränkung haben Hashtabellen nicht.
+            \item Suchbäume basieren darauf, dass Werte verglichen werden.  
+            Bei großen Werten, zum Beispiel langen Strings, können Vergleiche potentiell lange dauern.
+            Hashwerte von Strings müssen dagegen nur einmal berechnet werden und können dann zusammen mit dem String abgespeichert werden.
+            Vergleiche von Hashwerten, wie sie für Hashtabellen notwendig sind, sind normalerweise sehr schnell durchzuführen.
         \end{itemize}
         \textbf{Nachteile:}
         \begin{itemize}
-            \item Operationen bei balancierten Suchbäumen sind selbst im Worst-Case mit $O(\log n)$ sehr effizient, während Hashtables potentiell sehr langsam sein können (Worst Case: $O(n)$).
-            Das gilt ganz besonders, wenn kein universelles Hashing verwendet wird und so ein Angreifer bewusst Worst-Case-Performance provozieren kann.
+            \item Operationen bei balancierten Suchbäumen sind selbst im Worst-Case mit $O(\log n)$ sehr effizient, während Hashtabellen potentiell sehr langsam sein können (Worst Case: $O(n)$).
+            Dieser Nachteil ist besonders relevant, wenn kein universelles Hashing verwendet wird und so ein bösartiger Nutzer der Tabelle bewusst Worst-Case-Performance provozieren kann.
             \item Da bei Hashtabellen für schnelles Suchen oft viele Tabellenplätze leer bleiben müssen, um Kollisionen zu vermeiden, bleibt immer ein Teil des verwendeten Speichers ungenutzt.
-            (Binäre) Suchbäume verwenden immer nur so viel Speicher wie sie benötigen.
+            (Binäre) Suchbäume verwenden immer nur so viel Speicher, wie sie benötigen.
             \item 
-            Operationen wie \quotes{Was ist das größte Element?}, \quotes{Welcher Wert liegt am nächsten an 49?} oder \quotes{Gib alle Werte zwischen 100 und 200 aus.} benötigen mit einer Hashtabelle lineare Laufzeit, sind jedoch mit einem balancierten Suchbaum effizient durchführbar (die ersten beiden Operationen benötigen $O(\log n)$; die letzte $O(\log n + k)$, wobei $k$ die Anzahl der Elemente im angegebenen Bereich ist).
+            Operationen wie \quotes{Was ist das größte Element?}, \quotes{Welcher Wert liegt am nächsten an 49?} oder \quotes{Gib alle Werte zwischen 100 und 200 aus.} benötigen mit einer Hashtabelle lineare Laufzeit, sind jedoch mit einem balancierten Suchbaum effizient durchführbar (die ersten beiden Operationen benötigen Laufzeit $O(\log n)$; die letzte $O(\log n + k)$, wobei $k$ die Anzahl der Werte im angegebenen Bereich ist).
             \item Um Werte in einer Hashtabelle verwalten zu können, braucht es eine geeignete Hashfunktion.
-            Das Finden von guten Hashfunktionen ist, je nach dem welche Werte in der Tabelle gespeichert werden sollen, häufig alles andere als trivial.
-            \item Im Optimalfall sollte im Vorhinein bekannt sein, wie viele Werte etwa in der Tabelle gespeichert werden sollen, um am Ende gute Performance zu erhalten.
-            Andernfalls muss die Tabelle dynamisch vergrößert werden, wodurch einzelne Einfügeoperationen lineare Laufzeit benötigen
-            Amortisiert, also gemittelt über alle Einfügeoperationen, bleibt die Laufzeit aber konstant, solange die Tabelle immer um einen konstante Faktor wie 50\% vergrößert wird (siehe Tutoriumsblatt 5, Aufgabe 3c).
+            Das Finden von guten Hashfunktionen ist, je nach dem, welche Werte in der Tabelle gespeichert werden, häufig alles andere als trivial.
+            \item Im Optimalfall sollte im Vorhinein bekannt sein, wie viele Werte etwa in der Tabelle gespeichert werden sollen, damit die Tabelle nicht zu voll wird und die Performance darunter leidet.
+            Alternativ muss die Tabelle dynamisch vergrößert werden, wodurch einzelne Einfügeoperationen lineare Laufzeit benötigen.
+            % Amortisiert, also gemittelt über alle Einfügeoperationen, bleibt die Laufzeit aber konstant, solange die Tabelle immer um einen konstante Faktor wie 50\% vergrößert wird (siehe Tutoriumsblatt 5, Aufgabe 3c).
             Diese Probleme haben Suchbäume nicht.
             Sie können problemlos vergrößert werden können und es kein Wissen über die Anzahl der Elemente nötig, die eingefügt werden sollen.
         \end{itemize}
         \item
         \textbf{Vorteile:}
         \begin{itemize}
-            \item Keine (oft langsamen) dynamischen Speicherallokationen nötig.
+            \item Bei offener Adressierung sind keine dynamischen Speicherallokationen nötig (diese sind in der Praxis oft relativ langsam).
+            Die Tabelle wird nur einmal am Anfang erzeugt.
             Bei Verkettung muss für jeden Wert ein neues Listenelement allokiert werden.
-            Bei offener Adressierung wird die Tabelle nur einmal am Anfang erzeugt.
             \item Besseres Cache-Verhalten: Werte liegen in einem zusammenhängenden Bereich im Speicher.
             Daher können mehr Werte gleichzeitig in den Cache geladen werden und es sind insgesamt weniger Speichderzugriffe nötig.
             In verketteten Listen liegen Werte potentiell im Speicher verstreut.
@@ -271,20 +290,22 @@ value getValue(key);
             Wenn gleich viel Speicherplatz zu Verfügung steht, ist daher bei offener Adressierung ein höheres $m$ möglich als bei Verkettung.
             Die zusätzlichen freien Plätze in der Tabelle können Such- und Einfüge-Operationen beschleunigen.
         \end{itemize}
+        \textbf{Nachteile:}
         \begin{itemize}
             \item Hashtabellen mit offener Adressierung werden immer langsamer, je mehr sich der Belegungsfaktor 1 nähert.
-            Die Laufzeit der Such-Operation wächst von $O(1 + \frac{1}{m})$ für kleine $n$ bis zu $n$, wenn die Tabelle fast voll ist, was ein Steigerungsfaktor von $n \cdot m$
-            Tabellen mit Verkettung werden nur linear langsamer in $n$ bei mehr eingefügten Elementen, egal wie hoch der Belegungsfaktor ist.
-            \item Bei gleichbleibendem $n$ muss die $m$ bei offener Adressierung meist größer sein als bei Verkettung, bei gleichbleibender Performance.
+            Die Laufzeit der Such-Operation wächst von $O(1 + \frac{1}{m})$, wenn $n$ noch klein ist, bis hin zu $O(n)$, wenn die Tabelle fast voll ist, was ein Steigerungsfaktor von $n \cdot m$ ist.
+            Tabellen mit Verkettung werden nur linear langsamer bei steigendem $n$, egal wie hoch der Belegungsfaktor ist.
+            \item Da ein hoher Belegungsfaktor wie im letzten Punkt erwähnt bei offener Adressierung unerwünscht ist, muss, wenn $n$ gleich bleibt, $m$ meist größer sein als bei Verkettung, um vergleichbare Performance zu erreichen.
+            Die zu speichernde Tabelle ist also größer.
             \item Löschen von Werten problematisch.
-            Bei offener Adressierung bleibt der Platz nach dem Löschen eines Elements typischer belegt.
+            Bei offener Adressierung bleibt der Platz nach dem Löschen eines Elements typischerweise belegt.
             Werden also viele Werte eingefügt und wieder gelöscht, hat das einen nachteiligen Einfluss auf die Performance.
         \end{itemize}
         \item
         Es soll in durchschnittlich konstanter Laufzeit möglich sein, festzustellen, ob ein bestimmter Schlüssel in der Hashtabelle gespeichert wird oder nicht.
-        Gleichzeitig soll der passende Wert zu einem gegebenen in konstanter Zeit gefunden werden.
+        Gleichzeitig soll der passende Wert zu einem gegebenen Schlüssel in konstanter Zeit gefunden werden.
         Am einfachsten lassen sich beide Anforderungen erfüllen, indem ganze Schlüssel-Wert-Paare in der Hashtabelle gespeichert werden.
-        Wird ein neues Schlüssel-Wert-Paar eingefügt oder nach einem gegebenen Schlüssel gesucht, wird die entsprechende Stelle in der Tabelle anhand des Hashes des Schlüssels bestimmt (der zugehörige Wert spielt für den Hash keine Rolle).
+        Wird ein neues Schlüssel-Wert-Paar eingefügt oder nach einem gegebenen Schlüssel gesucht, wird die entsprechende Stelle in der Tabelle anhand des Hashes des Schlüssels bestimmt (der zugehörige Wert darf für den Hash keine Rolle spielen).
         Ist beim Suchen eines Schlüssels der entsprechende Eintrag (hoffentlich in konstanter Zeit) gefunden, kann der zugehörige Wert sofort zurückgegebenen werden, da Schlüssel und Wert zusammen in der gleichen Stelle im Array gespeichert werden.
         Wenn ein Schlüssel gelöscht wird, kann außerdem problemlos das gesamte Paar in konstanter Zeit gelöscht werden.
 
@@ -292,8 +313,8 @@ value getValue(key);
         Daher kann es in diesem Fall sinnvoll sein, die Werte separat abzuspeichern und nur einen Zeiger in der Tabelle abzulegen.
         
         \item 
-        Um die Größenordnung der Zahlen möglichst klein zu halten wird im folgendem vom Alphabet A = 1, B = 2, $\ldots$, Z = 26 ausgegangen.
-        Die beschriebenen Überlegung funktionieren natürlich auch für ASCII- oder Unicode-Strings.
+        Um die verwendeten Zahlen klein zu halten, gehen wir im Folgenden vom Alphabet A = 1, B = 2, $\ldots$, Z = 26 aus.
+        Die beschriebenen Überlegungen funktionieren aber natürlich auch für ASCII- oder Unicode-Strings.
 
         Mit dem in der Aufgabenstellung beschriebenen Verfahren ergibt sich der zu hashende Zahlenwert eines Strings $s = (s_0, s_2, \ldots, s_{n - 1})$ durch die Summe $\sum_{i = 0}^{n - 1} s_i$.
         Auf diese Weise bekommen jedoch alle Strings, die aus den gleichen Buchstaben, nur in anderer Reihenfolge, bestehen (sogenannte Anagramme), denselben Hash-Wert zugewiesen.
@@ -301,13 +322,13 @@ value getValue(key);
         Dies stellt beispielsweise ein Problem dar, wenn Permutationen derselben Zeichenkette in einer Hashtabelle verwaltet werden.
 
         Um dieses Problem zu beheben, kann man jede Stelle des Strings unterschiedlich gewichten.
-        Dies macht man in der Praxis beispielsweise gerne in der Form eines Stellenwertsystems.
+        Dies macht man in der Praxis gerne mithilfe einer Art Stellenwertsystem.
         Üblicherweise wird hierfür eine Primzahl $p$ gewählt, die größer ist als die Größe des Alphabets.
-        In obigem Beispiel könnte man beispielsweise 31 ($> 26$) wählen.
+        In obigem Beispiel könnte man beispielsweise 31~($> 26$) wählen.
         Anschließend berechnet man den Zahlenwert des Strings $s$ durch die Summe $\sum_{i = 0}^{n - 1} s_i \cdot p^i$.
         Mit diesem Verfahren unterscheiden sich die Hashes von Anagrammen (Beispiel: $\text{\quotes{Lager}} = 12 + 1 \cdot 31 + 7 \cdot 31^2 + 5 \cdot 31^3 + 18 \cdot 31^4 = 16779103$ und $\text{\quotes{Regal}} = 18 + 5 \cdot 31 + 7 \cdot 31^2 + 1 \cdot 31^3 + 12 \cdot 31^4 = 11118943$).
 
-        Mithilfe des Horner-Schemas $\big($z.B. $2+ 5x + 3x^2 + 7x^3 = 2 + x \cdot (5 + x \cdot (3 + x \cdot 7))$$\big)$ kann man diesen Wert in $O(n)$ berechnen, also genau so schnell wie das ursprüngliche Verfahren.
+        Mithilfe des Horner-Schemas $\big($z.B. $2+ 5x + 3x^2 + 7x^3 = 2 + x \cdot (5 + x \cdot (3 + x \cdot 7))$$\big)$ kann man diesen Wert in $O(n)$ berechnen, was genau so schnell ist wie das ursprüngliche Verfahren.
 
     \end{enumerate}
 \end{loesung}
@@ -325,33 +346,35 @@ value getValue(key);
     Wenn man also für jedes $a_k$ in konstanter Zeit prüfen könnte, ob $s - a_k$ auch im Array enthalten ist, kann man das Problem in linearer Zeit lösen.
     Die Hashtabelle ist genau das Werkzeug, welches uns dies ermöglicht.
 
-    Wir iterieren also über das Array und prüfen für jedes $a_k$, ob $s - a_k$ in der Hashtabelle enthalten ist.
+    Wir iterieren also über das Array und prüfen für jedes $a_k$, ob $s - a_k$ bereits in der Hashtabelle enthalten ist.
     Falls ja, haben wir $a_i, a_j$ mit $a_i + a_j = s$ gefunden.
     Falls nein, fügen wir das Schlüssel-Wert-Paar $(a_k, k)$ in die Tabelle ein und fahren mit $k + 1$ fort.
-    Angenommen, es gibt zwei Werte $a_i, a_j$ mit $a_i + a_j = s$ und (o.B.d.A) $i < j$.
+    Angenommen, es gibt zwei Werte $a_i, a_j$ mit $a_i + a_j = s$ und o.B.d.A. sei $i < j$.
     Dann ist, sobald wir uns $a_j$ ansehen, $a_i = s - a_i$ bereits in der Tabelle enthalten.
     Außerdem erhalten wir zum Schlüssel $a_i$ den Wert $i$.
-    Also können wir sofort $(i, j)$ ausgeben und sind fertig.
+    Also können wir sofort $(i, j)$ ausgeben und das Programm beenden.
     Angenommen, es gibt kein solches Paar $a_i, a_j$.
     Dann finden wir natürlich für kein $k$ den Wert $s - a_k$ in der Tabelle und können so, nachdem wir alle Werte betrachtet haben, sicher sagen, dass es kein passendes Paar $a_i, a_j$ gibt.
+    \begin{minipage}{\linewidth}
     \begin{lstlisting}[language=c++]
 void sumOfTwoElements(int a[], int n, int s) {
-    unordered_map<int, int> m;
-    // chooses table size based on expected number of entries
-    m.reserve(n);
+    unordered_map<int, int> table;
+    // choose table size based on expected number of entries
+    table.reserve(n);
     for (int i = 0; i < n; i++) {
         int rest = s - a[i];
-        auto pair = m.find(rest);
-        // checks if "m" contains pair with key "rest"
-        if (pair != m.end()) {
+        auto pair = table.find(rest);
+        // check if "m" contains pair with key "rest"
+        if (pair != table.end()) {
             cout << "(" << pair->second << ", " << i << ")";
             return;
         }
-        m[a[i]] = i;
+        table[a[i]] = i;
     }
     cout << "no result";
 }
     \end{lstlisting}
+    \end{minipage}
     
     Zunächst wird mittels \texttt{reserve} eine Hashtabelle für $n$ Elemente angelegt.
     Laut C++-Doku ist die Größe der Tabelle nun $n \,\cdot \,\text{\texttt{max\_load\_factor}}$.
@@ -391,7 +414,7 @@ void sumOfTwoElements(int a[], int n, int s) {
 
         Allen Werten, die Modulo 23 den gleichen Wert liefern, wird bei Verwendung der Divisionsmethode in der Hashtabelle die gleiche Position zugewiesen.
         Für alle Vielfachen von 23 ($23k$ für $k \in \mathbb{N}_0$) gilt $23k \equiv 0 \mod{23}$.
-        Daher werden die $n$ Werte $23, 2 \cdot 23, 3 \cdot 23, \ldots n \cdot 23$ allesamt an Position $0$ in die Tabelle eingefügt, was zu durchschnittlicher Laufzeit $O(n)$ bei erfolgreicher Suche führt.
+        Daher werden die $n$ Werte $1 \cdot 23, 2 \cdot 23, \ldots, (n - 1) \cdot 23, n \cdot 23$ allesamt an Position $0$ in die Tabelle eingefügt, was zu durchschnittlicher Laufzeit $O(n)$ bei erfolgreicher Suche führt.
         
         \item Es gilt $a, b \in \{1, 2, 3, 4\}$.
         Es gibt also $4 \cdot 4 = 16$ mögliche Hashfunktionen ($|H_{5,3}| = 16$).
@@ -478,7 +501,7 @@ void sumOfTwoElements(int a[], int n, int s) {
             }
         \end{table}
         \FloatBarrier
-        In den Tabellen sind die Kollisionen \textbf{fett} markiert.
+        In diesen Tabellen sind die Kollisionen \textbf{fett} markiert.
         4 von 16 möglichen Hashfunktionen liefern bei 1 und 3 eine Kollision.
         Damit ist $P(h(1) = h(3)) = \frac{4}{16} = \frac{1}{4}$.
 
@@ -486,7 +509,7 @@ void sumOfTwoElements(int a[], int n, int s) {
         Für jedes Paar $s_1, s_2 \in U, s_1 \neq s_2$ muss die Wahrscheinlichkeit berechnet werden, dass $h(s_1) = h(s_2)$.
         Dies geschiet, analog zur vorherigen Teilaufgabe, in der Funktion \texttt{calcProb}.
         In \texttt{maxProb} werden alle Paare $s_1, s_2 \in U, s_1 \neq s_2$ durchlaufen und jeweils die Kollisionswahrscheinlichkeit berechnet.
-        Am Ende wird das Maximum dieser Wahrscheinlichkeiten zurückgegebenen.
+        Am Ende wird das Maximum dieser Wahrscheinlichkeiten zurückgegebenen:
         \begin{lstlisting}[language=c++]
 int h(int s, int p, int m, int a, int b) {
     return ((a * s + b) % p) % m;
