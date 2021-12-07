@@ -1,0 +1,603 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{gastex}
+\usepackage{etoolbox}
+\newcommand{\showLoesung}{2} %<---als Schalter
+%\newcommand{\showInhalt}{1} %<---als Schalter
+
+\input{../skel/uebmacsPNG}
+
+\usepackage{enumitem}
+\usepackage{algpseudocode}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{placeins}
+\usepackage{multicol}
+\usepackage{slashbox}
+\usepackage{fancyvrb}
+\usepackage{ulem}
+
+\begin{document}
+\thispagestyle{empty}
+\DeclareRobustCommand{\ttfamily}{\fontencoding{T1}\fontfamily{lmtt}\selectfont}
+
+\newcommand{\quotes}[1]{\glqq{}#1\grqq{}}
+
+\Uebung{9}{10}{Simon Thelen}{9. Dezember 2021}  % FIXME: Blattnummer, Datum, Zeit
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifcsdef{showLoesung}{
+\textbf{Bitte beachten Sie:} Die Lösungen können trotz sorgfältiger Prüfung Fehler enthalten.
+Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in Tutorien, Übungen oder nach Vorlesungen.
+}{}
+
+
+\begin{aufgabe}{1}{Hashing}
+    \begin{enumerate}
+        \item Gegeben sei eine Hashtabelle mit $100$ Plätzen, die Hashing mit Verkettung verwendet.
+        Es werden $150$ Werte mithilfe einer gleichmäßig verteilenden Hashfunktion eingefügt.
+        Berechnen Sie die Wahrscheinlichkeit, dass ein bestimmter Platz der Tabelle nach dem Einfügen genau ein Element enthält.
+        \item Sei $X$ die Anzahl der Plätze der obigen Tabelle, die nach Einfügen von 150 Werten genau ein Element enthalten.
+        Berechnen Sie $E[X]$ mithilfe des 5-Punkte-Plans und des Ergebnisses der vorherigen Teilaufgabe (Wenn Sie die vorherige Aufgabe nicht lösen konnten, verwenden Sie $P(\text{ein Element}) = \frac{1}{3}$).
+    \end{enumerate}
+\end{aufgabe}
+
+\begin{loesung}
+    \begin{enumerate}
+        \item Betrachten wir zunächst den Fall, dass der erste der 150 Werte in den gewünschten Platz einsortiert wird und alle weiteren 149 Elemente in einen anderen.
+        Die Wahrscheinlichkeit, dass ein Wert in den richtigen Platz einsortiert wird, ist $\frac{1}{100}$, die Wahrscheinlichkeit, dass es ein anderer Platz ist, $\frac{99}{100}$.
+        Da alle Werte unabhängig voneinander einsortiert werden, können die Wahrscheinlichkeiten für alle Werte einfach multipliziert werden.
+        Die Wahrscheinlichkeit dafür, dass der erste der 150 Werte in den gewünschten Platz einsortiert wird und alle weiteren 149 Elemente in einen anderen, beträgt also $\frac{1}{100}\cdot \left(\frac{99}{100}\right)^{149}$.
+
+        Jetzt muss der eine Wert, der in den gewünschten Platz einsortiert wird, aber nicht unbedingt der erste sein, sondern es kann jeder der 150 Werte sein.
+        Da sich die Wahrscheinlichkeiten der einzelnen Plätze jedoch für die anderen Werte nicht ändern, gilt die obige Wahrscheinlichkeit für alle 150 Werte.
+
+        Es muss noch die Wahrscheinlichkeit berechnet werden, dass mindestens eines der obigen 150 Ereignisse eintritt.
+        Allerdings sind alle Ereignisse disjunkt (es kann maximal eines eintreten).
+        Daher reicht es, alle 150 Wahrscheinlichkeiten aufzusummieren.
+        Das finale Ergebnis ist also $150 \cdot \frac{1}{100}\cdot \left(\frac{99}{100}\right)^{149} \approx 33.6\%$. 
+
+        \item
+        \begin{description}
+            \item[Schritt 1: Definiere eine geeignete Zählvariable.]
+            Wir wollen die Plätze der Tabelle zählen, die genau einen Wert enthalten.
+            Daher definieren wir die Zählvariable wie folgt:
+            \begin{equation*}
+                X_i = \begin{cases}
+                    1 & \text{Der $i$-te Platz enthält genau einen Wert} \\
+                    0 & \text{sonst}
+                \end{cases}
+            \end{equation*}
+            \item[Schritt 2: Bestimme die Wahrscheinlichkeit, dass $X_i = 1$.]
+            Die Situation, dass $X_i = 1$ entspricht genau der betrachteten Situation aus der vorherigen Teilaufgabe.
+            Also: $P(X_i = 1) = 150 \cdot \frac{1}{100}\cdot \left(\frac{99}{100}\right)^{149} \approx 33.6\%$.
+            \item[Schritt 3: Bestimme den Erwartungswert von $X_i$.]
+            \begin{equation*}
+                E[X_i] = 1 \cdot P(X_i = 1) + 0 \cdot P(X_i = 0) = P(X_i = 1) + 0 \approx 33.6\%
+            \end{equation*}
+            \item[Schritt 4: Definiere neue Zählvariable.]
+            Wir definieren $X = \sum\limits_{i = 1}^{100} X_i$
+            \item[Schritt 5: Bestimme den Erwartungswert von $X$.]
+            \begin{equation*}
+                E[X] = E\left[ \sum\limits_{i = 1}^{100} X_i \right]
+                \overset{\text{Linearität von $E$}}{=} \sum\limits_{i = 1}^{100} E[X_i]
+                \overset{\text{Schritt 3}}{\approx} \sum\limits_{i = 1}^{100} 33.6\% = 100 \cdot 33.6\% = 33.6
+            \end{equation*}
+        \end{description}
+        
+    \end{enumerate}
+\end{loesung}
+
+\begin{aufgabe}{2}{Skip-Listen}
+    \begin{enumerate}[label=\alph*)]
+        \item Fügen Sie folgende Werte in eine leere Skip-Liste ein:
+        5 (mit Höhe 2), 7 (1), 3 (3), 8 (2), 1 (1), 2 (2), 4 (1).
+        Löschen Sie anschließend folgende Werte: 7, 5, 3.
+        % \item Führe folgende Operationen sukzessiv auf einer leeren Skip-Liste aus (\texttt{Insert($v$, $h$)} fügt den Wert $v$ mit Höhe $h$ in die Liste ein): TODO\ldots.
+        Geben Sie bei jeder Operation an, auf welche Knoten lesend und schreibend zugegriffen wird.
+        % 5, 2
+        % 7, 1
+        % 2, 3
+        % 8, 2
+        % 0, 1
+        % 1, 2
+        % 4, 1
+        \item Zeigen Sie mittels des 5-Punkte-Plans, dass die erwartete Höhe eines Werte einer Skip-Liste 2 beträgt, indem Sie die folgenden Zählvariablen verwenden:
+        \begin{equation*}
+            X_i = \begin{cases}
+                1 & \text{der Wert hat mindestens Höhe $i$} \\
+                0 & \text{sonst}
+            \end{cases}
+        \end{equation*}
+        \item\label{skip} 
+        Erweitern Sie die Skip-Listen-Datenstruktur, sodass zusätzlich zu jedem Zeiger gespeichert wird, wie viele Werte übersprungen werden, wenn man über diesen Zeiger zum entsprechenden Wert springt.
+        Beschreiben Sie kurz, wie die Einfüge- und Lösch-Operationen für diese Erweiterung angepasst werden müssen, ohne das asymptotische Laufzeitverhalten zu verändern.
+
+        \item 
+        Implementieren Sie auf Basis der Erweiterung aus Teilaufgabe \ref*{skip} die Operation \textsc{KthSmallestValue} in Pseudocode oder einer Programmiersprache Ihrer Wahl mit durchschnittlicher Laufzeit $O(\log n)$, welche Ihnen den $k$-kleinsten Wert der Liste liefert.
+    \end{enumerate}
+\end{aufgabe}
+
+\begin{loesung}
+    \begin{enumerate}
+        \item 
+        \item
+        \begin{description}
+            \item[Schritt 1: Definiere eine geeignete Zählvariable.]
+            Wir verwenden die Variable aus der Aufgabenstellung:
+            \begin{equation*}
+                X_i = \begin{cases}
+                    1 & \text{der Wert hat mindestens Höhe $i$} \\
+                    0 & \text{sonst}
+                \end{cases}
+            \end{equation*}
+            \item[Schritt 2: Bestimme die Wahrscheinlichkeit, dass $X_i = 1$.]
+            Die Wahrscheinlichkeit, dass die Höhe mindestens $i$ beträgt, entspricht 1 minus der Gegenwahrscheinlichkeit, nämlich dass die Höhe maximal $i - 1$ ist ($P(\text{Höhe genau $h$}) = (1 / 2)^h$).
+            Es gilt also:
+            \begin{align*}
+                P(X_i = 1) &= P(\text{Höhe min. $i$})
+                = 1 - \sum\limits_{h = 1}^{i - 1} \left(\frac{1}{2}\right)^h \\
+                &= 1 - \left(\sum\limits_{h = 0}^{i - 1} \left(\frac{1}{2}\right)^h\right) + \underbrace{\left(\frac{1}{2}\right)^0}_{= 1}
+                \overset{\text{Geom. Reihe}}{=} 2 - \frac{\left(\frac{1}{2}\right)^i - 1}{\frac{1}{2} - 1} \\
+                &= 2 - (-2) \cdot \left(\left(\frac{1}{2}\right)^i - 1\right)
+                = 2 + 2 \cdot \left(\frac{1}{2}\right)^i - 2
+                = 2 \cdot \left(\frac{1}{2}\right)^i \\
+                &= \left(\frac{1}{2}\right)^{-1} \cdot \left(\frac{1}{2}\right)^i
+                = \left(\frac{1}{2}\right)^{i - 1}
+            \end{align*}
+            \item[Schritt 3: Bestimme den Erwartungswert von $X_i$.]
+            \begin{equation*}
+                E[X_i] = 1 \cdot P(X_i = 1) + 0 \cdot P(X_i = 0) = P(X_i = 1) + 0 = \left(\frac{1}{2}\right)^{i - 1}
+            \end{equation*}
+            \item[Schritt 4: Definiere neue Zählvariable.]
+            Wir definieren $X = \sum\limits_{i = 1}^{\infty} X_i$
+            \item[Schritt 5: Bestimme den Erwartungswert von $X$.]
+            \begin{align*}
+                E[X] &= E\left[ \sum\limits_{i = 1}^{\infty} X_i \right]
+                \overset{\text{Linearität von $E$}}{=} \sum\limits_{i = 1}^{\infty} E[X_i]
+                \overset{\text{Schritt 3}}{=} \sum\limits_{i = 1}^{\infty} \left(\frac{1}{2}\right)^{i - 1} \\
+                &= \sum\limits_{i = 0}^{\infty} \left(\frac{1}{2}\right)^i
+                \overset{\text{unendl. Geom. Reihe}}{=} 2
+            \end{align*}
+        \end{description}
+        \item
+        \begin{description}
+            \item[Einfügen] 
+            Beim Einfügen wird ja entlang der Zeiger in der Skip-Liste gesprungen, um die Position zu erreichen, an die der Wert eingefügt werden soll.
+            Durch die zusätzlichen Werte, die beschreiben, wie viele Werte bei jedem Springen übersprungen werden, kann man leicht feststellen, an welche Position der neue Wert eingefügt wird, indem man die Werte für alle Zeiger, die fürs Einfügen durchlaufen werden, aufsummiert und dazu noch alle Knoten mitzählt, die man fürs Einfügen passiert.
+            Anschließend geht man erneut den Weg zum eingefügten Knoten.
+            Die Werte zu allen Zeigern, die den eingefügten Knoten überspringen, erhöht man um 1.
+            Für jeden Zeiger, den man zuvor beim Einfügen aktualisiert hat, kennt man durch das oben beschriebene Verfahren die Position des zugehörigen Knotens.
+            Aus dem ursprünglichen Überspring-Wert des Zeigers, dessen Position und der Position des eingefügten Wertes kann man die Werte der beiden neuen Werte leicht berechnen.
+            Dabei geht man wie in folgendem Beispiel vor:
+            Ein Zeiger des Knotens an Position 3 übersprang vor dem Einfügen 10 Werte und zeigte somit auf Position 14 ($=3 + 10 + 1$).
+            Jetzt wurde ein neuer Wert an Position 7 eingefügt und der Zeiger zeigt auf diesen eingefügten Wert.
+            Damit überspringt der Zeiger nun $7 - 3 - 1 = 4$ Werte.
+            Der neue Wert (an Position 7) zeigt ja jetzt auf Position 14 und überspringt dadurch $14 - 7 - 1 = 6$.
+            
+            Man muss den Pfad zum eingefügten Wert also nur zweimal durchlaufen.
+            An jeder Position des Pfads wird weiterhin nur konstante Laufzeit benötigt.
+            Das asymptotische Laufzeitverhalten ändert sich also nicht. 
+            \item[Löschen]
+            Zunächst sucht man den zu gewünschten Wert in der Liste, ohne ihn tatsächlich zu löschen.
+            Dabei bestimmt man, wie oben beschrieben dessen Position.
+            Wenn man den Pfad zum Knoten nun ein weiteres Mal durchläuft, um ihn zu löschen, geht man ähnlich wie beim Einfügen vor:
+            Werte von Zeigern, die den zu löschenden Knoten überspringen, verringert man um 1.
+            Bei Zeigern, die auf den zu löschenden Wert zeigen, geht man wie im folgenden Beispiel vor.
+            Angenommen, ein Knoten $a$ zeigt auf den zu löschenden Knoten $b$ und überspringt dabei 4 Werte.
+            Der Zeiger des zu löschenden Knotens auf gleicher Höhe zeigt auf $c$ und überspringt dabei 6 Werte.
+            Wird dann $b$ gelöscht, zeigt nun $a$ auf $c$.
+            Dabei werden $4 + 6 = 10$ Werte übersprungen.
+
+            Nach der gleichen Argumentation wie schon beim Einfügen ändert sich bei dieser Anpassung das Laufzeitverhalten nicht.
+        \end{description}
+        \item Wir gehen für die Lösung von folgender Skip-List-Implementierung aus:
+        \begin{lstlisting}[language=c++]
+class Node {
+    public:
+    int value;
+    int height;
+    Node *next[MAX_HEIGHT];
+    int skip[MAX_HEIGHT];
+};
+class SkipList {
+    public:
+    int height;
+    Node *nodes[MAX_HEIGHT];
+    int skip[MAX_HEIGHT];
+};
+        \end{lstlisting}
+        Die Idee ist simpel:
+        Wir traversieren genau so über die Liste, wie wir das beim normalen Suchen auch tun würden.
+        Jedoch hängt die Entscheidung, ob wir einen Zeiger entlang zum nächsten Knoten gehen oder eine Ebene nach unten, nicht davon ab, ob der Wert des nächsten Knotens größer ist als der gesuchte, sondern ob dessen Position größer ist als die gesuchte.
+        Die Position errechnet sich über die Position des aktuellen Knotens plus der Anzahl der Knoten, die übersprungen werden, plus 1 (der Zielknoten muss auch mitgezählt werden).
+        Sobald die gewünschte Position erreicht wurde, kann der entsprechende Wert zurückgegebenen werden.
+        \begin{lstlisting}[language=c++]
+int kthSmallestValue(SkipList *list, int k) {
+    int i;
+    int pos = 0;
+    Node *node = nullptr;
+    for (i = list->height - 1; i >= 0; i--) {
+        if (list->skip[i] < k) {
+            node = list->nodes[i];
+            pos = list->skip[i] + 1;
+            break;
+        }
+    }
+    while (pos != k) {
+        if (node->next[i] == nullptr) {
+            // index out of bounds
+            return -1;
+        }
+        for (; i >= 0; i--) {
+            if (pos + list->skip[i] < k) {
+                node = node->next[i];
+                pos += node->skip[i] + 1;
+                break;
+            }
+        }
+    }
+    return node->value;
+}
+        \end{lstlisting}
+    \end{enumerate}
+\end{loesung}
+
+\begin{aufgabe}{3}{Textsuche}
+    \begin{enumerate}[label=\alph*)]
+        \item Betrachten Sie das Muster \texttt{BEENDEN}.
+        Wie ist die \texttt{shift}-Funktion für dieses Muster bei Verwendung der Bad-Character-Strategie definiert?
+        Sie dürfen alle Zeichen, die nicht im Muster enthalten sind, zusammenfassen.
+        \item Betrachten Sie die Muster \texttt{KENNEN} und \texttt{NENNEN}.
+        Geben Sie für jede Position des Musters an, um viel viele Zeichen das Muster gemäß der Good-Suffix-Strategie verschoben werden darf, wenn es an dieser Position zu einer Nichtübereinstimmung kommt.
+        \item Suchen Sie das Muster \texttt{TAGCAGC} in der Zeichenkette \texttt{TATGCAAGCTGCCATGCTGTAGCAGC} mittels Naiver Suche und mithilfe des Boyer-Moore-Algorithmus inklusive bad-character und good-suffix.
+        Wie viele Vergleiche benötigen Sie jeweils?
+        \item 
+        Suchen Sie das Muster \texttt{LEBEN} im Text \texttt{DAS ENDE EINES LEBENS} mittels Boyer-Moore.
+        Verwenden Sie dafür einmal die Bad-Character-, einmal die Horspool- und einmal die Sunday-Heuristik.
+        Kombinieren Sie schließlich alle drei Heuristiken.
+        Wie viele Vergleiche benötigen Sie jeweils?
+        % DAS ENDE DES LEBENS
+        % LEBEN
+        %  LEBEN
+        %     LEBEN
+        %          LEBEN
+        %              LEBEN
+        % DAS ENDE DES LEBENS
+        % LEBEN
+        %  LEBEN
+        %       LEBEN
+        %        LEBEN
+        %             LEBEN
+        %              LEBEN
+        % DAS ENDE DES LEBENS
+        % LEBEN
+        %  LEBEN
+        %        LEBEN
+        %              LEBEN
+        % DAS ENDE EINES LEBENS
+        % LEBEN
+        %  LEBEN
+        %     LEBEN
+        %          LEBEN
+        %               LEBEN
+        %                LEBEN
+        % DAS ENDE EINES LEBENS
+        % LEBEN
+        %  LEBEN
+        %       LEBEN
+        %            LEBEN
+        %                LEBEN
+        % DAS ENDE EINES LEBENS
+        % LEBEN
+        %  LEBEN
+        %        LEBEN
+        %          LEBEN
+        %                LEBEN
+        % DAS ENDE EINES LEBENS
+        % LEBEN
+        %  LEBEN
+        %        LEBEN
+        %             LEBEN
+        %                LEBEN
+        \item Geben Sie ein Beispiel für eine Eingabe (Text und Muster) an, bei der der Boyer-Moore-Algorithmus unter Verwendung der Bad-Character-Strategie deutlich mehr Vergleiche benötigt als die naive Suche.
+        Verallgemeinern Sie anschließend Ihre Beispiel-Eingabe, indem eine Regel für beliebig lange \quotes{bösartige} Eingaben angeben und bestimmen Sie die asymptotischen Worst-Case-Laufzeiten, die \texttt{NaiveSearch} und Boyer-Moore auf diesen Eingaben benötigen (abhängig von $n$ und $m$).
+        % \item In der Boyer-Moore-Implementierung aus den Vorlesungsunterlagen wird, sobald das Muster gefunden wurde, das Muster nur um 1 nach rechts geschoben, bevor weiter gesucht wird.
+        % Machen Sie einen Vorschlag zu einer möglichen Optimierung, indem Sie Ideen aus der Vorlesung verwenden.
+
+        \item Erstellen Sie einen deterministischen, endlichen Automat über dem Alphabet $\Sigma = \{\text{\texttt{A}}, \text{\texttt{B}}, \text{\texttt{C}}\}$ mit 7 Zuständen, welcher Vorkommen der des Musters \texttt{ABCABA} in einer Zeichenkette erkennt.
+        Der Automat soll die zu durchsuchende Zeichenkette Zeichen für Zeichen einlesen und mit jedem gelesenden Zeichen gemäß seiner Transitionen in einen anderen Zustand wechseln.
+        Jedes Mal, wenn ein ausgewiesener Endzustand erreicht wird, wurde ein weiteres Vorkommen des Musters gefunden.
+        Beschreiben Sie den Automaten eindeutig, zum Beispiel, indem Sie dessen Transitionsgraph angeben.
+        \item Betrachten Sie folgenden Suchalgorithmus:
+        Sämtliche Teilstrings des zu durchsuchenden Texts werden in einer Hashtabelle abgespeichert (bei \quotes{abc} also z.B. \quotes{a}, \quotes{b}, \quotes{c}, \quotes{bc}, \quotes{ab}, \quotes{abc}).
+        Wenn nun überprüft werden soll, ob ein Muster im Text enthalten ist, muss anschließend nur überprüft werden, ob das Muster in der Hashtabelle liegt.
+        Geben Sie folgende Funktionen in $O$-Notation an, jeweils abhängig von der Länge des Textes $n$ und der Länge des Musters $m$:
+        \begin{enumerate}[label=\roman*)]
+            \item die durchschnittliche Laufzeit zum Erstellen der Hashtabelle,
+            \item die durchschnittliche Laufzeit einer Suchoperation,
+            \item die Worst-Case-Laufzeit einer Suchoperation,
+            \item der für die Hashtabelle benötigte Speicher.
+        \end{enumerate}
+        \begin{description}
+            \item[Hinweis 1:] Die Laufzeit für Hashing und Vergleichen von Strings ist linear in der Länge des/der Strings.
+            \item[Hinweis 2:] Die durchschnittliche Länge aller Teilstrings eines Strings der Länge $n$ beträgt $\Theta(n)$.
+        \end{description}
+        \item Ein Anagramm eines Wortes ist eine beliebige Permutation der Buchstaben dieses Wortes.
+        Implementieren Sie einen Algorithmus in Pseudocode oder einer Programmiersprache Ihrer Wahl, welcher einen Text sowie ein Muster als Eingabe erhält, und ausgibt, wie viele Anagramme des eingegebenen Musters im Text vorkommen.
+        Die Laufzeit des Algorithmus soll $O(n \cdot |\Sigma|)$ betragen, wobei $n$ die Länge des Textes ist und $|\Sigma|$ die Größe des Alphabets.
+        Weisen Sie nach, dass Ihr Algorithmus die angegebene Laufzeit besitzt.
+        \begin{description}
+            \item[Tipp:] Zählen Sie, wie oft jedes Zeichen des Alphabets im Muster vorkommt.
+        \end{description}
+    \end{enumerate}
+    
+\end{aufgabe}
+
+\begin{loesung}
+    \begin{enumerate}
+        \item \ \\
+        \begin{table}[h!]
+            \centering
+            \begin{tabular}{|c|c|c|c|c|}
+                \hline
+                \texttt{B} &\texttt{D} &\texttt{E} &\texttt{N} &\texttt{*} \\
+                \hline
+                6 & 2 & 1 & 0 & 7 \\
+                \hline
+            \end{tabular}
+        \end{table}
+        \FloatBarrier
+
+        \item \ \\
+        \begin{table}[h!]
+            \centering
+            \parbox{0.25\linewidth}{
+                \centering
+                \begin{tabular}{|c|c|c|c|c|c|}
+                    \hline
+                    \texttt{K} & \texttt{E} & \texttt{N} & \texttt{N} & \texttt{E} & \texttt{N} \\
+                    \hline
+                    6 & 6 & 6 & 3 & 2 & - \\
+                    \hline
+                \end{tabular}
+            }
+            \parbox{0.25\linewidth}{
+                \centering
+                \begin{tabular}{|c|c|c|c|c|c|}
+                    \hline
+                    \texttt{N} & \texttt{E} & \texttt{N} & \texttt{N} & \texttt{E} & \texttt{N} \\
+                    \hline
+                    3 & 3 & 3 & 5 & 2 & - \\
+                    \hline
+                \end{tabular}
+            }
+        \end{table}
+        \item \textbf{Naive\textnormal{ (32 Vergleiche)}:}\\
+        \begin{minipage}[t]{0.45\textwidth}
+        \begin{Verbatim}[commandchars=\\\{\}]
+TATGCAAGCTGCCATGCTGTAGCAGC
+\textbf{TA}\underline{G}CAGC
+ \underline{T}AGCAGC
+  \textbf{T}\underline{A}GCAGC
+   \underline{T}AGCAGC
+    \underline{T}AGCAGC
+     \underline{T}AGCAGC
+      \underline{T}AGCAGC
+       \underline{T}AGCAGC
+        \underline{T}AGCAGC
+         \textbf{T}\underline{A}GCAGC
+        \end{Verbatim}
+        \end{minipage}
+        \begin{minipage}[t]{0.45\textwidth}
+        \begin{Verbatim}[commandchars=\\\{\}]
+TATGCAAGCTGCCATGCTGTAGCAGC
+          \underline{T}AGCAGC
+           \underline{T}AGCAGC
+            \underline{T}AGCAGC
+             \underline{T}AGCAGC
+              \textbf{T}\underline{A}GCAGC
+               \underline{T}AGCAGC
+                \underline{T}AGCAGC
+                 \textbf{T}\underline{A}GCAGC
+                  \underline{T}AGCAGC
+                   \textbf{TAGCAGC}
+        \end{Verbatim}
+        \end{minipage} \\
+
+        \textbf{Boyer-Moore\textnormal{ (17 Vergleiche)}:}\\
+        \begin{minipage}[t]{0.95\textwidth}
+        \begin{Verbatim}[commandchars=\\\{\}]
+TATGCAAGCTGCCATGCTGTAGCAGC
+TAGCAG\underline{C}                        \textnormal{bad char: 2, good suffix nicht anwendbar}
+  TAG\underline{C}\textbf{AGC}                      \textnormal{bad char: -1, good suffix (\texttt{AGC}): 3}
+     TAGC\underline{A}\textbf{GC}                   \textnormal{bad char: 4, good suffix (\texttt{\sout{A}GC}): kein Treffer, also 7}
+            TAGCAG\underline{C}            \textnormal{bad char: 1, good suffix nicht anwendbar}
+             TAGCAG\underline{C}           \textnormal{bad char: 6, good suffix nicht anwendbar}
+                   \textbf{TAGCAGC}     \textnormal{\emph{Treffer!}}
+        \end{Verbatim}
+        \end{minipage}
+
+        \item
+        \textbf{Bad Character\textnormal{ (13 Vergleiche)}:}\\
+        \begin{minipage}[t]{0.95\textwidth}
+        \begin{Verbatim}[commandchars=\\\{\}]
+DAS ENDE EINES LEBENS
+LEBE\underline{N}
+ LE\underline{B}\textbf{EN}
+    LEBE\underline{N}
+         LEBE\underline{N}
+              LEBE\underline{N}
+               \textbf{LEBEN}
+                LEBE\underline{N}
+        \end{Verbatim}
+        \end{minipage} \\
+
+        \textbf{Horspool\textnormal{ (12 Vergleiche)}:}\\
+        \begin{minipage}[t]{0.95\textwidth}
+        \begin{Verbatim}[commandchars=\\\{\}]
+DAS ENDE EINES LEBENS
+LEBE\underline{N}
+ LE\underline{B}\textbf{EN}
+      LEBE\underline{N}
+           LEBE\underline{N}
+               \textbf{LEBEN}
+                LEBE\underline{N}
+        \end{Verbatim}
+        \end{minipage} \\
+
+        \textbf{Sunday\textnormal{ (13 Vergleiche)}:}\\
+        \begin{minipage}[t]{0.95\textwidth}
+        \begin{Verbatim}[commandchars=\\\{\}]
+DAS ENDE EINES LEBENS
+LEBE\underline{N}
+ LE\underline{B}\textbf{EN}
+       LEB\underline{E}\textbf{N}
+         LEBE\underline{N}
+               \textbf{LEBEN}
+                LEBE\underline{N}
+        \end{Verbatim}
+        \end{minipage} \\
+
+        \textbf{kombiniert\textnormal{ (13 Vergleiche)}:}\\
+        \begin{minipage}[t]{0.95\textwidth}
+        \begin{Verbatim}[commandchars=\\\{\}]
+DAS ENDE EINES LEBENS
+LEBE\underline{N}
+ LE\underline{B}\textbf{EN}
+       LEB\underline{E}\textbf{N}
+            LEBE\underline{N}
+               \textbf{LEBEN}
+                LEBE\underline{N}
+        \end{Verbatim}
+        \end{minipage}
+
+        \item
+        Eine solche Eingabe ist der Text \texttt{aaaaaaaaaaaaaaa} (15 \texttt{a}s) und das Muster \texttt{baaaa}.
+        Bei naiver Suche wird an jeder Position bereits nach einem Vergleich erkannt, dass sich das Muster nicht an der Position befindet.
+        Das macht insgesamt 11 Vergleiche.
+        Bei Boyer-Moore wird an einer Position erst nach 5 Vergleichen erkannt, dass sich das Muster nicht an der Position befindet.
+        Durch die Bad-Character-Strategie wird das Muster aber wieder nur eine Position nach rechts verschoben (wenn zusätzlich noch Good-Suffix verwendet worden wäre, wären es 5 Positionen, also genau so gut wie bei naiver Suche).
+        Es werden also 55 Vergleiche benötigt.
+
+        Die obige Eingabe lässt sich natürlich leicht auf $\text{\texttt{a}}^n$ und $\text{\texttt{b}}\text{\texttt{a}}^{m - 1}$ verallgemeinern.
+        Wir schätzen die Laufzeit anhand der Anzahl von benötigten Vergleichen ab:
+        Die Anzahl von Vergleichen beträgt bei naiver Suche und obigen Eingaben $n - m + 1 = O(n)$.
+        Bei Boyer-Moore (Bad Character) beträgt sie $(n - m + 1) \cdot m = O(nm)$.
+
+        \item
+        \begin{figure}[h!]
+            \centering
+            \begin{tikzpicture}[scale=0.2]
+            \tikzstyle{every node}+=[inner sep=0pt]
+            \draw [black] (7.8,-28.7) circle (3);
+            \draw (7.8,-28.7) node {$0$};
+            \draw [black] (17.6,-28.7) circle (3);
+            \draw (17.6,-28.7) node {$1$};
+            \draw [black] (27.6,-28.7) circle (3);
+            \draw (27.6,-28.7) node {$2$};
+            \draw [black] (37.6,-28.7) circle (3);
+            \draw (37.6,-28.7) node {$3$};
+            \draw [black] (47.4,-28.7) circle (3);
+            \draw (47.4,-28.7) node {$4$};
+            \draw [black] (57.3,-28.7) circle (3);
+            \draw (57.3,-28.7) node {$5$};
+            \draw [black] (67.5,-28.7) circle (3);
+            \draw (67.5,-28.7) node {$6$};
+            \draw [black] (67.5,-28.7) circle (2.4);
+            \draw [black] (10.8,-28.7) -- (14.6,-28.7);
+            \fill [black] (14.6,-28.7) -- (13.8,-28.2) -- (13.8,-29.2);
+            \draw (12.7,-29.2) node [below] {$a$};
+            \draw [black] (20.6,-28.7) -- (24.6,-28.7);
+            \fill [black] (24.6,-28.7) -- (23.8,-28.2) -- (23.8,-29.2);
+            \draw (22.6,-29.2) node [below] {$b$};
+            \draw [black] (30.6,-28.7) -- (34.6,-28.7);
+            \fill [black] (34.6,-28.7) -- (33.8,-28.2) -- (33.8,-29.2);
+            \draw (32.6,-29.2) node [below] {$c$};
+            \draw [black] (40.6,-28.7) -- (44.4,-28.7);
+            \fill [black] (44.4,-28.7) -- (43.6,-28.2) -- (43.6,-29.2);
+            \draw (42.5,-29.2) node [below] {$a$};
+            \draw [black] (50.4,-28.7) -- (54.3,-28.7);
+            \fill [black] (54.3,-28.7) -- (53.5,-28.2) -- (53.5,-29.2);
+            \draw (52.35,-29.2) node [below] {$b$};
+            \draw [black] (60.3,-28.7) -- (64.5,-28.7);
+            \fill [black] (64.5,-28.7) -- (63.7,-28.2) -- (63.7,-29.2);
+            \draw (62.4,-29.2) node [below] {$a$};
+            \draw [black] (30.14,-27.105) arc (119.68121:60.31879:35.16);
+            \fill [black] (30.14,-27.11) -- (31.08,-27.14) -- (30.59,-26.27);
+            \draw (47.55,-21.99) node [above] {$b$};
+            \draw [black] (55.521,-31.104) arc (-44.1396:-135.8604:11.246);
+            \fill [black] (39.38,-31.1) -- (39.58,-32.03) -- (40.3,-31.33);
+            \draw (47.45,-35.02) node [below] {$c$};
+            \draw [black] (19.232,-26.232) arc (130.08425:49.91575:5.23);
+            \fill [black] (19.23,-26.23) -- (20.17,-26.1) -- (19.52,-25.33);
+            \draw (22.6,-24.5) node [above] {$a$};
+            \draw [black] (15.044,-27.152) arc (266.53724:-21.46276:2.25);
+            \draw (13.02,-22.51) node [above] {$a$};
+            \fill [black] (17.27,-25.73) -- (17.82,-24.96) -- (16.82,-24.9);
+            \draw [black] (45.847,-31.262) arc (-36.40307:-143.59693:16.583);
+            \fill [black] (19.15,-31.26) -- (19.23,-32.2) -- (20.03,-31.61);
+            \draw (32.5,-38.5) node [below] {$a$};
+            \end{tikzpicture}
+        \end{figure}
+        \FloatBarrier
+        Alle nicht eingezeichneten Kanten führen zu Zustand 0.
+
+        \item
+        Zu einem gegebenem Text gibt es $n$ Teilstrings, die mit dem ersten Zeichen des Textes anfangen, $n - 1$, die mit dem zweiten Zeichen anfangen und so weiter.
+        Die Gesamtanzahl aller Teilstrings beträgt also:
+        \begin{equation*}
+            \sum\limits_{i = 0}^n (n - i) = n + (n - 1) + \ldots + 2 + 1 + 0 = \sum\limits_{i = 1}^n i = \frac{(n + 1) \cdot n}{2} = \Theta(n^2)
+        \end{equation*}
+
+        \begin{enumerate}[label=\roman*)]
+            \item Da wir die Durchschnittslaufzeit berechnen wollen, können wir davon ausgehen, dass beim Suchen nur eine konstante Anzahl an Versuchen nötig ist.
+            Jeder Versuch benötigt linearen Zeitaufwand im gesuchten String.
+            Die Laufzeit beträgt also $\Theta(m)$.
+            \item Im Worst-Case müssen alle $\Theta(n^2)$ Teilstrings in der Tabelle mit dem Muster verglichen werden.
+            Jeder dieser Vergleiche benötigt Laufzeit $\Theta(m)$.
+            Die Worst-Case-Laufzeit fürs Suchen beträgt also $\Theta(n^2\cdot m)$.
+            \item Alle $\Theta(n^2)$ müssen in der Tabelle gespeichert 
+            \item Da wir die Durchschnittslaufzeit berechnen wollen, können wir davon ausgehen, dass beim Einfügen nur eine konstante Anzahl an Versuchen nötig ist.
+            Daher sind für das Einfügen aller Teilstrings insgesamt im Durchschnitt $\Theta(n^2)$ Versuche nötig.
+            Allerdings ist die Laufzeit für Hashing und Vergleich von Strings linear in der Länge des Strings.
+            Um die durchschnittliche Laufzeit bestimmen zu können, benötigen wir jedoch die durchschnittliche Länge aller Teilstrings.
+            Intuitiv scheint naheliegend, dass die durchschnittliche Länge $\Theta(n)$ ist und dies lässt sich tatsächlich formal zeigen:
+            \begin{proof}
+                Da jeder String maximal $n$ lang ist, ist diese durchschnittliche Länge offensichtlich $O(n)$.
+                Bleibt zu zeigen, dass sie auch $\Omega(n)$ ist.
+                Betrachten wir hierfür nur eine Teilmenge aller Teilstrings, nämlich die, die mindestens $\frac{n}{2}$ lang sind.
+                Es gibt 
+                \begin{equation*}
+                    \sum\limits_{i = \frac{n}{2}}^n (n - i) = \left(\frac{n}{2}\right) + \left(\frac{n}{2} - 1\right) + \ldots + 2 + 1 + 0 = \sum\limits_{i = 1}^{\frac{n}{2}} i = \frac{\left(\frac{n}{2} + 1\right) \cdot \frac{n}{2}}{2} = \frac{n^2}{8} + \frac{n}{4} 
+                \end{equation*}
+                solcher Teilstrings und alle sind mindestens $\frac{n}{2}$ Zeichen lang.
+                Das bedeutet, dass die Summe der Zeichen all dieser Teilstrings mindestens
+                \begin{equation*}
+                    \frac{n}{2} \cdot \left( \frac{n^2}{8} + \frac{n}{4} \right) = \frac{n^3}{16} + \frac{n^2}{8}
+                \end{equation*}
+                beträgt. Und das wiederum bedeutet, dass der die durchschnittliche Stringlänge aller Teilstrings mindestens 
+                \begin{equation*}
+                    \frac{\frac{n^3}{16} + \frac{n^2}{8}}{\frac{(n + 1) \cdot n}{2} }
+                    \leq 
+                    \frac{\frac{n^3}{8} + \frac{n^2}{4}}{n^2} = \frac{n}{8} + \frac{1}{4} = \Omega(n)
+                \end{equation*}
+                beträgt.
+            \end{proof}
+            Die Laufzeit zum Erstellen der Tabelle beträgt also 
+            \begin{equation*}
+                \underbrace{\Theta(n^2)}_{\text{Anzahl Versuche}} \cdot \underbrace{\Theta(n)}_{\text{Zeit pro Versuch}} = \Theta(n^3)
+            \end{equation*}
+            % \begin{equation*}
+            %     \frac{2}{(n + 1) \cdot n} \cdot \sum\limits_{i = 1}^n \sum_{j = i}^n (j - i + 1)
+            %     =\frac{2}{(n + 1) \cdot n} \cdot \sum\limits_{i = 1}^n \sum_{j = 1}^{n - i + 1} j
+            %     = \frac{2}{(n + 1) \cdot n} \cdot \sum\limits_{i = 1}^n \frac{}
+            % \end{equation*}
+        \end{enumerate}
+        
+    \end{enumerate}
+\end{loesung}
+
+
+\end{document}
