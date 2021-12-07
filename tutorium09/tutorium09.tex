@@ -2,7 +2,7 @@
 
 \usepackage{gastex}
 \usepackage{etoolbox}
-\newcommand{\showLoesung}{2} %<---als Schalter
+% \newcommand{\showLoesung}{2} %<---als Schalter
 %\newcommand{\showInhalt}{1} %<---als Schalter
 
 \input{../skel/uebmacsPNG}
@@ -121,7 +121,60 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
 
 \begin{loesung}
     \begin{enumerate}
-        \item 
+        \item \ \\
+        \begin{figure}[h!]
+            \centering
+            \begin{subfigure}[b]{0.3\textwidth}
+                \centering
+                \includegraphics[scale=0.15]{img/2a/1}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.3\textwidth}
+                \centering
+                \includegraphics[scale=0.15]{img/2a/2}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.3\textwidth}
+                \centering
+                \includegraphics[scale=0.15]{img/2a/3}
+            \end{subfigure}
+        \end{figure}
+        \begin{figure}[h!]
+            \centering
+            \begin{subfigure}[b]{0.45\textwidth}
+                \centering
+                \includegraphics[scale=0.15]{img/2a/4}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.45\textwidth}
+                \centering
+                \includegraphics[scale=0.15]{img/2a/5}
+            \end{subfigure}
+        \end{figure}
+        \begin{figure}[h!]
+            \centering
+            \begin{subfigure}[b]{0.45\textwidth}
+                \centering
+                \includegraphics[scale=0.14]{img/2a/6}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.45\textwidth}
+                \centering
+                \includegraphics[scale=0.14]{img/2a/7}
+            \end{subfigure}
+        \end{figure}
+        \begin{figure}[h!]
+            \centering
+            \begin{subfigure}[b]{0.45\textwidth}
+                \centering
+                \includegraphics[scale=0.15]{img/2a/8}
+            \end{subfigure}
+            \begin{subfigure}[b]{0.45\textwidth}
+                \centering
+                \includegraphics[scale=0.15]{img/2a/9}
+            \end{subfigure}
+        \end{figure}
+        \begin{figure}[h!]
+            \centering
+            \includegraphics[scale=0.15]{img/2a/10}
+        \end{figure}
+        \FloatBarrier
         \item
         \begin{description}
             \item[Schritt 1: Definiere eine geeignete Zählvariable.]
@@ -331,6 +384,7 @@ int kthSmallestValue(SkipList *list, int k) {
         \begin{description}
             \item[Tipp:] Zählen Sie, wie oft jedes Zeichen des Alphabets im Muster vorkommt.
         \end{description}
+        Schaffen Sie es sogar in $O(n + |\Sigma|)$?
     \end{enumerate}
     
 \end{aufgabe}
@@ -486,10 +540,10 @@ LEBE\underline{N}
         Die Anzahl von Vergleichen beträgt bei naiver Suche und obigen Eingaben $n - m + 1 = O(n)$.
         Bei Boyer-Moore (Bad Character) beträgt sie $(n - m + 1) \cdot m = O(nm)$.
 
-        \item
+        \item \ \\
         \begin{figure}[h!]
             \centering
-            \begin{tikzpicture}[scale=0.2]
+            \begin{tikzpicture}[scale=0.15]
             \tikzstyle{every node}+=[inner sep=0pt]
             \draw [black] (7.8,-28.7) circle (3);
             \draw (7.8,-28.7) node {$0$};
@@ -545,57 +599,153 @@ LEBE\underline{N}
         Alle nicht eingezeichneten Kanten führen zu Zustand 0.
 
         \item
-        Zu einem gegebenem Text gibt es $n$ Teilstrings, die mit dem ersten Zeichen des Textes anfangen, $n - 1$, die mit dem zweiten Zeichen anfangen und so weiter.
+        Zu einem gegebenem Text gibt es $n$ Teilstrings, die mit dem ersten Zeichen des Textes anfangen, $n - 1$, die mit dem zweiten Zeichen anfangen, und so weiter.
         Die Gesamtanzahl aller Teilstrings beträgt also:
         \begin{equation*}
             \sum\limits_{i = 0}^n (n - i) = n + (n - 1) + \ldots + 2 + 1 + 0 = \sum\limits_{i = 1}^n i = \frac{(n + 1) \cdot n}{2} = \Theta(n^2)
         \end{equation*}
 
         \begin{enumerate}[label=\roman*)]
-            \item Da wir die Durchschnittslaufzeit berechnen wollen, können wir davon ausgehen, dass beim Suchen nur eine konstante Anzahl an Versuchen nötig ist.
+            \item Da wir die Durchschnittslaufzeit berechnen wollen, können wir davon ausgehen, dass zum Einfügen nur eine konstante Anzahl an Versuchen nötig ist.
+            Daher sind für das Einfügen aller Teilstrings insgesamt im Durchschnitt $\Theta(n^2)$ Versuche nötig.
+            Allerdings ist die Laufzeit für Hashing und Vergleich von Strings linear in der Länge des Strings (nach Hinweis 2 $\Theta(n)$).
+            Die Laufzeit zum Erstellen der Tabelle beträgt also 
+            \begin{equation*}
+                \underbrace{\Theta(n^2)}_{\text{Anzahl Versuche}} \cdot \underbrace{\Theta(n)}_{\text{Zeit pro Versuch}} = \Theta(n^3)
+            \end{equation*}
+
+            \emph{Anmerkung:} Je nach verwendeter String-Hashfunktion (siehe Aufgabe 3d von Tutoriumsblatt 8) ist es oft möglich, den Hash für zum Beispiel alle Strings, die mit dem ersten Zeichen des Textes anfangen, Zeichen für Zeichen zu erweitern, ohne den Hash jedes Mal komplett neu berechnen zu müssen.
+            Mit dieser Optimierung erreicht man in der Praxis Laufzeit $\Theta(n^2)$
+            \item Wir gehen erneut von einer konstanten Anzahl an Versuchen aus.
             Jeder Versuch benötigt linearen Zeitaufwand im gesuchten String.
             Die Laufzeit beträgt also $\Theta(m)$.
             \item Im Worst-Case müssen alle $\Theta(n^2)$ Teilstrings in der Tabelle mit dem Muster verglichen werden.
             Jeder dieser Vergleiche benötigt Laufzeit $\Theta(m)$.
             Die Worst-Case-Laufzeit fürs Suchen beträgt also $\Theta(n^2\cdot m)$.
-            \item Alle $\Theta(n^2)$ müssen in der Tabelle gespeichert 
-            \item Da wir die Durchschnittslaufzeit berechnen wollen, können wir davon ausgehen, dass beim Einfügen nur eine konstante Anzahl an Versuchen nötig ist.
-            Daher sind für das Einfügen aller Teilstrings insgesamt im Durchschnitt $\Theta(n^2)$ Versuche nötig.
-            Allerdings ist die Laufzeit für Hashing und Vergleich von Strings linear in der Länge des Strings.
-            Um die durchschnittliche Laufzeit bestimmen zu können, benötigen wir jedoch die durchschnittliche Länge aller Teilstrings.
-            Intuitiv scheint naheliegend, dass die durchschnittliche Länge $\Theta(n)$ ist und dies lässt sich tatsächlich formal zeigen:
-            \begin{proof}
-                Da jeder String maximal $n$ lang ist, ist diese durchschnittliche Länge offensichtlich $O(n)$.
-                Bleibt zu zeigen, dass sie auch $\Omega(n)$ ist.
-                Betrachten wir hierfür nur eine Teilmenge aller Teilstrings, nämlich die, die mindestens $\frac{n}{2}$ lang sind.
-                Es gibt 
-                \begin{equation*}
-                    \sum\limits_{i = \frac{n}{2}}^n (n - i) = \left(\frac{n}{2}\right) + \left(\frac{n}{2} - 1\right) + \ldots + 2 + 1 + 0 = \sum\limits_{i = 1}^{\frac{n}{2}} i = \frac{\left(\frac{n}{2} + 1\right) \cdot \frac{n}{2}}{2} = \frac{n^2}{8} + \frac{n}{4} 
-                \end{equation*}
-                solcher Teilstrings und alle sind mindestens $\frac{n}{2}$ Zeichen lang.
-                Das bedeutet, dass die Summe der Zeichen all dieser Teilstrings mindestens
-                \begin{equation*}
-                    \frac{n}{2} \cdot \left( \frac{n^2}{8} + \frac{n}{4} \right) = \frac{n^3}{16} + \frac{n^2}{8}
-                \end{equation*}
-                beträgt. Und das wiederum bedeutet, dass der die durchschnittliche Stringlänge aller Teilstrings mindestens 
-                \begin{equation*}
-                    \frac{\frac{n^3}{16} + \frac{n^2}{8}}{\frac{(n + 1) \cdot n}{2} }
-                    \leq 
-                    \frac{\frac{n^3}{8} + \frac{n^2}{4}}{n^2} = \frac{n}{8} + \frac{1}{4} = \Omega(n)
-                \end{equation*}
-                beträgt.
-            \end{proof}
-            Die Laufzeit zum Erstellen der Tabelle beträgt also 
-            \begin{equation*}
-                \underbrace{\Theta(n^2)}_{\text{Anzahl Versuche}} \cdot \underbrace{\Theta(n)}_{\text{Zeit pro Versuch}} = \Theta(n^3)
-            \end{equation*}
-            % \begin{equation*}
-            %     \frac{2}{(n + 1) \cdot n} \cdot \sum\limits_{i = 1}^n \sum_{j = i}^n (j - i + 1)
-            %     =\frac{2}{(n + 1) \cdot n} \cdot \sum\limits_{i = 1}^n \sum_{j = 1}^{n - i + 1} j
-            %     = \frac{2}{(n + 1) \cdot n} \cdot \sum\limits_{i = 1}^n \frac{}
-            % \end{equation*}
+            \item Alle $\Theta(n^2)$ Teilstrings müssen in der Tabelle gespeichert werden.
+            Bei konstantem Belegungsfaktor sind also $\Theta(n^2)$ Tabellenplätze nötig.
+            Allerdings müssen die Teilstrings selbst auch in der Tabelle gespeichert werden, um die später beim Suchen mit dem Muster vergleichen zu können.
+            Die Teilstrings sind im Durchschnitt $\Theta(n)$ lang.
+            Daher ist für das Speichern der Strings zusätzlich $\Theta(n) \cdot \Theta(n^2) = \Theta(n^3)$ Speicherplatz nötig.
+            Als Optimierung kann man auch nur Start- und Endindex der Teilstrings in der Tabelle speichern, die indirekt auf den Ursprungstext verweisen.
+            Da nun pro Teilstring nur noch konstant viele Daten (zwei Zahlen) gespeichert werden müssen, schrumpft der benötigte Speicherplatz mit dieser Optimierung auf $\Theta(n^2)$.
         \end{enumerate}
-        
+        Der Vollständigkeits halber folgt nun der Beweis, dass die durchschnittliche Länge der Teilstrings tatsächlich $\Theta(n)$ ist.
+        \begin{proof}
+            Da jeder Teilstring maximal $n$ lang ist, ist diese durchschnittliche Länge offensichtlich $O(n)$.
+            Bleibt zu zeigen, dass sie auch $\Omega(n)$ ist.
+            Betrachten wir hierfür eine Teilmenge der Teilstrings, nämlich die, die mindestens $\frac{n}{2}$ lang sind.
+            Es gibt 
+            \begin{equation*}
+                \sum\limits_{i = \frac{n}{2}}^n (n - i) = \left(\frac{n}{2}\right) + \left(\frac{n}{2} - 1\right) + \ldots + 2 + 1 + 0 = \sum\limits_{i = 1}^{\frac{n}{2}} i = \frac{\left(\frac{n}{2} + 1\right) \cdot \frac{n}{2}}{2} = \frac{n^2}{8} + \frac{n}{4} 
+            \end{equation*}
+            solcher Teilstrings und alle sind mindestens $\frac{n}{2}$ Zeichen lang.
+            Das bedeutet, dass die Summe der Zeichen all dieser Teilstrings mindestens
+            \begin{equation*}
+                \frac{n}{2} \cdot \left( \frac{n^2}{8} + \frac{n}{4} \right) = \frac{n^3}{16} + \frac{n^2}{8}
+            \end{equation*}
+            beträgt. Und das wiederum bedeutet, dass der die durchschnittliche Stringlänge aller Teilstrings mindestens 
+            \begin{equation*}
+                \frac{\frac{n^3}{16} + \frac{n^2}{8}}{\frac{(n + 1) \cdot n}{2} }
+                \leq 
+                \frac{\frac{n^3}{8} + \frac{n^2}{4}}{n^2} = \frac{n}{8} + \frac{1}{4} = \Omega(n)
+            \end{equation*}
+            beträgt.
+        \end{proof}
+
+        \item
+        Zunächst wird ein Array \texttt{anagram} erstellt, dessen Größe der $|\Sigma|$ entspricht.
+        In diesem wird gespeichert, welches Zeichen im Muster wie oft vorkommt.
+        Die Idee ist nun, für jeden $m$-Zeichen-langen Bereich im Text ebenfalls zu zählen, welches Zeichen wie oft vorkommt.
+        Stimmt die Zählung mit der des Musters überein, wurde ein Anagramm des Musters gefunden.
+        Würde man naiv für jeden Bereich die Buchstaben zählen, wäre dies allein schon Aufwand $O(nm)$, was für die verlangte Laufzeit zu viel ist.
+        Der Trick ist, zunächst die Vorkommen der Zeichen im ersten Bereich, welcher mit dem ersten Zeichen des Textes beginnt, zu zählen und diese in einem Array (\texttt{rolling}) abzuspeichern.
+        Anschließend schiebt man den Bereich Zeichen für Zeichen über den Text und verringert jeweils den Zähler des Zeichens, welches den Bereich verlässt, um 1 und erhöht den Zähler des Zeichens, welches neu im Bereich hinzukommt, um 1.
+        Somit kann man \texttt{rolling} für jeden weiteren Bereich in konstanter Zeit aktualisieren.
+        Um zu prüfen, ob ein Anagramm gefunden wurde, muss überprüft werden, ob die Werte der beiden Arrays \texttt{anagram} und \texttt{rolling} übereinstimmen.
+        Dieser Vergleich benötigt Aufwand $O(|\Sigma|)$.
+        Dieser Aufwand muss für jeden Bereich durchgeführt werden.
+        Macht insgesamt Aufwand $O(n\cdot|\Sigma|)$.
+        \begin{lstlisting}[language=c++]
+bool compareArrays(int a[], int b[], int n) {
+    for (int i = 0; i < n; i++) {
+        if (a[i] != b[i]) {
+            return false;
+        }
+    }
+    return true;
+}
+int countAnagrams(char text[], int n, char pattern[], int m) {
+    if (m > n) {
+        return 0;
+    }
+    int anagram[SIGMA_SIZE] = { 0 }; // O(SIGMA_SIZE)
+    int rolling[SIGMA_SIZE] = { 0 }; // O(SIGMA_SIZE)
+    int count = 0;
+    for (int i = 0; i < m; i++) {
+        anagram[getIndex(pattern[i])]++;
+        rolling[getIndex(text[i])]++;
+    }
+    if (compareArrays(anagram, rolling, SIGMA_SIZE)) count++;
+    for (int i = m; i < n; i++) {
+        rolling[getIndex(text[i - m])]--;
+        rolling[getIndex(text[i])]++;
+        if (compareArrays(anagram, rolling, SIGMA_SIZE)) count++;
+    }
+    return count;
+}
+        \end{lstlisting}
+        Wie oben beschrieben, benötigt die letzte Schleife Aufwand $O(n \cdot |\Sigma|)$.
+        Bleibt noch der Initalisierungsaufwand.
+        Dieser beträgt zusätzlich noch $O(|\Sigma|)$ für das Initialisieren von \texttt{anagram} und \texttt{rolling}, was für $n \geq 1$ in $O(n\cdot |\Sigma|)$ untergeht, und $O(m)$ für das Zählen der Zeichen des Musters.
+        Dies fällt im $O$-Kalkül nur dann ins Gewicht, wenn $m > n$.
+        Wenn $m > n$, ist aber das Muster länger als der Text und damit sicherlich kein Anagramm im Text enthalten.
+        Daher wird in diesem Fall vorzeitig abgebrochen, sodass Aufwand $O(m)$ für die finale Laufzeit $O(n |\Sigma|)$ keine Rolle spielt.
+
+        Um die Laufzeit nun noch auf $O(n + |\Sigma|)$ zu verbessern, muss das Vergleichen der beiden Zählarrays optimiert werden, da dieses den Faktor $|\Sigma|$ in $O(n \cdot |\Sigma|)$ ausmacht.
+        Der Trick hierbei ist, eine Variable \texttt{rollingMatch} hinzuzufügen, welche zählt, wie viele der $|\Sigma|$ Werte der Zählarrays bereits übereinstimmen.
+        Bei jedem Verschieben des Bereichs ändern sich nur zwei Werte im Zählarray.
+        Für jeden dieser beiden Werte wird überprüft, ob er nun den gewünschten Wert hat oder ob er vorher bereits den gewünschten Wert hatte, aber jetzt nicht mehr.
+        \texttt{rollingMatch} wird anschließend entsprechend aktualisiert.
+        Sobald $\text{\texttt{rollingMatch}} = |\Sigma|$, stimmen die Zählarrays überein und es wurde ein Anagramm gefunden.
+        \begin{lstlisting}[language=c++]
+int countAnagrams(char text[], int n, char pattern[], int m) {
+    if (m > n) {
+        return 0;
+    }
+    int anagram[SIGMA_SIZE] = { 0 }; // O(SIGMA_SIZE)
+    int rolling[SIGMA_SIZE] = { 0 }; // O(SIGMA_SIZE)
+    int count = 0;
+    int rollingMatch = 0;
+    for (int i = 0; i < m; i++) {
+        anagram[getIndex(pattern[i])]++;
+        rolling[getIndex(text[i])]++;
+    }
+    for (int i = 0; i < SIGMA_SIZE; i++) {
+        if (anagram[i] == rolling[i]) rollingMatch++;
+    }
+    if (rollingMatch == SIGMA_SIZE) count++;
+    for (int i = m; i < n; i++) {
+        printArray(rolling, 3);
+        int oldIndex = getIndex(text[i - m]);
+        int newIndex = getIndex(text[i]);
+        rolling[oldIndex]--;
+        if (rolling[oldIndex] == anagram[oldIndex]) rollingMatch++;
+        if (rolling[oldIndex] == anagram[oldIndex] - 1) rollingMatch--;
+        rolling[newIndex]++;
+        if (rolling[newIndex] == anagram[newIndex]) rollingMatch++;
+        if (rolling[newIndex] == anagram[newIndex] + 1) rollingMatch--;
+        if (rollingMatch == SIGMA_SIZE) count++;
+    }
+    printArray(rolling, 3);
+    return count;
+}
+        \end{lstlisting}
+        Das Prüfen auf Anagramme benötigt so nur noch konstante Zeit pro Bereich, also Aufwand $O(n)$ für den ganzen Text.
+        Bleibt noch der Initalisierungsaufwand.
+        Wie oben erwähnt, kann man $O(m)$ für das Zählen der Zeichen des Musters ignorieren, solange $m \leq n$.
+        Jedoch geht nun $O(|\Sigma|)$ für das Initalisieren der Arrays nicht mehr in der restlichen Laufzeit unter.
+        Die Gesamtlaufzeit beträgt also $O(n + |\Sigma|)$.
     \end{enumerate}
 \end{loesung}
 
