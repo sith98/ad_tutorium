@@ -39,21 +39,21 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         Es werden $150$ Werte mithilfe einer gleichmäßig verteilenden Hashfunktion eingefügt.
         Berechnen Sie die Wahrscheinlichkeit, dass ein bestimmter Platz der Tabelle nach dem Einfügen genau ein Element enthält.
         \item Sei $X$ die Anzahl der Plätze der obigen Tabelle, die nach Einfügen von 150 Werten genau ein Element enthalten.
-        Berechnen Sie $E[X]$ mithilfe des 5-Punkte-Plans und des Ergebnisses der vorherigen Teilaufgabe (Wenn Sie die vorherige Aufgabe nicht lösen konnten, verwenden Sie $P(\text{ein Element}) = \frac{1}{3}$).
+        Berechnen Sie $E[X]$ mithilfe des \quotes{5-Punkte-Plans} und des Ergebnisses der vorherigen Teilaufgabe~(Wenn Sie die vorherige Aufgabe nicht lösen konnten, verwenden Sie $P(\text{ein Element}) = \frac{1}{3}$).
     \end{enumerate}
 \end{aufgabe}
 
 \begin{loesung}
     \begin{enumerate}
         \item Betrachten wir zunächst den Fall, dass der erste der 150 Werte in den gewünschten Platz einsortiert wird und alle weiteren 149 Elemente in einen anderen.
-        Die Wahrscheinlichkeit, dass ein Wert in den richtigen Platz einsortiert wird, ist $\frac{1}{100}$, die Wahrscheinlichkeit, dass es ein anderer Platz ist, $\frac{99}{100}$.
+        Die Wahrscheinlichkeit, dass ein Wert in den rich\-ti\-gen Platz einsortiert wird, ist $\frac{1}{100}$, die Wahrscheinlichkeit, dass es ein anderer Platz ist, $\frac{99}{100}$.
         Da alle Werte unabhängig voneinander einsortiert werden, können die Wahrscheinlichkeiten für alle Werte einfach multipliziert werden.
         Die Wahrscheinlichkeit dafür, dass der erste der 150 Werte in den gewünschten Platz einsortiert wird und alle weiteren 149 Elemente in einen anderen, beträgt also $\frac{1}{100}\cdot \left(\frac{99}{100}\right)^{149}$.
 
         Jetzt muss der eine Wert, der in den gewünschten Platz einsortiert wird, aber nicht unbedingt der erste sein, sondern es kann jeder der 150 Werte sein.
         Da sich die Wahrscheinlichkeiten der einzelnen Plätze jedoch für die anderen Werte nicht ändern, gilt die obige Wahrscheinlichkeit für alle 150 Werte.
 
-        Es muss noch die Wahrscheinlichkeit berechnet werden, dass mindestens eines der obigen 150 Ereignisse eintritt.
+        Es muss nur noch die Wahrscheinlichkeit berechnet werden, dass mindestens eines der obigen 150 Ereignisse eintritt.
         Allerdings sind alle Ereignisse disjunkt (es kann maximal eines eintreten).
         Daher reicht es, alle 150 Wahrscheinlichkeiten aufzusummieren.
         Das finale Ergebnis ist also $150 \cdot \frac{1}{100}\cdot \left(\frac{99}{100}\right)^{149} \approx 33.6\%$. 
@@ -103,7 +103,7 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         % 0, 1
         % 1, 2
         % 4, 1
-        \item Zeigen Sie mittels des 5-Punkte-Plans, dass die erwartete Höhe eines Werte einer Skip-Liste 2 beträgt, indem Sie die folgenden Zählvariablen verwenden:
+        \item Zeigen Sie mittels des \quotes{5-Punkte-Plans}, dass die erwartete Höhe eines Wertes einer Skip-Liste 2 beträgt, indem Sie die folgenden Zählvariablen verwenden:
         \begin{equation*}
             X_i = \begin{cases}
                 1 & \text{der Wert hat mindestens Höhe $i$} \\
@@ -121,7 +121,7 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
 
 \begin{loesung}
     \begin{enumerate}
-        \item \ \\
+        \item Im folgenden sind Knoten, auf die lesend zugegriffen wird, blau, Knoten, auf die schreibend zugegriffen wird, rot, und Knoten, auf die sowohl lesend als auch schreibend zugegriffen wird, gelb markiert.
         \begin{figure}[h!]
             \centering
             \begin{subfigure}[b]{0.3\textwidth}
@@ -219,15 +219,15 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
             \item[Einfügen] 
             Beim Einfügen wird ja entlang der Zeiger in der Skip-Liste gesprungen, um die Position zu erreichen, an die der Wert eingefügt werden soll.
             Durch die zusätzlichen Werte, die beschreiben, wie viele Werte bei jedem Springen übersprungen werden, kann man leicht feststellen, an welche Position der neue Wert eingefügt wird, indem man die Werte für alle Zeiger, die fürs Einfügen durchlaufen werden, aufsummiert und dazu noch alle Knoten mitzählt, die man fürs Einfügen passiert.
-            Anschließend geht man erneut den Weg zum eingefügten Knoten.
+            Nach dem Einfügen geht man erneut den Weg zum eingefügten Knoten.
             Die Werte zu allen Zeigern, die den eingefügten Knoten überspringen, erhöht man um 1.
             Für jeden Zeiger, den man zuvor beim Einfügen aktualisiert hat, kennt man durch das oben beschriebene Verfahren die Position des zugehörigen Knotens.
-            Aus dem ursprünglichen Überspring-Wert des Zeigers, dessen Position und der Position des eingefügten Wertes kann man die Werte der beiden neuen Werte leicht berechnen.
+            Aus dem ursprünglichen Überspring-Wert des Zeigers, dessen Position und der Position des eingefügten Wertes kann man die beiden neuen Werte leicht berechnen.
             Dabei geht man wie in folgendem Beispiel vor:
             Ein Zeiger des Knotens an Position 3 übersprang vor dem Einfügen 10 Werte und zeigte somit auf Position 14 ($=3 + 10 + 1$).
             Jetzt wurde ein neuer Wert an Position 7 eingefügt und der Zeiger zeigt auf diesen eingefügten Wert.
             Damit überspringt der Zeiger nun $7 - 3 - 1 = 4$ Werte.
-            Der neue Wert (an Position 7) zeigt ja jetzt auf Position 14 und überspringt dadurch $14 - 7 - 1 = 6$.
+            Der neue Wert (an Position 7) zeigt ja jetzt auf Position 14 und überspringt dadurch $14 - 7 - 1 = 6$ Werte.
             
             Man muss den Pfad zum eingefügten Wert also nur zweimal durchlaufen.
             An jeder Position des Pfads wird weiterhin nur konstante Laufzeit benötigt.
@@ -300,10 +300,10 @@ int kthSmallestValue(SkipList *list, int k) {
 \begin{aufgabe}{3}{Textsuche}
     \begin{enumerate}[label=\alph*)]
         \item Betrachten Sie das Muster \texttt{BEENDEN}.
-        Wie ist die \texttt{shift}-Funktion für dieses Muster bei Verwendung der Bad-Character-Strategie definiert?
+        Wie ist die \texttt{shift}-Funktion für dieses Muster mit $\Sigma = \{A, B, \ldots, Z\}$ bei Verwendung der Bad-Character-Strategie definiert?
         Sie dürfen alle Zeichen, die nicht im Muster enthalten sind, zusammenfassen.
         \item Betrachten Sie die Muster \texttt{KENNEN} und \texttt{NENNEN}.
-        Geben Sie für jede Position des Musters an, um viel viele Zeichen das Muster gemäß der Good-Suffix-Strategie verschoben werden darf, wenn es an dieser Position zu einer Nichtübereinstimmung kommt.
+        Geben Sie für beide Muster und für jede Position an, um viel viele Zeichen das jeweilige Muster gemäß der Good-Suffix-Strategie verschoben werden darf, wenn es an dieser Position zu einer Nichtübereinstimmung kommt.
         \item Suchen Sie das Muster \texttt{TAGCAGC} in der Zeichenkette \texttt{TATGCAAGCTGCCATGCTGTAGCAGC} mittels Naiver Suche und mithilfe des Boyer-Moore-Algorithmus inklusive bad-character und good-suffix.
         Wie viele Vergleiche benötigen Sie jeweils?
         \item 
@@ -365,7 +365,7 @@ int kthSmallestValue(SkipList *list, int k) {
         Beschreiben Sie den Automaten eindeutig, zum Beispiel, indem Sie dessen Transitionsgraph angeben.
         \item Betrachten Sie folgenden Suchalgorithmus:
         Sämtliche Teilstrings des zu durchsuchenden Texts werden in einer Hashtabelle abgespeichert (bei \quotes{abc} also z.B. \quotes{a}, \quotes{b}, \quotes{c}, \quotes{bc}, \quotes{ab}, \quotes{abc}).
-        Wenn nun überprüft werden soll, ob ein Muster im Text enthalten ist, muss anschließend nur überprüft werden, ob das Muster in der Hashtabelle liegt.
+        Wenn nun ein Muster im Text gesucht werden soll, muss nur überprüft werden, ob das Muster in der Hashtabelle liegt.
         Geben Sie folgende Funktionen in $O$-Notation an, jeweils abhängig von der Länge des Textes $n$ und der Länge des Musters $m$:
         \begin{enumerate}[label=\roman*)]
             \item die durchschnittliche Laufzeit zum Erstellen der Hashtabelle,
@@ -378,9 +378,10 @@ int kthSmallestValue(SkipList *list, int k) {
             \item[Hinweis 2:] Die durchschnittliche Länge aller Teilstrings eines Strings der Länge $n$ beträgt $\Theta(n)$.
         \end{description}
         \item Ein Anagramm eines Wortes ist eine beliebige Permutation der Buchstaben dieses Wortes.
+        Zum Beispiel ist \texttt{REIFEN} ein Anagramm von \texttt{FERIEN}.
         Implementieren Sie einen Algorithmus in Pseudocode oder einer Programmiersprache Ihrer Wahl, welcher einen Text sowie ein Muster als Eingabe erhält, und ausgibt, wie viele Anagramme des eingegebenen Musters im Text vorkommen.
         Die Laufzeit des Algorithmus soll $O(n \cdot |\Sigma|)$ betragen, wobei $n$ die Länge des Textes ist und $|\Sigma|$ die Größe des Alphabets.
-        Weisen Sie nach, dass Ihr Algorithmus die angegebene Laufzeit besitzt.
+        Argumentieren Sie, warum Ihr Algorithmus die angegebene Laufzeit besitzt.
         \begin{description}
             \item[Tipp:] Zählen Sie, wie oft jedes Zeichen des Alphabets im Muster vorkommt.
         \end{description}
@@ -532,8 +533,8 @@ LEBE\underline{N}
         Bei naiver Suche wird an jeder Position bereits nach einem Vergleich erkannt, dass sich das Muster nicht an der Position befindet.
         Das macht insgesamt 11 Vergleiche.
         Bei Boyer-Moore wird an einer Position erst nach 5 Vergleichen erkannt, dass sich das Muster nicht an der Position befindet.
-        Durch die Bad-Character-Strategie wird das Muster aber wieder nur eine Position nach rechts verschoben (wenn zusätzlich noch Good-Suffix verwendet worden wäre, wären es 5 Positionen, also genau so gut wie bei naiver Suche).
-        Es werden also 55 Vergleiche benötigt.
+        Durch die Bad-Character-Strategie wird das Muster aber wieder nur eine Position nach rechts verschoben (wenn zusätzlich noch Good-Suffix verwendet worden wäre, wären es 5 Positionen, genau so gut wie bei naiver Suche).
+        Es werden also insgesamt 55 Vergleiche benötigt.
 
         Die obige Eingabe lässt sich natürlich leicht auf $\text{\texttt{a}}^n$ und $\text{\texttt{b}}\text{\texttt{a}}^{m - 1}$ verallgemeinern.
         Wir schätzen die Laufzeit anhand der Anzahl von benötigten Vergleichen ab:
@@ -544,55 +545,57 @@ LEBE\underline{N}
         \begin{figure}[h!]
             \centering
             \begin{tikzpicture}[scale=0.15]
-            \tikzstyle{every node}+=[inner sep=0pt]
-            \draw [black] (7.8,-28.7) circle (3);
-            \draw (7.8,-28.7) node {$0$};
-            \draw [black] (17.6,-28.7) circle (3);
-            \draw (17.6,-28.7) node {$1$};
-            \draw [black] (27.6,-28.7) circle (3);
-            \draw (27.6,-28.7) node {$2$};
-            \draw [black] (37.6,-28.7) circle (3);
-            \draw (37.6,-28.7) node {$3$};
-            \draw [black] (47.4,-28.7) circle (3);
-            \draw (47.4,-28.7) node {$4$};
-            \draw [black] (57.3,-28.7) circle (3);
-            \draw (57.3,-28.7) node {$5$};
-            \draw [black] (67.5,-28.7) circle (3);
-            \draw (67.5,-28.7) node {$6$};
-            \draw [black] (67.5,-28.7) circle (2.4);
-            \draw [black] (10.8,-28.7) -- (14.6,-28.7);
-            \fill [black] (14.6,-28.7) -- (13.8,-28.2) -- (13.8,-29.2);
-            \draw (12.7,-29.2) node [below] {$a$};
-            \draw [black] (20.6,-28.7) -- (24.6,-28.7);
-            \fill [black] (24.6,-28.7) -- (23.8,-28.2) -- (23.8,-29.2);
-            \draw (22.6,-29.2) node [below] {$b$};
-            \draw [black] (30.6,-28.7) -- (34.6,-28.7);
-            \fill [black] (34.6,-28.7) -- (33.8,-28.2) -- (33.8,-29.2);
-            \draw (32.6,-29.2) node [below] {$c$};
-            \draw [black] (40.6,-28.7) -- (44.4,-28.7);
-            \fill [black] (44.4,-28.7) -- (43.6,-28.2) -- (43.6,-29.2);
-            \draw (42.5,-29.2) node [below] {$a$};
-            \draw [black] (50.4,-28.7) -- (54.3,-28.7);
-            \fill [black] (54.3,-28.7) -- (53.5,-28.2) -- (53.5,-29.2);
-            \draw (52.35,-29.2) node [below] {$b$};
-            \draw [black] (60.3,-28.7) -- (64.5,-28.7);
-            \fill [black] (64.5,-28.7) -- (63.7,-28.2) -- (63.7,-29.2);
-            \draw (62.4,-29.2) node [below] {$a$};
-            \draw [black] (30.14,-27.105) arc (119.68121:60.31879:35.16);
-            \fill [black] (30.14,-27.11) -- (31.08,-27.14) -- (30.59,-26.27);
-            \draw (47.55,-21.99) node [above] {$b$};
-            \draw [black] (55.521,-31.104) arc (-44.1396:-135.8604:11.246);
-            \fill [black] (39.38,-31.1) -- (39.58,-32.03) -- (40.3,-31.33);
-            \draw (47.45,-35.02) node [below] {$c$};
-            \draw [black] (19.232,-26.232) arc (130.08425:49.91575:5.23);
-            \fill [black] (19.23,-26.23) -- (20.17,-26.1) -- (19.52,-25.33);
-            \draw (22.6,-24.5) node [above] {$a$};
-            \draw [black] (15.044,-27.152) arc (266.53724:-21.46276:2.25);
-            \draw (13.02,-22.51) node [above] {$a$};
-            \fill [black] (17.27,-25.73) -- (17.82,-24.96) -- (16.82,-24.9);
-            \draw [black] (45.847,-31.262) arc (-36.40307:-143.59693:16.583);
-            \fill [black] (19.15,-31.26) -- (19.23,-32.2) -- (20.03,-31.61);
-            \draw (32.5,-38.5) node [below] {$a$};
+                \tikzstyle{every node}+=[inner sep=0pt]
+                \draw [black] (10.2,-24.9) circle (3);
+                \draw (10.2,-24.9) node {$0$};
+                \draw [black] (20.4,-24.9) circle (3);
+                \draw (20.4,-24.9) node {$1$};
+                \draw [black] (31.1,-24.9) circle (3);
+                \draw (31.1,-24.9) node {$2$};
+                \draw [black] (41.7,-24.9) circle (3);
+                \draw (41.7,-24.9) node {$3$};
+                \draw [black] (52,-24.9) circle (3);
+                \draw (52,-24.9) node {$4$};
+                \draw [black] (62.5,-24.9) circle (3);
+                \draw (62.5,-24.9) node {$5$};
+                \draw [black] (72.8,-24.9) circle (3);
+                \draw (72.8,-24.9) node {$6$};
+                \draw [black] (13.2,-24.9) -- (17.4,-24.9);
+                \fill [black] (17.4,-24.9) -- (16.6,-24.4) -- (16.6,-25.4);
+                \draw (15.3,-25.4) node [below] {$a$};
+                \draw [black] (23.4,-24.9) -- (28.1,-24.9);
+                \fill [black] (28.1,-24.9) -- (27.3,-24.4) -- (27.3,-25.4);
+                \draw (25.75,-25.4) node [below] {$b$};
+                \draw [black] (34.1,-24.9) -- (38.7,-24.9);
+                \fill [black] (38.7,-24.9) -- (37.9,-24.4) -- (37.9,-25.4);
+                \draw (36.4,-25.4) node [below] {$c$};
+                \draw [black] (44.7,-24.9) -- (49,-24.9);
+                \fill [black] (49,-24.9) -- (48.2,-24.4) -- (48.2,-25.4);
+                \draw (46.85,-25.4) node [below] {$a$};
+                \draw [black] (55,-24.9) -- (59.5,-24.9);
+                \fill [black] (59.5,-24.9) -- (58.7,-24.4) -- (58.7,-25.4);
+                \draw (57.25,-25.4) node [below] {$b$};
+                \draw [black] (65.5,-24.9) -- (69.8,-24.9);
+                \fill [black] (69.8,-24.9) -- (69,-24.4) -- (69,-25.4);
+                \draw (67.65,-25.4) node [below] {$a$};
+                \draw [black] (22.738,-23.058) arc (115.8009:64.1991:6.919);
+                \fill [black] (22.74,-23.06) -- (23.68,-23.16) -- (23.24,-22.26);
+                \draw (25.75,-21.87) node [above] {$a$};
+                \draw [black] (17.766,-23.488) arc (269.5344:-18.4656:2.25);
+                \draw (15.53,-18.91) node [above] {$a$};
+                \fill [black] (19.92,-21.95) -- (20.43,-21.15) -- (19.43,-21.15);
+                \draw [black] (22.178,-22.488) arc (138.98447:41.01553:18.584);
+                \fill [black] (22.18,-22.49) -- (23.08,-22.21) -- (22.33,-21.56);
+                \draw (36.2,-15.6) node [above] {$a$};
+                \draw [black] (60.402,-27.035) arc (-51.00884:-128.99116:13.194);
+                \fill [black] (43.8,-27.04) -- (44.11,-27.93) -- (44.73,-27.15);
+                \draw (52.1,-30.47) node [below] {$c$};
+                \draw [black] (33.664,-23.344) arc (118.97268:61.02732:37.75);
+                \fill [black] (33.66,-23.34) -- (34.61,-23.39) -- (34.12,-22.52);
+                \draw (51.95,-18.12) node [above] {$b$};
+                \draw [black] (70.409,-26.71) arc (-54.94924:-125.05076:41.456);
+                \fill [black] (22.79,-26.71) -- (23.16,-27.58) -- (23.73,-26.76);
+                \draw (46.6,-34.73) node [below] {$a$};
             \end{tikzpicture}
         \end{figure}
         \FloatBarrier
@@ -606,9 +609,10 @@ LEBE\underline{N}
         \end{equation*}
 
         \begin{enumerate}[label=\roman*)]
-            \item Da wir die Durchschnittslaufzeit berechnen wollen, können wir davon ausgehen, dass zum Einfügen nur eine konstante Anzahl an Versuchen nötig ist.
+            \item Da wir die Durchschnittslaufzeit berechnen wollen, können wir davon ausgehen, dass pro Einfügen nur eine konstante Anzahl an Versuchen nötig ist.
             Daher sind für das Einfügen aller Teilstrings insgesamt im Durchschnitt $\Theta(n^2)$ Versuche nötig.
-            Allerdings ist die Laufzeit für Hashing und Vergleich von Strings linear in der Länge des Strings (nach Hinweis 2 $\Theta(n)$).
+            Allerdings ist die Laufzeit für Hashing und Vergleich von Strings nach Hinweis 1 linear in der Länge des Strings.
+            Die durchschnittliche Länge der Strings ist außerdem $\Theta(n)$ nach Hinweis 2.
             Die Laufzeit zum Erstellen der Tabelle beträgt also 
             \begin{equation*}
                 \underbrace{\Theta(n^2)}_{\text{Anzahl Versuche}} \cdot \underbrace{\Theta(n)}_{\text{Zeit pro Versuch}} = \Theta(n^3)
@@ -617,7 +621,7 @@ LEBE\underline{N}
             \emph{Anmerkung:} Je nach verwendeter String-Hashfunktion (siehe Aufgabe 3d von Tutoriumsblatt 8) ist es oft möglich, den Hash für zum Beispiel alle Strings, die mit dem ersten Zeichen des Textes anfangen, Zeichen für Zeichen zu erweitern, ohne den Hash jedes Mal komplett neu berechnen zu müssen.
             Mit dieser Optimierung erreicht man in der Praxis Laufzeit $\Theta(n^2)$
             \item Wir gehen erneut von einer konstanten Anzahl an Versuchen aus.
-            Jeder Versuch benötigt linearen Zeitaufwand im gesuchten String.
+            Jeder Versuch benötigt linearen Zeitaufwand in der Länge des gesuchten Strings.
             Die Laufzeit beträgt also $\Theta(m)$.
             \item Im Worst-Case müssen alle $\Theta(n^2)$ Teilstrings in der Tabelle mit dem Muster verglichen werden.
             Jeder dieser Vergleiche benötigt Laufzeit $\Theta(m)$.
@@ -644,9 +648,13 @@ LEBE\underline{N}
             \begin{equation*}
                 \frac{n}{2} \cdot \left( \frac{n^2}{8} + \frac{n}{4} \right) = \frac{n^3}{16} + \frac{n^2}{8}
             \end{equation*}
-            beträgt. Und das wiederum bedeutet, dass der die durchschnittliche Stringlänge aller Teilstrings mindestens 
+            beträgt. 
+            Da es sich um eine Teilmenge aller Teilstrings handelt, ist die Summe der Längen aller Teilstrings ebenfalls mindestens $\frac{n^3}{16} + \frac{n^2}{8}$.
+            Und das wiederum bedeutet, dass der die durchschnittliche Stringlänge aller Teilstrings mindestens 
             \begin{equation*}
                 \frac{\frac{n^3}{16} + \frac{n^2}{8}}{\frac{(n + 1) \cdot n}{2} }
+                =
+                \frac{\frac{n^3}{8} + \frac{n^2}{4}}{(n + 1) \cdot n}
                 \leq 
                 \frac{\frac{n^3}{8} + \frac{n^2}{4}}{n^2} = \frac{n}{8} + \frac{1}{4} = \Omega(n)
             \end{equation*}
@@ -654,16 +662,16 @@ LEBE\underline{N}
         \end{proof}
 
         \item
-        Zunächst wird ein Array \texttt{anagram} erstellt, dessen Größe der $|\Sigma|$ entspricht.
+        Zunächst wird ein Array \texttt{anagram} erstellt, dessen Größe $|\Sigma|$ entspricht.
         In diesem wird gespeichert, welches Zeichen im Muster wie oft vorkommt.
         Die Idee ist nun, für jeden $m$-Zeichen-langen Bereich im Text ebenfalls zu zählen, welches Zeichen wie oft vorkommt.
         Stimmt die Zählung mit der des Musters überein, wurde ein Anagramm des Musters gefunden.
-        Würde man naiv für jeden Bereich die Buchstaben zählen, wäre dies allein schon Aufwand $O(nm)$, was für die verlangte Laufzeit zu viel ist.
+        Würde man naiv für jeden Bereich die Buchstaben zählen, wäre dies allein schon Aufwand $O(nm)$, also mehr als die verlangte Laufzeit.
         Der Trick ist, zunächst die Vorkommen der Zeichen im ersten Bereich, welcher mit dem ersten Zeichen des Textes beginnt, zu zählen und diese in einem Array (\texttt{rolling}) abzuspeichern.
         Anschließend schiebt man den Bereich Zeichen für Zeichen über den Text und verringert jeweils den Zähler des Zeichens, welches den Bereich verlässt, um 1 und erhöht den Zähler des Zeichens, welches neu im Bereich hinzukommt, um 1.
-        Somit kann man \texttt{rolling} für jeden weiteren Bereich in konstanter Zeit aktualisieren.
+        Somit kann man \texttt{rolling} für jedes Verschieben des Bereichs  in konstanter Zeit aktualisieren.
         Um zu prüfen, ob ein Anagramm gefunden wurde, muss überprüft werden, ob die Werte der beiden Arrays \texttt{anagram} und \texttt{rolling} übereinstimmen.
-        Dieser Vergleich benötigt Aufwand $O(|\Sigma|)$.
+        Dieser Vergleich benötigt Aufwand in der Länge der Arrays, also $O(|\Sigma|)$.
         Dieser Aufwand muss für jeden Bereich durchgeführt werden.
         Macht insgesamt Aufwand $O(n\cdot|\Sigma|)$.
         \begin{lstlisting}[language=c++]
@@ -695,19 +703,19 @@ int countAnagrams(char text[], int n, char pattern[], int m) {
     return count;
 }
         \end{lstlisting}
-        Wie oben beschrieben, benötigt die letzte Schleife Aufwand $O(n \cdot |\Sigma|)$.
+        Wie oben beschrieben, benötigt die letzte Schleife, in der die Anagramme schlussendlich gezählt werden, Aufwand $O(n \cdot |\Sigma|)$.
         Bleibt noch der Initalisierungsaufwand.
         Dieser beträgt zusätzlich noch $O(|\Sigma|)$ für das Initialisieren von \texttt{anagram} und \texttt{rolling}, was für $n \geq 1$ in $O(n\cdot |\Sigma|)$ untergeht, und $O(m)$ für das Zählen der Zeichen des Musters.
         Dies fällt im $O$-Kalkül nur dann ins Gewicht, wenn $m > n$.
         Wenn $m > n$, ist aber das Muster länger als der Text und damit sicherlich kein Anagramm im Text enthalten.
-        Daher wird in diesem Fall vorzeitig abgebrochen, sodass Aufwand $O(m)$ für die finale Laufzeit $O(n |\Sigma|)$ keine Rolle spielt.
+        Daher wird in diesem Fall vorzeitig abgebrochen, sodass Aufwand $O(m)$ für die finale Laufzeit $O(n \cdot |\Sigma|)$ keine Rolle spielt.
 
         Um die Laufzeit nun noch auf $O(n + |\Sigma|)$ zu verbessern, muss das Vergleichen der beiden Zählarrays optimiert werden, da dieses den Faktor $|\Sigma|$ in $O(n \cdot |\Sigma|)$ ausmacht.
         Der Trick hierbei ist, eine Variable \texttt{rollingMatch} hinzuzufügen, welche zählt, wie viele der $|\Sigma|$ Werte der Zählarrays bereits übereinstimmen.
         Bei jedem Verschieben des Bereichs ändern sich nur zwei Werte im Zählarray.
         Für jeden dieser beiden Werte wird überprüft, ob er nun den gewünschten Wert hat oder ob er vorher bereits den gewünschten Wert hatte, aber jetzt nicht mehr.
         \texttt{rollingMatch} wird anschließend entsprechend aktualisiert.
-        Sobald $\text{\texttt{rollingMatch}} = |\Sigma|$, stimmen die Zählarrays überein und es wurde ein Anagramm gefunden.
+        Sobald $\text{\texttt{rollingMatch}} = |\Sigma|$, stimmen die Zählarrays überein und ein Anagramm wurde gefunden.
         \begin{lstlisting}[language=c++]
 int countAnagrams(char text[], int n, char pattern[], int m) {
     if (m > n) {
@@ -726,7 +734,6 @@ int countAnagrams(char text[], int n, char pattern[], int m) {
     }
     if (rollingMatch == SIGMA_SIZE) count++;
     for (int i = m; i < n; i++) {
-        printArray(rolling, 3);
         int oldIndex = getIndex(text[i - m]);
         int newIndex = getIndex(text[i]);
         rolling[oldIndex]--;
@@ -737,7 +744,6 @@ int countAnagrams(char text[], int n, char pattern[], int m) {
         if (rolling[newIndex] == anagram[newIndex] + 1) rollingMatch--;
         if (rollingMatch == SIGMA_SIZE) count++;
     }
-    printArray(rolling, 3);
     return count;
 }
         \end{lstlisting}

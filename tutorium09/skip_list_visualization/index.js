@@ -35,7 +35,7 @@ document.querySelectorAll(".list").forEach(el => {
     for (const node of nodes) {
         ctx.fillStyle = "white";
         if (green.includes(node[0])) {
-            ctx.fillStyle = "#7fff99";
+            ctx.fillStyle = "#7fcfff";
         }
         if (red.includes(node[0])) {
             ctx.fillStyle = "#ff7f7f";
