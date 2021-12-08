@@ -103,6 +103,7 @@ REM TeX all TeX-files in current directory
 REM for /r %%i in (*) do echo %%i // for recursive version
 FOR %%f IN (*.tex) DO (
   %PDFLATEX% "%%f" %quietMode%
+  %PDFLATEX% "%%f" %quietMode%
 )
 GOTO mainLoopShiftParameters
 
