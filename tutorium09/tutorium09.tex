@@ -302,9 +302,9 @@ int kthSmallestValue(SkipList *list, int k) {
         \item Betrachten Sie das Muster \texttt{BEENDEN}.
         Wie ist die \texttt{shift}-Funktion für dieses Muster mit $\Sigma = \{A, B, \ldots, Z\}$ bei Verwendung der Bad-Character-Strategie definiert?
         Sie dürfen alle Zeichen, die nicht im Muster enthalten sind, zusammenfassen.
-        \item Betrachten Sie die Muster \texttt{KENNEN} und \texttt{NENNEN}.
+        \item Betrachten Sie die Muster \texttt{KENNEN}, \texttt{NENNEN} und \texttt{NONNEN}.
         Geben Sie für beide Muster und für jede Position an, um viel viele Zeichen das jeweilige Muster gemäß der Good-Suffix-Strategie verschoben werden darf, wenn es an dieser Position zu einer Nichtübereinstimmung kommt.
-        \item Suchen Sie das Muster \texttt{TAGCAGC} in der Zeichenkette \texttt{TATGCAAGCTGCCATGCTGTAGCAGC} mittels Naiver Suche und mithilfe des Boyer-Moore-Algorithmus inklusive bad-character und good-suffix.
+        \item Suchen Sie das Muster \texttt{CTGCAGC} in der Zeichenkette \texttt{TATGAAAGCTGCCGCGCTGCAGCCGC} mittels Naiver Suche und mithilfe des Boyer-Moore-Algorithmus inklusive bad-character und good-suffix.
         Wie viele Vergleiche benötigen Sie jeweils?
         \item 
         Suchen Sie das Muster \texttt{LEBEN} im Text \texttt{DAS ENDE EINES LEBENS} mittels Boyer-Moore.
@@ -424,53 +424,64 @@ int kthSmallestValue(SkipList *list, int k) {
                     \hline
                     \texttt{N} & \texttt{E} & \texttt{N} & \texttt{N} & \texttt{E} & \texttt{N} \\
                     \hline
-                    3 & 3 & 3 & 5 & 2 & - \\
+                    3 & 3 & 3 & 3 & 2 & - \\
+                    \hline
+                \end{tabular}
+            }
+            \parbox{0.25\linewidth}{
+                \centering
+                \begin{tabular}{|c|c|c|c|c|c|}
+                    \hline
+                    \texttt{N} & \texttt{O} & \texttt{N} & \texttt{N} & \texttt{E} & \texttt{N} \\
+                    \hline
+                    5 & 5 & 5 & 5 & 2 & - \\
                     \hline
                 \end{tabular}
             }
         \end{table}
-        \item \textbf{Naive\textnormal{ (32 Vergleiche)}:}\\
+        \item \textbf{Naive\textnormal{ (34 Vergleiche)}:}\\
         \begin{minipage}[t]{0.45\textwidth}
         \begin{Verbatim}[commandchars=\\\{\}]
-TATGCAAGCTGCCATGCTGTAGCAGC
-\textbf{TA}\underline{G}CAGC
- \underline{T}AGCAGC
-  \textbf{T}\underline{A}GCAGC
-   \underline{T}AGCAGC
-    \underline{T}AGCAGC
-     \underline{T}AGCAGC
-      \underline{T}AGCAGC
-       \underline{T}AGCAGC
-        \underline{T}AGCAGC
-         \textbf{T}\underline{A}GCAGC
+TATGAAAGCTGCCGCGCTGCAGCCGC
+\underline{C}TGCAGC
+ \underline{C}TGCAGC
+  \underline{C}TGCAGC
+   \underline{C}TGCAGC
+    \underline{C}TGCAGC
+     \underline{C}TGCAGC
+      \underline{C}TGCAGC
+       \underline{C}TGCAGC
+        \textbf{CTGC}\underline{A}GC
+         \underline{C}TGCAGC
         \end{Verbatim}
         \end{minipage}
         \begin{minipage}[t]{0.45\textwidth}
         \begin{Verbatim}[commandchars=\\\{\}]
-TATGCAAGCTGCCATGCTGTAGCAGC
-          \underline{T}AGCAGC
-           \underline{T}AGCAGC
-            \underline{T}AGCAGC
-             \underline{T}AGCAGC
-              \textbf{T}\underline{A}GCAGC
-               \underline{T}AGCAGC
-                \underline{T}AGCAGC
-                 \textbf{T}\underline{A}GCAGC
-                  \underline{T}AGCAGC
-                   \textbf{TAGCAGC}
+TATGAAAGCTGCCGCGCTGCAGCCGC
+          \underline{C}TGCAGC
+           \textbf{C}\underline{T}GCAGC
+            \textbf{C}\underline{T}GCAGC
+             \underline{C}TGCAGC
+              \textbf{C}\underline{T}GCAGC
+               \underline{C}TGCAGC
+                \textbf{CTGCAGC}
+                 \underline{C}TGCAGC
+                  \underline{C}TGCAGC
+                   \textbf{C}\underline{T}GCAGC
         \end{Verbatim}
         \end{minipage} \\
 
-        \textbf{Boyer-Moore\textnormal{ (17 Vergleiche)}:}\\
+        \textbf{Boyer-Moore\textnormal{ (18 Vergleiche)}:}\\
         \begin{minipage}[t]{0.95\textwidth}
         \begin{Verbatim}[commandchars=\\\{\}]
-TATGCAAGCTGCCATGCTGTAGCAGC
-TAGCAG\underline{C}                        \textnormal{bad char: 2, good suffix nicht anwendbar}
-  TAG\underline{C}\textbf{AGC}                      \textnormal{bad char: -1, good suffix (\texttt{AGC}): 3}
-     TAGC\underline{A}\textbf{GC}                   \textnormal{bad char: 4, good suffix (\texttt{\sout{A}GC}): kein Treffer, also 7}
-            TAGCAG\underline{C}            \textnormal{bad char: 1, good suffix nicht anwendbar}
-             TAGCAG\underline{C}           \textnormal{bad char: 6, good suffix nicht anwendbar}
-                   \textbf{TAGCAGC}     \textnormal{\emph{Treffer!}}
+TATGAAAGCTGCCGCGCTGCAGCCGC
+CTGCAG\underline{C}                          \textnormal{bad char: 2, good suffix nicht anwendbar}
+  CTG\underline{C}\textbf{AGC}                        \textnormal{bad char: -1, good suffix (\texttt{AG\underline{C}}): 6}
+        CTGC\underline{A}\textbf{GC}                  \textnormal{bad char: -2, good suffix (\texttt{GC}): 3}
+           CTGCAG\underline{C}               \textnormal{bad char: 5, good suffix nicht anwendbar}
+                \textbf{CTGCAGC}          \textnormal{\emph{Treffer!}}
+                 CTGCA\underline{G}\textbf{C}         \textnormal{bad char: -1, good suffix (\texttt{AG\underline{C}}): 6}
+                       CTGCAGC   \textnormal{out of bounds}
         \end{Verbatim}
         \end{minipage}
 
