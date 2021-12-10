@@ -16,12 +16,12 @@ function canvas_arrow(context, fromx, fromy, tox, toy, headlen) {
 const DUMMY = ""
 document.querySelectorAll(".list").forEach(el => {
     const lines = el.innerHTML.trim().split("\n")
-    const nodes = lines[0].split(",").map(l => l.trim()).filter(l => l.length > 0)
+    const nodes = lines[0].split(",").map(l => l.trim()).filter(l => l.length > 0 && !l.includes("-"))
         .map(s => s.split(" ").map(l => l.trim()).filter(s => s.length > 0).map(s => parseInt(s)))
     const green = lines[1].split(" ").map(l => l.trim()).filter(l => l.length > 0).map(s => parseInt(s));
     const red = lines[2].split(" ").map(l => l.trim()).filter(l => l.length > 0).map(s => parseInt(s));
 
-    const height = Math.max(...nodes.map(n => n[1]));
+    const height = Math.max(1, ...nodes.map(n => n[1]));
     nodes.push([DUMMY, height])
     nodes.splice(0, 0, [DUMMY, height])
 
@@ -53,7 +53,6 @@ document.querySelectorAll(".list").forEach(el => {
             const y = canvas.height - MARGIN - (i + 1) * UNIT;
             ctx.fillRect(x, y, UNIT, UNIT);
             ctx.strokeRect(x, y, UNIT, UNIT);
-            console.log(x, y)
         }
 
         ctx.font = `${UNIT / 2}px Arial`
@@ -81,4 +80,20 @@ document.querySelectorAll(".list").forEach(el => {
 
     el.innerHTML = "";
     el.appendChild(canvas)
+})
+
+const trees = document.querySelectorAll("canvas")
+trees.forEach(el => {
+    el.style.display = "none";
+});
+let index = 0;
+trees[index].style.display = "block";
+window.addEventListener("keydown", evt => {
+    trees[index].style.display = "none";
+    if (evt.key === "ArrowLeft") {
+        index = Math.max(index - 1, 0);
+    } else if (evt.key === "ArrowRight") {
+        index = Math.min(index + 1, trees.length - 1);
+    }
+    trees[index].style.display = "block";
 })
