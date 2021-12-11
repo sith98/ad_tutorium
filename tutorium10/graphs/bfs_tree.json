@@ -1,0 +1,90 @@
+{
+    "nodes": [
+        {
+            "x": 243,
+            "y": 129,
+            "text": "a",
+            "isAcceptState": false
+        },
+        {
+            "x": 409,
+            "y": 129,
+            "text": "b",
+            "isAcceptState": false
+        },
+        {
+            "x": 243,
+            "y": 300,
+            "text": "c",
+            "isAcceptState": false
+        },
+        {
+            "x": 327,
+            "y": 216,
+            "text": "d",
+            "isAcceptState": false
+        },
+        {
+            "x": 409,
+            "y": 300,
+            "text": "e",
+            "isAcceptState": false
+        }
+    ],
+    "links": [
+        {
+            "type": "Link",
+            "nodeA": 0,
+            "nodeB": 1,
+            "text": "",
+            "lineAngleAdjust": 0,
+            "parallelPart": 0.5,
+            "perpendicularPart": 0
+        },
+        {
+            "type": "Link",
+            "nodeA": 0,
+            "nodeB": 2,
+            "text": "",
+            "lineAngleAdjust": 0,
+            "parallelPart": 0.5,
+            "perpendicularPart": 0
+        },
+        {
+            "type": "Link",
+            "nodeA": 1,
+            "nodeB": 3,
+            "text": "",
+            "lineAngleAdjust": 0,
+            "parallelPart": 0.5,
+            "perpendicularPart": 0
+        },
+        {
+            "type": "Link",
+            "nodeA": 2,
+            "nodeB": 4,
+            "text": "",
+            "lineAngleAdjust": 0,
+            "parallelPart": 0.5,
+            "perpendicularPart": 0
+        },
+        {
+            "type": "Link",
+            "nodeA": 1,
+            "nodeB": 4,
+            "text": "",
+            "lineAngleAdjust": 0,
+            "parallelPart": 0.5,
+            "perpendicularPart": 0
+        },
+        {
+            "type": "Link",
+            "nodeA": 2,
+            "nodeB": 3,
+            "text": "",
+            "lineAngleAdjust": 0,
+            "parallelPart": 0.5,
+            "perpendicularPart": 0
+        }
+    ]
+}

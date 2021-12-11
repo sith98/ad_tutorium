@@ -1,0 +1,206 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{gastex}
+\usepackage{etoolbox}
+% \newcommand{\showLoesung}{2} %<---als Schalter
+%\newcommand{\showInhalt}{1} %<---als Schalter
+
+\input{../skel/uebmacsPNG}
+
+\usepackage{enumitem}
+\usepackage{algpseudocode}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{placeins}
+\usepackage{multicol}
+\usepackage{slashbox}
+\usepackage{fancyvrb}
+\usepackage{ulem}
+
+\begin{document}
+\thispagestyle{empty}
+\DeclareRobustCommand{\ttfamily}{\fontencoding{T1}\fontfamily{lmtt}\selectfont}
+
+\newcommand{\quotes}[1]{\glqq{}#1\grqq{}}
+
+\Uebung{10}{11}{Simon Thelen}{16. Dezember 2021}  % FIXME: Blattnummer, Datum, Zeit
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifcsdef{showLoesung}{
+\textbf{Bitte beachten Sie:} Die Lösungen können trotz sorgfältiger Prüfung Fehler enthalten.
+Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in Tutorien, Übungen oder nach Vorlesungen.
+}{}
+
+\begin{aufgabe}{1}{Repräsentation von Graphen}
+    Gegeben sei Graph $G_1$:
+    \begin{figure}[h!]
+        \centering
+        \begin{tikzpicture}[scale=0.15]
+            tikzstyle{every node}+=[inner sep=0pt]
+            \tikzstyle{every node}+=[inner sep=0pt]
+            \draw [black] (14.5,-16) circle (3);
+\draw (14.5,-16) node {$1$};
+\draw [black] (30.4,-16) circle (3);
+\draw (30.4,-16) node {$3$};
+\draw [black] (45.3,-16) circle (3);
+\draw (45.3,-16) node {$4$};
+\draw [black] (30.4,-4.1) circle (3);
+\draw (30.4,-4.1) node {$2$};
+\draw [black] (14.5,-31.4) circle (3);
+\draw (14.5,-31.4) node {$7$};
+\draw [black] (30.4,-31.4) circle (3);
+\draw (30.4,-31.4) node {$8$};
+\draw [black] (45.3,-31.4) circle (3);
+\draw (45.3,-31.4) node {$9$};
+\draw [black] (38.1,-23.8) circle (3);
+\draw (38.1,-23.8) node {$6$};
+\draw [black] (59.1,-16) circle (3);
+\draw (59.1,-16) node {$5$};
+\draw [black] (59.1,-31.4) circle (3);
+\draw (59.1,-31.4) node {$10$};
+\draw [black] (17.5,-16) -- (27.4,-16);
+\fill [black] (27.4,-16) -- (26.6,-15.5) -- (26.6,-16.5);
+\draw [black] (33.374,-15.614) arc (95.54669:84.45331:46.303);
+\fill [black] (42.33,-15.61) -- (41.58,-15.04) -- (41.48,-16.03);
+\draw [black] (42.96,-14.13) -- (32.74,-5.97);
+\fill [black] (32.74,-5.97) -- (33.06,-6.86) -- (33.68,-6.08);
+\draw [black] (28,-5.9) -- (16.9,-14.2);
+\fill [black] (16.9,-14.2) -- (17.84,-14.12) -- (17.24,-13.32);
+\draw [black] (14.5,-19) -- (14.5,-28.4);
+\fill [black] (14.5,-28.4) -- (15,-27.6) -- (14,-27.6);
+\draw [black] (17.5,-31.4) -- (27.4,-31.4);
+\fill [black] (27.4,-31.4) -- (26.6,-30.9) -- (26.6,-31.9);
+\draw [black] (30.4,-28.4) -- (30.4,-19);
+\fill [black] (30.4,-19) -- (29.9,-19.8) -- (30.9,-19.8);
+\draw [black] (16.65,-29.31) -- (28.25,-18.09);
+\fill [black] (28.25,-18.09) -- (27.32,-18.28) -- (28.02,-19);
+\draw [black] (42.3,-31.4) -- (33.4,-31.4);
+\fill [black] (33.4,-31.4) -- (34.2,-31.9) -- (34.2,-30.9);
+\draw [black] (45.3,-28.4) -- (45.3,-19);
+\fill [black] (45.3,-19) -- (44.8,-19.8) -- (45.8,-19.8);
+\draw [black] (32.51,-18.13) -- (35.99,-21.67);
+\fill [black] (35.99,-21.67) -- (35.79,-20.74) -- (35.07,-21.45);
+\draw [black] (40.13,-21.6) -- (43.27,-18.2);
+\fill [black] (43.27,-18.2) -- (42.36,-18.45) -- (43.09,-19.13);
+\draw [black] (28.25,-29.31) -- (16.65,-18.09);
+\fill [black] (16.65,-18.09) -- (16.88,-19) -- (17.58,-18.28);
+\draw [black] (42.334,-16.448) arc (-83.55508:-96.44492:39.951);
+\fill [black] (33.37,-16.45) -- (34.1,-17.03) -- (34.22,-16.04);
+\draw [black] (56.1,-16) -- (48.3,-16);
+\fill [black] (48.3,-16) -- (49.1,-16.5) -- (49.1,-15.5);
+\draw [black] (57.1,-18.23) -- (47.3,-29.17);
+\fill [black] (47.3,-29.17) -- (48.21,-28.9) -- (47.46,-28.24);
+\draw [black] (59.1,-28.4) -- (59.1,-19);
+\fill [black] (59.1,-19) -- (58.6,-19.8) -- (59.6,-19.8);
+\draw [black] (48.3,-31.4) -- (56.1,-31.4);
+\fill [black] (56.1,-31.4) -- (55.3,-30.9) -- (55.3,-31.9);
+\draw [black] (29.077,-13.32) arc (234:-54:2.25);
+\fill [black] (31.72,-13.32) -- (32.6,-12.97) -- (31.79,-12.38);
+
+        \end{tikzpicture}
+    \end{figure}
+    \begin{enumerate}
+        \item Geben Sie für $G_1$ die Adjazenzlistendarstellung (gestreute und dichte Speicherung) und die Adjazenzmatrixdarstellung an.
+        \item Nennen Sie zwei Vor- und zwei Nachteile der Repräsentation von Graphen als Adjazenzmatrix im Vergleich zu Adjazenzlisten.
+        \item Sie möchten zu einem gegebenen Knoten $v$ eines gerichteten Graphen $\operatorname{deg}^+(v)$ und $\operatorname{deg}^-(v)$, also Eingangs- und Ausgangsgrad, bestimmen.
+        Wie schnell (in $O$-Notation) schaffen Sie dies, wenn Sie den Graphen als Adjazenzliste gegeben haben?
+        Wie lange brauchen Sie, wenn Sie ihn als Adjazenzliste gegeben haben.
+        \item 
+        Geben Sie zu folgender Adjazenzmatrix an, ob der Graph gerichtet oder ungerichtet ist.
+        Zeichnen Sie anschließend den Graphen.
+        Nummerieren Sie die Knoten anhand der Zeilen und Spalten der Matrix.
+        \begin{equation*}
+            \begin{pmatrix}
+                0 & 1 & 1 & 0 & 0 \\
+                1 & 0 & 1 & 1 & 1 \\
+                1 & 1 & 0 & 1 & 1 \\
+                0 & 1 & 1 & 0 & 1 \\
+                0 & 1 & 1 & 1 & 0 
+            \end{pmatrix}
+        \end{equation*}
+        \item Zeichnen Sie den Graph zu folgender Inzidenzmatrix.
+        Nummerieren Sie die Knoten anhand der Zeilen der Matrix.
+        \begin{equation*}
+            \begin{pmatrix}
+                -1 & 0 & 0 & 0 & 1 & 0 & -1 & 0 \\
+                1 & -1 & 0 & 0 & 0 & 1 & 0 & 0 \\
+                0 & 1 & -1 & 1 & 0 & 0 & 0 & 0 \\
+                0 & 0 & 1 & -1 & -1 & 0 & 0 & 1 \\
+                0 & 0 & 0 & 0 & 0 & -1 & 1 & -1
+            \end{pmatrix}
+        \end{equation*}
+    \end{enumerate}
+\end{aufgabe}
+
+\begin{aufgabe}{2}{Breiten- und Tiefensuche}
+    Gegeben sei den Graph aus Aufgabe 1 als Adjazenzliste.
+    Die Kanten, die von einem Knoten aus beginnen, liegen in der entsprechenden Liste in numerisch aufsteigend sortierter Reihenfolge vor.
+    \begin{enumerate}
+        \item Führen Sie eine Breitensuche auf dem Graphen durch.
+        Geben Sie an, in welcher Reihenfolge Knoten ent\-deckt und abgeschlossen werden.
+        \item Führen Sie eine Tiefensuche auf dem Graphen durch.
+        Geben Sie an, in welcher Reihenfolge Knoten entdeckt und abgeschlossen werden. Vergessen Sie nicht, dass die Tiefensuche von allen noch nicht besuchten Knoten aus gestartet werden muss.
+        \item Angenommen, der Graph sei ungerichtet (alle Kanten gehen in beide Richtungen, Selbstschleifen werden entfernt).
+        Führen Sie eine Breitensuche und Tiefensuche auf dem ungerichteten Graphen durch.
+        Geben Sie an, in welcher Reihenfolge Knoten entdeckt und abgeschlossen werden.
+        \item Welche Laufzeit hätten Breiten- und Tiefensuche, wenn der Eingabegraph in Adjazenzmatrixform vorliegen würde.
+        \item
+        Gegeben sei ein Baum als gerichteter Graph (Die Wurzel hat Eingangsgrad 0, Blätter Ausgangsgrad 0).
+        Angenommen, Sie beginnnen bei der Wurzel des Baumes einen Tiefensuchendurchlauf und geben alle Knoten in der Reihenfolge aus, in der Sie sie entdecken.
+        Welcher Form von Baumtraversion entspricht dies?
+        Wie sieht es aus, wenn Sie die Knoten in der Reihenfolge ausgeben, in der Sie sie abschließen?
+        \item
+        Begründen Sie, warum die gestrichelten Linien in folgendem Graphen keinen Breitensuchenbaum bilden können.
+        \begin{figure}[h!]
+            \centering
+            \begin{tikzpicture}[scale=0.1]
+\tikzstyle{every node}+=[inner sep=0pt]
+\draw [black] (24.3,-12.9) circle (3);
+\draw (24.3,-12.9) node {$a$};
+\draw [black] (40.9,-12.9) circle (3);
+\draw (40.9,-12.9) node {$b$};
+\draw [black] (24.3,-30) circle (3);
+\draw (24.3,-30) node {$c$};
+\draw [black] (32.7,-21.6) circle (3);
+\draw (32.7,-21.6) node {$d$};
+\draw [black] (40.9,-30) circle (3);
+\draw (40.9,-30) node {$e$};
+\draw [black, dashed] (27.3,-12.9) -- (37.9,-12.9);
+\fill [black] (37.9,-12.9) -- (37.1,-12.4) -- (37.1,-13.4);
+\draw [black, dashed] (24.3,-15.9) -- (24.3,-27);
+\fill [black] (24.3,-27) -- (24.8,-26.2) -- (23.8,-26.2);
+\draw [black, dashed] (38.84,-15.08) -- (34.76,-19.42);
+\fill [black] (34.76,-19.42) -- (35.67,-19.18) -- (34.94,-18.49);
+\draw [black, dashed] (27.3,-30) -- (37.9,-30);
+\fill [black] (37.9,-30) -- (37.1,-29.5) -- (37.1,-30.5);
+\draw [black] (40.9,-15.9) -- (40.9,-27);
+\fill [black] (40.9,-27) -- (41.4,-26.2) -- (40.4,-26.2);
+\draw [black] (26.42,-27.88) -- (30.58,-23.72);
+\fill [black] (30.58,-23.72) -- (29.66,-23.93) -- (30.37,-24.64);
+\end{tikzpicture}
+        \end{figure}
+    \end{enumerate}
+\end{aufgabe}
+
+\begin{aufgabe}{3}{Anwendungen von Tiefensuche}
+    \begin{enumerate}[label=\alph*)]
+        \item Ein ungerichteter Graph ist zusammenhängend, wenn von jedem Knoten aus jeder andere Knoten erreichbar ist.
+        Gegeben sei ein ungerichteter Graph in Adjazenzlistenform.
+        Implementieren Sie einen Algorithmus mit Laufzeit $O(|V| + |E|)$ in Pseudocode oder einer Programmiersprache Ihrer Wahl, der überprüft, ob der Graph zusammenhängend ist.
+        \item \label{transpose} Gegeben sei ein gerichteter Graph $G = (V, E)$. Dann ist die Transposition dieses Graphen $G^T$ definiert als der Graph $G^T = (V, \{(v, u) \mid (u, v) \in E\})$.
+        Es handelt sich also um den gleichen Graphen, nur das alle seine Kanten in die andere Richtung verlaufen.
+        Implementieren Sie einen Algorithmus mit Laufzeit $\Theta(|V| + |E|)$ in Pseudocode oder einer Programmiersprache Ihrer Wahl, welcher einen gerichteten Graphen $G$ in Adjazenzlistenform als Eingabe erhält und $G^T$ zurückgibt.
+        \item Ein gerichteter Graph ist stark zusammenhängend, wenn von jedem Knoten aus jeder andere Knoten er\-reichbar ist.
+        Gegeben sei ein gerichteter Graph in Adjazenzlistenform.
+        Implementieren Sie einen Algorithmus mit Laufzeit $O(|V| + |E|)$ in Pseudocode oder einer Programmiersprache Ihrer Wahl, der überprüft, ob der Graph stark zusammenhängend ist.
+        \begin{description}
+            \item[Tipp:] Verwenden Sie den Algorithmus aus Teilaufgabe \ref*{transpose} als Subroutine.
+        \end{description}
+        \item Gegeben sein ein zusammenhängender, ungerichteter Graph.
+        Implementieren Sie einen Algorithmus mit Laufzeit $O(|V| + |E|)$ in Pseudocode oder einer Programmiersprache Ihrer, welcher zusammenhängenden Pfad durch den Graphen ausgibt, der jede Kante des Graphen genau zweimal passiert, nämlich einmal in jede Richtung.
+    \end{enumerate}
+\end{aufgabe}
+
+
+\end{document}
