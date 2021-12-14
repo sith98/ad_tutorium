@@ -57,8 +57,8 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
 \draw (59.1,-31.4) node {$7$};
 \draw [black] (17.5,-16) -- (27.4,-16);
 \fill [black] (27.4,-16) -- (26.6,-15.5) -- (26.6,-16.5);
-\draw [black] (33.355,-15.489) arc (97.35989:82.64011:35.088);
-\fill [black] (42.34,-15.49) -- (41.62,-14.89) -- (41.49,-15.88);
+\draw [black] (33.203,-14.94) arc (105.70591:74.29409:17.168);
+\fill [black] (42.5,-14.94) -- (41.86,-14.24) -- (41.59,-15.21);
 \draw [black] (30.4,-28.4) -- (30.4,-19);
 \fill [black] (30.4,-19) -- (29.9,-19.8) -- (30.9,-19.8);
 \draw [black] (42.3,-31.4) -- (33.4,-31.4);
@@ -69,8 +69,8 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
 \fill [black] (35.95,-21.91) -- (35.76,-20.99) -- (35.04,-21.67);
 \draw [black] (40.01,-21.87) -- (43.29,-18.23);
 \fill [black] (43.29,-18.23) -- (42.38,-18.49) -- (43.13,-19.16);
-\draw [black] (17.041,-17.594) arc (56.04379:35.78659:46.251);
-\fill [black] (17.04,-17.59) -- (17.43,-18.46) -- (17.98,-17.63);
+\draw [black] (17.192,-17.322) arc (61.11045:30.71993:31.34);
+\fill [black] (17.19,-17.32) -- (17.65,-18.15) -- (18.13,-17.27);
 \draw [black] (56.1,-16) -- (48.3,-16);
 \fill [black] (48.3,-16) -- (49.1,-16.5) -- (49.1,-15.5);
 \draw [black] (57.1,-18.23) -- (47.3,-29.17);
@@ -81,12 +81,12 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
 \fill [black] (56.1,-31.4) -- (55.3,-30.9) -- (55.3,-31.9);
 \draw [black] (16.401,-13.683) arc (136.04204:43.95796:18.752);
 \fill [black] (16.4,-13.68) -- (17.32,-13.45) -- (16.6,-12.76);
-\draw [black] (27.931,-29.697) arc (-126.06725:-142.10237:58.139);
-\fill [black] (27.93,-29.7) -- (27.58,-28.82) -- (26.99,-29.63);
-\draw [black] (42.334,-16.448) arc (-83.55508:-96.44492:39.951);
-\fill [black] (33.37,-16.45) -- (34.1,-17.03) -- (34.22,-16.04);
 \draw [black] (29.077,-13.32) arc (234:-54:2.25);
 \fill [black] (31.72,-13.32) -- (32.6,-12.97) -- (31.79,-12.38);
+\draw [black] (42.497,-17.059) arc (-74.29951:-105.70049:17.174);
+\fill [black] (33.2,-17.06) -- (33.84,-17.76) -- (34.11,-16.79);
+\draw [black] (27.639,-30.23) arc (-116.16691:-152.00271:26.882);
+\fill [black] (27.64,-30.23) -- (27.14,-29.43) -- (26.7,-30.33);
 
         \end{tikzpicture}
     \end{figure}
@@ -94,7 +94,7 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         \item Geben Sie für $G_1$ die Adjazenzlistendarstellung (dichte Speicherung) und die Adjazenzmatrix an.
         \item Nennen Sie zwei Vor- und zwei Nachteile der Repräsentation von Graphen als Adjazenzmatrix im Vergleich zu Adjazenzlisten.
         \item Sie möchten zu einem gegebenen Knoten $v$ eines gerichteten Graphen $\operatorname{deg}^+(v)$ und $\operatorname{deg}^-(v)$, also Eingangs- und Ausgangsgrad, bestimmen.
-        Wie schnell (in $O$-Notation) schaffen Sie dies, wenn Sie den Graphen als Adjazenzliste (dicht/zerstreut/hybrid) gegeben haben?
+        Wie schnell (in $O$-Notation) schaffen Sie dies, wenn Sie den Graphen als Adjazenzliste (dicht/gestreut/hybrid) gegeben haben?
         Wie lange brauchen Sie, wenn Sie ihn als Adjazenzmatrix gegeben haben?
         \item 
         Gegeben seien die Adjazenzmatrix $M_1$ und die Inzidenzmatrix $M_2$.
@@ -310,9 +310,9 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         \item Angenommen, $G_1$ sei ungerichtet (alle Kanten sind in beide Richtung traversierbar, Selbstschleifen werden entfernt).
         Führen Sie eine Breitensuche und Tiefensuche auf dem ungerichteten Graphen durch.
         Geben Sie jeweils an, in welcher Reihenfolge Knoten entdeckt und abgeschlossen werden.
-        \item Welche Laufzeit haben Breiten- und Tiefensuche, wenn ein Eingabegraph als Adjazenzmatrix vorliegt.
+        \item Welche Laufzeit haben Breiten- und Tiefensuche, wenn ein Eingabegraph als Adjazenzmatrix vorliegt?
         \item
-        Gegeben sei ein Baum als gerichteter Graph (die Wurzel hat Eingangsgrad 0, Blätter Ausgangsgrad 0, Kanten gehen von Eltern- zu Kindknoten).
+        Gegeben sei ein Baum als gerichteter Graph (die Wurzel hat Eingangsgrad 0, Blätter Ausgangsgrad 0, Kanten verlaufen von Eltern- zu Kindknoten).
         Angenommen, Sie beginnnen bei der Wurzel des Baumes einen Tiefensuchendurchlauf und geben alle Knoten in der Reihenfolge aus, in der Sie sie entdecken.
         Welcher uns bekannter Form von Baumtraversion entspricht dies?
         Wie sieht es aus, wenn Sie die Knoten in der Reihenfolge ausgeben, in der Sie sie abschließen?
