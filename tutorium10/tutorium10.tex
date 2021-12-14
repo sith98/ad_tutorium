@@ -2,7 +2,7 @@
 
 \usepackage{gastex}
 \usepackage{etoolbox}
-% \newcommand{\showLoesung}{2} %<---als Schalter
+\newcommand{\showLoesung}{2} %<---als Schalter
 %\newcommand{\showInhalt}{1} %<---als Schalter
 
 \input{../skel/uebmacsPNG}
@@ -16,6 +16,7 @@
 \usepackage{slashbox}
 \usepackage{fancyvrb}
 \usepackage{ulem}
+\usepackage{amssymb}
 
 \begin{document}
 \thispagestyle{empty}
@@ -38,7 +39,7 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         \centering
         \begin{tikzpicture}[scale=0.12]
             \tikzstyle{every node}+=[inner sep=0pt]
-            \draw [black] (14.5,-16) circle (3);
+\draw [black] (14.5,-16) circle (3);
 \draw (14.5,-16) node {$0$};
 \draw [black] (30.4,-16) circle (3);
 \draw (30.4,-16) node {$1$};
@@ -56,8 +57,8 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
 \draw (59.1,-31.4) node {$7$};
 \draw [black] (17.5,-16) -- (27.4,-16);
 \fill [black] (27.4,-16) -- (26.6,-15.5) -- (26.6,-16.5);
-\draw [black] (33.374,-15.614) arc (95.54669:84.45331:46.303);
-\fill [black] (42.33,-15.61) -- (41.58,-15.04) -- (41.48,-16.03);
+\draw [black] (33.355,-15.489) arc (97.35989:82.64011:35.088);
+\fill [black] (42.34,-15.49) -- (41.62,-14.89) -- (41.49,-15.88);
 \draw [black] (30.4,-28.4) -- (30.4,-19);
 \fill [black] (30.4,-19) -- (29.9,-19.8) -- (30.9,-19.8);
 \draw [black] (42.3,-31.4) -- (33.4,-31.4);
@@ -68,10 +69,8 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
 \fill [black] (35.95,-21.91) -- (35.76,-20.99) -- (35.04,-21.67);
 \draw [black] (40.01,-21.87) -- (43.29,-18.23);
 \fill [black] (43.29,-18.23) -- (42.38,-18.49) -- (43.13,-19.16);
-\draw [black] (16.858,-17.854) arc (50.89492:40.93546:93.126);
-\fill [black] (16.86,-17.85) -- (17.16,-18.75) -- (17.79,-17.97);
-\draw [black] (42.334,-16.448) arc (-83.55508:-96.44492:39.951);
-\fill [black] (33.37,-16.45) -- (34.1,-17.03) -- (34.22,-16.04);
+\draw [black] (17.041,-17.594) arc (56.04379:35.78659:46.251);
+\fill [black] (17.04,-17.59) -- (17.43,-18.46) -- (17.98,-17.63);
 \draw [black] (56.1,-16) -- (48.3,-16);
 \fill [black] (48.3,-16) -- (49.1,-16.5) -- (49.1,-15.5);
 \draw [black] (57.1,-18.23) -- (47.3,-29.17);
@@ -80,20 +79,22 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
 \fill [black] (59.1,-19) -- (58.6,-19.8) -- (59.6,-19.8);
 \draw [black] (48.3,-31.4) -- (56.1,-31.4);
 \fill [black] (56.1,-31.4) -- (55.3,-30.9) -- (55.3,-31.9);
-\draw [black] (29.077,-13.32) arc (234:-54:2.25);
-\fill [black] (31.72,-13.32) -- (32.6,-12.97) -- (31.79,-12.38);
 \draw [black] (16.401,-13.683) arc (136.04204:43.95796:18.752);
 \fill [black] (16.4,-13.68) -- (17.32,-13.45) -- (16.6,-12.76);
-\draw [black] (28.059,-29.524) arc (-129.55074:-138.61888:102.223);
-\fill [black] (28.06,-29.52) -- (27.76,-28.63) -- (27.12,-29.4);
+\draw [black] (27.931,-29.697) arc (-126.06725:-142.10237:58.139);
+\fill [black] (27.93,-29.7) -- (27.58,-28.82) -- (26.99,-29.63);
+\draw [black] (42.334,-16.448) arc (-83.55508:-96.44492:39.951);
+\fill [black] (33.37,-16.45) -- (34.1,-17.03) -- (34.22,-16.04);
+\draw [black] (29.077,-13.32) arc (234:-54:2.25);
+\fill [black] (31.72,-13.32) -- (32.6,-12.97) -- (31.79,-12.38);
 
         \end{tikzpicture}
     \end{figure}
     \begin{enumerate}
-        \item Geben Sie für $G_1$ die Adjazenzlistendarstellung (dichte Speicherung) und die Adjazenzmatrixdarstellung an.
+        \item Geben Sie für $G_1$ die Adjazenzlistendarstellung (dichte Speicherung) und die Adjazenzmatrix an.
         \item Nennen Sie zwei Vor- und zwei Nachteile der Repräsentation von Graphen als Adjazenzmatrix im Vergleich zu Adjazenzlisten.
         \item Sie möchten zu einem gegebenen Knoten $v$ eines gerichteten Graphen $\operatorname{deg}^+(v)$ und $\operatorname{deg}^-(v)$, also Eingangs- und Ausgangsgrad, bestimmen.
-        Wie schnell (in $O$-Notation) schaffen Sie dies, wenn Sie den Graphen als Adjazenzliste gegeben haben?
+        Wie schnell (in $O$-Notation) schaffen Sie dies, wenn Sie den Graphen als Adjazenzliste (dicht/zerstreut/hybrid) gegeben haben?
         Wie lange brauchen Sie, wenn Sie ihn als Adjazenzmatrix gegeben haben?
         \item 
         Gegeben seien die Adjazenzmatrix $M_1$ und die Inzidenzmatrix $M_2$.
@@ -230,6 +231,7 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         Das heißt, für jede eingehende gibt es auch eine ausgehenden Kante: der Graph ist ungerichtet.
         Der Graph von $M_2$ ist gerichtet.
         Das erkennt man zum Beispiel daran, dass es zur ersten Kante (erste Spalte der Matrix) keine passende Kante in die entgegengesetzte Richtung gibt.
+        Es folgen die entsprechenden Graphen:
         \begin{figure}[h!]
             \centering
             \begin{subfigure}{0.45\textwidth}
@@ -312,12 +314,15 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         \item
         Gegeben sei ein Baum als gerichteter Graph (die Wurzel hat Eingangsgrad 0, Blätter Ausgangsgrad 0, Kanten gehen von Eltern- zu Kindknoten).
         Angenommen, Sie beginnnen bei der Wurzel des Baumes einen Tiefensuchendurchlauf und geben alle Knoten in der Reihenfolge aus, in der Sie sie entdecken.
-        Welcher Form von Baumtraversion entspricht dies?
+        Welcher uns bekannter Form von Baumtraversion entspricht dies?
         Wie sieht es aus, wenn Sie die Knoten in der Reihenfolge ausgeben, in der Sie sie abschließen?
-        Was ist mit Breitensuche?
+        Welche Art der Tranversierung liefert eine Breitensuche?
         \item
         Warum können die gestrichelten Linien in folgendem Graphen $G_2$ keinen Breitensuchenbaum bilden?
         \begin{figure}[h!]
+            \centering
+        $G_3$:
+        \begin{subfigure}[c]{0.2\textwidth}
             \centering
             \begin{tikzpicture}[scale=0.1]
 \tikzstyle{every node}+=[inner sep=0pt]
@@ -344,6 +349,7 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
 \draw [black] (26.42,-27.88) -- (30.58,-23.72);
 \fill [black] (30.58,-23.72) -- (29.66,-23.93) -- (30.37,-24.64);
 \end{tikzpicture}
+        \end{subfigure}
         \end{figure}
     \end{enumerate}
 \end{aufgabe}
@@ -2943,6 +2949,9 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
     Welche Sortierung erhalten Sie, wenn Sie stets den Knoten mit der größten Zahl zuerst wählen?
     \begin{figure}[h!]
         \centering
+        $G_3$:
+        \begin{subfigure}[c]{0.4\textwidth}
+            \centering
         \begin{tikzpicture}[scale=0.12]
             \draw [black] (17.9,-17.4) circle (3);
             \draw (17.9,-17.4) node {$1$};
@@ -2985,6 +2994,7 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
             \draw [black] (17.9,-20.4) -- (17.9,-27.9);
             \fill [black] (17.9,-27.9) -- (18.4,-27.1) -- (17.4,-27.1);
         \end{tikzpicture}
+    \end{subfigure}
         
     \end{figure}
     \FloatBarrier
@@ -3836,7 +3846,7 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         \end{subfigure}
     \end{figure}
     \FloatBarrier
-    Wenn die Knoten in absteigend sortierter Reihenfolge durchsucht würden (absteigend durch die Knoten iterieren und Tiefensuchendurchläufe starten, Adjazenzlisten absteigend sortiert durchlaufen) erhilte man als Sortierung $S = (1, 2, 4, 3, 5, 6, 8, 7)$.
+    Wenn die Knoten in absteigend sortierter Reihenfolge durchsucht würden (absteigend durch die Knoten iterieren und Tiefensuchendurchläufe starten, Adjazenzlisten absteigend sortiert durchlaufen) erhielte man als Sortierung $S = (1, 2, 4, 3, 5, 6, 8, 7)$.
     Das ist eine andere mögliche, aber ebenso korrekte, topologische Sortierung.
 \end{loesung}
 
@@ -3853,7 +3863,7 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         \emph{Zusatzfrage:} Wie müssten Sie vorgehen, wenn der Graph als Adjazenzmatrix vorläge?
         \item 
         Gegeben sei ein gerichteter Graph.
-        Gestimmen Sie, ob der Graph stark zusammenhängend ist.
+        Bestimmen Sie, ob der Graph stark zusammenhängend ist.
         Verwenden Sie dabei den Algorithmus aus Teilaufgabe \ref*{transpose} als Subroutine.
         \item
         Sie arbeiten an einem Softwareprojekt, bestehend aus mehreren Modulen, die untereinander Abhängigkeiten besitzen.
@@ -3862,8 +3872,8 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         Sie erhalten als Eingabe den Graphen und das Modul, welches gebaut werden soll.
         Geben Sie aus, welche Module in welcher Reihenfolge gebaut werden müssen.
         \item
-        \emph{Schwer:} Gegeben sein ein zusammenhängender, ungerichteter Graph.
-        Geben Sie einen zusammenhängenden Pfad durch den Graphen aus, der jede Kante genau zweimal traversiert, nämlich einmal in jede Richtung.
+        \emph{Schwer:} Gegeben sei ein zusammenhängender, ungerichteter Graph.
+        Geben Sie einen Pfad durch den Graphen aus, der jede Kante genau zweimal traversiert, nämlich einmal in jede Richtung.
     \end{enumerate}
 \end{aufgabe}
 
@@ -3903,7 +3913,7 @@ class graph {
     }
 };
     \end{lstlisting}
-    Es ist leicht zu sehen, dass \texttt{graph} Laufzeit $O(|V|)$ benötigt, \texttt{\~graph} $O(|V| + |E|)$ und \texttt{addEdge} $O(1)$.
+    Es ist leicht zu sehen, dass \texttt{graph} Laufzeit $O(|V|)$ benötigt, \texttt{\raisebox{-0.8ex}{\~{}}graph} $O(|V| + |E|)$ und \texttt{addEdge} $O(1)$.
 
     \begin{enumerate}
         \item Es genügt zu prüfen, ob von einem beliebigen Knoten $v$ aus alle anderen Knoten erreichbar sind.
@@ -3936,7 +3946,7 @@ bool isConnected(graph *g) {
         \end{lstlisting}
 
         \item
-        Es wird ein neuer Graph $G^T = (V, \emptyset)$ angelegt.
+        Es wird ein neuer Graph $G^T = (V, \varnothing)$ angelegt.
         Anschließend iteriert man in $O(|V| + |E|)$ über alle Kanten $(v, w)$ von $G$ und fügt, jeweils in $O(1)$, die Kante $(w, v)$ in $G^T$ ein:
         \begin{lstlisting}[language=c++]
 graph *transpose(graph *g) {
@@ -3951,6 +3961,7 @@ graph *transpose(graph *g) {
     return gT;
 }
         \end{lstlisting}
+        Würde der Graph als Adjazenzmatrix vorliegen, müsste man diese nur transponieren (Zeilen und Spalten vertauschen): $(a_{ij})^T = a_{ji}$.
 
         \item
         Das Vorgehen ist ähnlich wie in Teilaufgabe~\ref*{connected}.
@@ -3987,7 +3998,7 @@ bool isStronglyConnected(graph *g) {
         Die Reihenfolge, in der Module gebaut werden müssen entspricht einer topologischen Sortierung, allerdings in umgekehrter Reihenfolge (der Endknoten einer Kante muss vor dem Startknoten gebaut werden).
         Gibt man einfach alle Knoten, in umgekehrter topologischer Sortierung aus, werden potentiell auch Module ausgegeben, die für das Bauen des gewünschten Moduls $v$ gar nicht gebaut werden müssten, da kein Abhängigkeitspfad von $v$ aus zum entsprechenden Modul führt.
         Es muss also zusätzlich zur topologischen Sortierung geprüft werden, welche Knoten von $v$ aus erreichbar sind, damit nur diese ausgegeben werden.
-        Da sowohl Erreichbarkeit als auch topologische Sortierung mittels Tiefensuche berechnet werden können, kann das Problem mit nur einer Tiefensuche lösen.
+        Da sowohl Erreichbarkeit als auch topologische Sortierung mittels Tiefensuche berechnet werden können, kann man das Problem mit nur einer Tiefensuche lösen.
         Man startet dafür einen Tiefensuchendurchlauf von $v$ aus, und gibt alle erreichten Knoten in der Reihenfolge aus in der sie abgeschlossen werden.
         Somit wird zu jeder Kante $(w_1, w_2)$ $w_2$ stets vor $w_1$ ausgegeben.
         Außerdem werden nur von $v$ aus erreichbare Knoten ausgegeben.
@@ -4064,7 +4075,7 @@ void pathDfs(graph *g, bool visited[], int v, int prev) {
             Wir gehen also die Kante, über die wir zum aktuellen Knoten gekommen sind, erneut.
             Um dies zu beheben, übergeben wir den Knoten, von dem wir kommen, als Parameter in die rekursive Funktion und gehen diese Kante nicht mehr zurück.
             \item 
-            Es kann passieren, dass wir Kanten $(v, w)$, die nicht Teil des Tiefensuchenbaumes sind, zweimal hin und zurück traversieren, nämlich einmal, wenn wir $v$ untersuchen, und einmal, wenn wir $w$ untersuchen.
+            Kanten $(v, w)$, die nicht Teil des Tiefensuchenbaumes sind, traversieren wir zweimal hin und zurück, nämlich einmal, wenn wir $v$ untersuchen, und einmal, wenn wir $w$ untersuchen.
             % Das passiert dann, wenn wir $v$ entdecken und dann $w$ entdecken, bevor wir $v$ abschließen.
             Um dieses Problem zu beheben, legen wir für jede Kante willkürlich fest, von welcher Seite aus sie traversiert wird, falls nie nicht Teil des Tiefensuchenbaumes wird, zum Beispiel, indem wir $(v, w)$ nur dann gehen, wenn $v < w$ (wir verwenden die Knotenindezes).
             Somit traversieren wir jede Kante $(v, w)$ außerhalb des Tiefensuchenbaumes nur einmal hin und zurück, nämlich dann, wenn wir den kleineren der beiden Knoten analysieren.
