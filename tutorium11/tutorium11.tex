@@ -2,7 +2,7 @@
 
 \usepackage{gastex}
 \usepackage{etoolbox}
-% \newcommand{\showLoesung}{2} %<---als Schalter
+\newcommand{\showLoesung}{2} %<---als Schalter
 %\newcommand{\showInhalt}{1} %<---als Schalter
 
 \input{../skel/uebmacsPNG}
@@ -36,11 +36,52 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
 \begin{aufgabe}{1}{Tiefensuche}
     \begin{enumerate}
         \item Zeigen oder widerlegen Sie folgende Aussage:
-        \emph{Wenn während einer Tiefensuche auf einem ungerichteten Graphen eine Kante $(v, w)$ betrachtet wird, ist $w$ niemals schwarz.}
+        \emph{Wenn während einer Tiefensuche auf einem ungerichteten Graphen eine Kante $(u, v)$ betrachtet wird, ist $v$ niemals schwarz.}
         \item Zeigen oder widerlegen Sie folgende Aussage:
-        \emph{Wenn während einer Tiefensuche auf einem gerichteten, azyklischen Graphen eine Kante $(v, w)$ betrachtet wird, ist $w$ niemals grau.}
+        \emph{Wenn während einer Tiefensuche auf einem gerichteten, azyklischen Graphen eine Kante $(u, v)$ betrachtet wird, ist $v$ niemals grau.}
     \end{enumerate}
 \end{aufgabe}
+
+\begin{loesung}
+    \begin{enumerate}
+        \item Die Aussage ist falsch.
+        \begin{proof}
+            Beweis durch Gegenbeispiel:
+            \begin{figure}[h!]
+                \centering
+                \begin{tikzpicture}[scale=0.12]
+                    \tikzstyle{every node}+=[inner sep=0pt]
+                    \draw [black] (26.7,-19.9) circle (3);
+                    \draw (26.7,-19.9) node {$1$};
+                    \draw [black] (37.9,-19.9) circle (3);
+                    \draw (37.9,-19.9) node {$2$};
+                    \draw [black] (48.8,-19.9) circle (3);
+                    \draw (48.8,-19.9) node {$3$};
+                    \draw [black] (29.7,-19.9) -- (34.9,-19.9);
+                    \draw [black] (40.9,-19.9) -- (45.8,-19.9);
+                    \draw [black] (28.753,-17.72) arc (130.51772:49.48228:13.849);
+                \end{tikzpicture}
+            \end{figure}
+            \FloatBarrier
+            Es wird eine Tiefensuche bei Knoten 1 gestartet und die Kante $(1, 2)$ zuerst traversiert und als nächstes Knoten 2 untersucht.
+            Anschließend muss die Kante $(2, 3)$ traversiert werden, also wird nun Knoten 3 untersucht.
+            Zu diesem Zeitpunkt sind alle Knoten grau.
+            Daher wird Knoten 3 abgeschlossen.
+            Anschließend wird Knoten 2 abgeschlossen.
+            Bevor auch Knoten 1 abgeschlossen werden kann, muss noch Kante $(1, 3)$ überprüft werden.
+            Zu diesem Zeitpunkt ist jedoch Knoten 3 bereits abgeschlossen und damit schwarz.
+        \end{proof}
+        \item Die Aussage ist richtig.
+        \begin{proof}
+            Beweis durch Widerspruch:
+            Angenommen, eine Tiefensuche wird auf einem gerichteten, azyklischen Graphen ausgeführt und dabei wird eine Kante $(u, v)$ überprüft, wobei Knoten $v$ grau ist.
+            Also wird gerade $u$ untersucht, während $v$ noch nicht abgeschlossen ist.
+            Demnach gibt es einen direkten Pfad von $v$ nach $u$.
+            Die Kante $(u, v)$ schließt somit einen Zyklus.
+            Der Graph ist also nicht azyklisch, was einen Widerspruch zur Annahme darstellt.
+        \end{proof}
+    \end{enumerate}
+\end{loesung}
 
 \begin{aufgabe}{2}{Minimale Spannbäume}
     Gegeben seien folgende Graphen:
@@ -149,7 +190,7 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         \item Demonstieren Sie den Algorithmus von Prim zum Finden von minimalen Spannbäumen an $G_1$ und $G_2$ nach dem Schema aus der Vorlesung.
         Starten Sie jeweils bei Knoten 1.
         Geben Sie für jeden Zwischenschritt den bisherigen Teil-MST sowie den aktuellen Zustand des Min-Heaps an.
-        \item In $G_2$ gilt $\forall (v, w) \in E$: $w(v, w) = \{1, 2, \ldots, |E|\}$.
+        \item In $G_2$ gilt $\forall (u, v) \in E$: $w(u, v) = \{1, 2, \ldots, |E|\}$.
         Wie kann man den Algorithmus von Kruskal in einem solchen Fall mithilfe eines anderen Sortieralgorithmus beschleunigen?
         Welche Laufzeit hat Kruskal dann?
         \item\label{connected_components}Ein ungerichteter Graph lässt sich in disjunkte \emph{Zusammenhangskomponenten} aufteilen, wobei sich in der Komponente, in der der Knoten $v$ liegt, genau die von $v$ aus erreichbaren Knoten befinden.
@@ -159,6 +200,73 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         Wie können Sie das Problem aus Teilaufgabe \ref*{connected_components} schneller, nämlich in $O(|V| + |E|)$, mit einem Ihnen aus der Vorlesung bekannten Graphalgorithmus lösen?
     \end{enumerate}
 \end{aufgabe}
+
+\begin{loesung}
+    \begin{enumerate}
+        \item 
+        \item
+        \item Man kann die Kantengewichte mittels Countsort sortieren.
+        Alle zu sortierenden Werte liegen im Bereich $\{1, 2, \ldots, |E|\}$.
+        Also gilt: $k = |E|$.
+        Die Laufzeit von Countsort beträgt somit $O(n + k) = O(|E| + |E|) = O(|E|)$.
+        Zum Bestimmen des minimalen Spannbaumes sind, zusätzlich zum Sortieren, im Worst Case noch $2|V|$ \textsc{Menge}-Operationen und $|V|$ \textsc{Vereinige}-Operationen nötig.
+        Die Gesamtlaufzeit des Algorithmus beträgt also $O(|E| + |E| \log |V|) = O(|E| \log |V|)$.
+        \item
+        Es wird über alle Kanten $(u, v) \in E$ iteriert und die Mengen von $u$ und $v$ vereinigt.
+        Schließlich sind alle Knoten einer Komponente in derselben Menge.
+        \begin{algorithmic}[1]
+            \Procedure{FindComponents}{$V, E$}
+                \For{$v \in V$}
+                    \State \textsc{ErzeugeMenge}$(v)$
+                \EndFor
+                \For{$(u, v) \in E$}
+                    \If{$\text{\textsc{Menge}}(u) \neq \text{\textsc{Menge}}(v)$}
+                        \State \textsc{Vereinige}$(u, v)$
+                    \EndIf
+                \EndFor
+                \For{$v \in V$}
+                    \State $v.\mathrm{component} \gets \text{\textsc{Menge}}(v)$
+                \EndFor
+            \EndProcedure
+        \end{algorithmic}
+        Sowohl das Erzeugen der Mengen als auch das Zuweisen der Komponenten benötigt Laufzeit $O(|V|)$.
+        Für jede der $|E|$ Kanten wird zweimal \textsc{Menge} und einmal \textsc{Vereinige} aufgerufen (jeweils Laufzeit $O(\log |V|)$.
+        Die Gesamtlaufzeit beträgt also $O(|V| + |E| \log |V|)$.
+
+        \item Das Problem lässt sich mittels einer Tiefensuche lösen, indem man ähnlich vorgeht wie in Aufgabe 4a von Tutoriumsblatt 10.
+        Sei $v$ der Knoten einer Komponente, der in der Tiefensuche als erstes entdeckt wird.
+        Dann sind alle anderen Knoten der Komponente noch weiß.
+        Außerdem sind sie erreichbar, da sie sich in der gleichen Komponente befinden.
+        Also werden alle Knoten der Komponente im selben Tiefensuchendurchlauf wie $v$ entdeckt.
+        Danach wird kein weiterer Tiefensuchendurchlauf auf einem Knoten der Komponente gestartet, da bereits alle Knoten entdeckt wurden.
+
+        Der Algorithmus iteriert also wie gewohnt über alle Knoten.
+        Ist ein Knoten noch nicht entdeckt, ist er der erste Knoten einer noch unetdeckten Komponente.
+        Ein Tiefensuchendurchlauf wird von diesem Knoten aus gestartet und alle in diesem Durchlauf erreichten Knoten werden derselben Komponente zugewiesen.
+        \begin{algorithmic}[1]
+            \Procedure{FindComponentsDfs}{$V, E$}
+                \For{$v \in V$}
+                    \State $v.\mathrm{visited} \gets \text{\textbf{false}}$
+                \EndFor
+                \For{$v \in V$}
+                    \If{$v.\mathrm{visited} = \text{\textbf{false}}$}
+                        \State \textsc{Dfs}$(V, E, v, v)$
+                    \EndIf
+                \EndFor
+            \EndProcedure
+            \Procedure{Dfs}{$V, E, v, c$}
+                \State $v.\mathrm{visited} \gets \text{\textbf{true}}$
+                \State $v.\mathrm{component} \gets c$
+                \For{$w \in v.\mathrm{adj}$}
+                    \If{$w.\mathrm{visited} = \text{\textbf{false}}$}
+                        \State \textsc{Dfs}$(V, E, w, c)$
+                    \EndIf
+                \EndFor
+            \EndProcedure
+        \end{algorithmic}
+        Die Laufzeit ist die gleiche wie bei jeder Tiefensuche: $O(|V| + |E|)$.
+    \end{enumerate}
+\end{loesung}
 
 \begin{aufgabe}{3}{Kürzeste Wege}
     Gegeben sei folgender Graph $G_3$:
@@ -214,33 +322,213 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         \end{tikzpicture}
     \end{figure}
     \FloatBarrier
-    \begin{enumerate}
+    \begin{enumerate}[label=\alph*)]
         \item Demonstieren Sie den Algorithmus von Bellman und Ford nach dem Schema aus der Vorlesung, indem Sie in $G_3$ alle kürzesten Wege, beginnend bei Knoten $a$, suchen.
-        Durchlaufen Sie Kanten $(v, w)$ alphabetisch~(nach $v$, dann nach $w$).
+        Durchlaufen Sie Kanten $(u, v)$ alphabetisch~(nach $u$, dann nach $v$).
         Geben Sie alle Zwischenschritte an.
         \item Demonstieren Sie den Algorithmus von Dijkstra nach dem Schema aus der Vorlesung, indem Sie in $G_3$ alle kürzesten Wege, beginnend bei Knoten $a$, suchen.
         Geben Sie alle Zwischenschritte an.
         \item Suchen Sie nach demselben Schema mittels Dijkstra die kürzesten Wege in $G_2$, beginnend bei Knoten 1.
         \item Bei welchen Arten von Graphen ist Dijkstra mit einen Array statt eines Min-Heaps potentiell effizienter?
         \item Zeigen Sie anhand eines Beispiels, dass Dijkstra bei negativen Kantengewichten nicht immer kürzeste Wege findet.
-        \item Angenommen, die Kantengewichte eines Graphen werden angepasst: $w'(v, w) = w(v, w) - \min\limits_{(u, u') \in E} \{w(u, u') \}$.
-        Die neuen Gewichte $w'(v, w)$ sind stets nicht-negativ, sodass prinzipiell Dijkstra auf den Graphen mit angepassten Gewichten angewendet werden könnte.
+        \item Angenommen, die Kantengewichte eines Graphen werden angepasst: $w'(u, v) = w(u, v) - \min\limits_{(a, b) \in E} \{w(a, b) \}$.
+        Die neuen Gewichte $w'(u, v)$ sind stets nicht-negativ, sodass prinzipiell Dijkstra auf den Graphen mit angepassten Gewichten angewendet werden könnte.
         Zeigen Sie anhand eines Beispiels, dass sich kürzeste Wege durch das Anpassen der Gewichte ändern können.
-        \item Implementieren Sie einen Algorithmus in Pseudocode oder einer Programmiersprache Ihrer Wahl, der alle kürzesten Wege in einem gerichteten, azyklischen Graphen beginnend bei einem Knoten $v$ in Laufzeit $O(|V| + |E|)$ findet.
+        \item\label{shortest_paths_dag} Implementieren Sie einen Algorithmus in Pseudocode oder einer Programmiersprache Ihrer Wahl, der alle kürzesten Wege in einem gerichteten, azyklischen Graphen beginnend bei einem Knoten $s$ in Laufzeit $O(|V| + |E|)$ findet.
         \begin{description}
             \item[Tipp:] Wenn Sie alle Kanten entlang eines kürzesten Weges in der Reihenfolge relaxieren, in der sie auf dem Weg vorkommen, haben Sie den kürzesten Weg gefunden.
         \end{description}
     \end{enumerate}
 \end{aufgabe}
+\begin{loesung}
+    \begin{enumerate}
+        \item 
+        \item
+        \item
+        \item
+        Bei dichten Graphen ($|E| = \Theta(|V|^2)$) ist Dijkstra mit einem Feld potentiell schneller als mittels Min-Heap.
+        Dijkstra mittels Min-Heap hat Laufzeit $O(|V| \log |V| + |E| \log |V|)$.
+        Setzt man $|V|^2$ für $|E|$ ein, erhält man $O(|V|^2 \log\left(|V|^2\right) = O(|V|^2 \log |V|)$.
+        Bei einem Feld ist die Laufzeit von Dijkstra $O(|V|^2 + |E)$, was für dichte Graphen $O(|V|^2)$ entspricht.
+        Die asymptotische Laufzeit ist also bei einem Feld um den Faktor $\log |V|$ schneller als bei einem Heap.
+        Da der Logarithmus aber sehr langsam wächst, muss in der Praxis $|V|$ vermutlich sehr groß sein, damit dies eine wesentliche Laufzeitverbesserung bedeutet.
+        \item \ \\
+        \begin{figure}[h!]
+            \centering
+            \begin{tikzpicture}[scale=0.15]
+                \tikzstyle{every node}+=[inner sep=0pt]
+                \draw [black] (17.3,-17.2) circle (3);
+                \draw (17.3,-17.2) node {$a$};
+                \draw [black] (23.7,-8.5) circle (3);
+                \draw (23.7,-8.5) node {$b$};
+                \draw [black] (30.4,-17) circle (3);
+                \draw (30.4,-17) node {$c$};
+                \draw [black] (19.08,-14.78) -- (21.92,-10.92);
+                \fill [black] (21.92,-10.92) -- (21.05,-11.26) -- (21.85,-11.86);
+                \draw (19.92,-11.46) node [left] {$1$};
+                \draw [black] (20.3,-17.15) -- (27.4,-17.05);
+                \fill [black] (27.4,-17.05) -- (26.59,-16.56) -- (26.61,-17.56);
+                \draw (23.85,-17.62) node [below] {$2$};
+                \draw [black] (28.54,-14.64) -- (25.56,-10.86);
+                \fill [black] (25.56,-10.86) -- (25.66,-11.79) -- (26.45,-11.17);
+                \draw (27.62,-11.33) node [right] {$-2$};
+            \end{tikzpicture}
+        \end{figure}
+        \FloatBarrier
+        Wird in obigem Graphen mittels Dijkstra nach dem kürzesten Weg von $a$ nach $b$, werden die Knoten in der Reihenfolge $a$, $b$, $c$ abgearbeitet.
+        Das bedeutet, $b$ wurde bereits aus dem Heap entfernt, wenn $c$ untersucht wird.
+        Somit kann $b.\mathbf{dist}$ zu diesem Zeitpunkt nicht mehr aktualisiert werden.
+        Dijkstra liefert also als kürzesten Pfad $(a, b)$ mit Länge 1, obwohl $(a, c, b)$ mit Länge 0 kürzer wäre.
+        \item
+        Betrachten wir folgenden Graphen, einmal mit den ursprünglichen und einmal mit den angepassten Gewichten:
+        \begin{figure}[h!]
+            \centering
+            \begin{subfigure}{0.2\textwidth}
+                \centering
+                \begin{tikzpicture}[scale=0.15]
+                    \tikzstyle{every node}+=[inner sep=0pt]
+                    \draw [black] (17.3,-17.2) circle (3);
+                    \draw (17.3,-17.2) node {$a$};
+                    \draw [black] (23.7,-8.5) circle (3);
+                    \draw (23.7,-8.5) node {$b$};
+                    \draw [black] (30.4,-17) circle (3);
+                    \draw (30.4,-17) node {$c$};
+                    \draw [black] (19.08,-14.78) -- (21.92,-10.92);
+                    \fill [black] (21.92,-10.92) -- (21.05,-11.26) -- (21.85,-11.86);
+                    \draw (19.92,-11.46) node [left] {$-3$};
+                    \draw [black] (20.3,-17.15) -- (27.4,-17.05);
+                    \fill [black] (27.4,-17.05) -- (26.59,-16.56) -- (26.61,-17.56);
+                    \draw (23.85,-17.62) node [below] {$-2$};
+                    \draw [black] (28.54,-14.64) -- (25.56,-10.86);
+                    \fill [black] (25.56,-10.86) -- (25.66,-11.79) -- (26.45,-11.17);
+                    \draw (27.62,-11.33) node [right] {$-2$};
+                \end{tikzpicture}
+            \end{subfigure}
+            $\rightarrow$
+            \begin{subfigure}{0.2\textwidth}
+                \centering
+                \begin{tikzpicture}[scale=0.15]
+                    \tikzstyle{every node}+=[inner sep=0pt]
+                    \draw [black] (17.3,-17.2) circle (3);
+                    \draw (17.3,-17.2) node {$a$};
+                    \draw [black] (23.7,-8.5) circle (3);
+                    \draw (23.7,-8.5) node {$b$};
+                    \draw [black] (30.4,-17) circle (3);
+                    \draw (30.4,-17) node {$c$};
+                    \draw [black] (19.08,-14.78) -- (21.92,-10.92);
+                    \fill [black] (21.92,-10.92) -- (21.05,-11.26) -- (21.85,-11.86);
+                    \draw (19.92,-11.46) node [left] {$0$};
+                    \draw [black] (20.3,-17.15) -- (27.4,-17.05);
+                    \fill [black] (27.4,-17.05) -- (26.59,-16.56) -- (26.61,-17.56);
+                    \draw (23.85,-17.62) node [below] {$1$};
+                    \draw [black] (28.54,-14.64) -- (25.56,-10.86);
+                    \fill [black] (25.56,-10.86) -- (25.66,-11.79) -- (26.45,-11.17);
+                    \draw (27.62,-11.33) node [right] {$1$};
+                \end{tikzpicture}
+            \end{subfigure}
+        \end{figure}
+        \FloatBarrier
+        Der kürzeste Weg von $a$ nach $b$ nach den ursprünglichen Gewichten ist $(a, c, b)$.
+        Nach den angepassten Gewichten ist es jedoch $(a, b)$.
+
+        \item
+        Wir durchlaufen alle Knoten $u \in V$ in topologischer Sortierung und relaxieren für jeden Knoten $u$ die Kanten $(u, v) \in u.\mathrm{adj}$.
+        So garantieren wir, dass wir alle Kanten des kürzesten Weges in der Reihenfolge relaxieren, in der sie im kürzesten Weg auftauchen (siehe Tipp), da in topologischer Reihenfolge keine Kante \quotes{zurück} führt.
+        \begin{algorithmic}[1]
+            \Procedure{ShortestPathsDag}{V, E, s}
+                \For{$v \in V$}
+                    \State $v.\mathrm{dist} \gets \infty$
+                    \State $v.\mathrm{pred} \gets \mathrm{NULL}$
+                \EndFor
+                \State $s.\mathrm{dist} \gets 0$
+                \State $S \gets \text{\textsc{TopologicalSort}}(V, E)$
+                \For{$u \in S$}
+                    \For{$v \in u.\mathrm{adj}$}
+                        \If{$u.\mathrm{dist} + w(u, v) < v.\mathrm{dist}$}
+                            \State $v.\mathrm{dist} = u.\mathrm{dist} + w(u, v)$
+                            \State $v.\mathrm{pred} = u$
+                        \EndIf
+                    \EndFor
+                \EndFor
+            \EndProcedure
+        \end{algorithmic}
+        Die erste Schleife hat Laufzeit $O(|V|)$.
+        Der Algorithmus zum Finden einer topologischen Sortierung benötigt Laufzeit $O(|V| + |E|)$.
+        In der letzten Schleife durchlaufen wir alle Kanten des Graphen.
+        Daher beträgt die Laufzeit hierfür ebenfalls $O(|V| + |E|)$ (vergl. Vorlesungsunterlagen).
+        Die Gesamtlaufzeit des Algorithmus ist demnach $O(|V| + |E|)$, was schneller ist als Dijkstra oder Bellman-Ford.
+    \end{enumerate}
+\end{loesung}
 \begin{aufgabe}{4}{Längste Wege}
     Der \emph{längste Weg} zwischen zwei Knoten $v$ und $w$ ist der längste, zyklenfreie (!) Pfad von $v$ nach $w$.
-    \begin{enumerate}
+    \begin{enumerate}[label=\alph*)]
         \item Widerlegen Sie folgende Aussage, zum Beispiel mithilfe eines Gegenbeispiels:
         \emph{Längste Wege bilden eine optimale Substruktur. Das heißt, längste Wege enhalten stets längste Wege.}
-        \item Zeigen Sie folgende Aussage:
+        \item\label{longest_path_dag}Zeigen Sie folgende Aussage:
         \emph{Längste Wege in einem gerichteten, azyklischen Graphen bilden eine optimale Substruktur.}
-        \item Beschreiben Sie kurz, wie Sie mit einem Algorithmus aus der Vorlesung längste Wege beginnend bei einem Knoten $v$ in einem gerichteten, azyklischen Graphen finden können.
+        \item Beschreiben Sie kurz, wie Sie mit einem Algorithmus aus der Vorlesung längste Wege beginnend bei einem Knoten $s$ in einem gerichteten, azyklischen Graphen finden können.
     \end{enumerate}
 \end{aufgabe}
+\begin{loesung}
+    \begin{enumerate}
+        \item 
+        \begin{proof}
+            Beweis durch Gegenbeispiel:
+            \begin{figure}[h!]
+                \centering
+                \begin{tikzpicture}[scale=0.15]
+                    \tikzstyle{every node}+=[inner sep=0pt]
+                    \draw [black] (24,-10.7) circle (3);
+                    \draw (24,-10.7) node {$a$};
+                    \draw [black] (34.1,-10.7) circle (3);
+                    \draw (34.1,-10.7) node {$b$};
+                    \draw [black] (34.1,-20.7) circle (3);
+                    \draw (34.1,-20.7) node {$c$};
+                    \draw [black] (24,-20.7) circle (3);
+                    \draw (24,-20.7) node {$d$};
+                    \draw [black] (27,-10.7) -- (31.1,-10.7);
+                    \draw (29.05,-10.2) node [above] {$1$};
+                    \draw [black] (34.1,-13.7) -- (34.1,-17.7);
+                    \draw (34.6,-15.7) node [right] {$1$};
+                    \draw [black] (31.1,-20.7) -- (27,-20.7);
+                    \draw (29.05,-21.2) node [below] {$1$};
+                    \draw [black] (24,-17.7) -- (24,-13.7);
+                    \draw (23.5,-15.7) node [left] {$1$};
+                \end{tikzpicture}
+            \end{figure}
+            \FloatBarrier
+            Der längste Weg von $a$ nach $b$ ist $(a, d, c, b)$ mit Länge 3.
+            Würden längste Wege stets längste Wege enthalten müsste $(d, c)$ mit Länge 1 der längste Weg von $d$ nach $c$ sein.
+            Der längste Weg von $d$ nach $c$ ist jedoch $(d, a, b, c)$ mit Länge 3.
+            Würde man diesen längsten Weg in den ursprünglichen Weg von $a$ nach $b$ einsetzen, wäre der resultierende Pfad $(a, d, a, b, c, b)$ nicht mehr zyklenfrei und somit per Definition kein kürzester Weg mehr.
+        \end{proof}
+        \item
+        Der Beweis verläuft analog zum Beweis der optimalen Substruktur kürzester Wege, nur das zusätzlich gezeigt werden musst, dass der \quotes{verlängerte} Pfad zyklenfrei ist, also einen Kandidat für einen längsten Weg ist.
+        Da jedoch gerichtete, azyklische Graphen per Definition keine Zyklen besitzen, ist dieser zusätzliche Schritt nicht schwierig.
+        \begin{proof}
+            Beweis durch Widerspruch:
+            Sei $P = (v_1, v_2, \ldots, v_i, v_{i + 1} \ldots, v_{j - 1}, v_j, \ldots, v_{n - 1}, v_n)$ ein längster Weg von $v_1$ nach $v_n$ ($1 \leq i < j \leq n$) und sei $P_{i, j} = (v_i, v_{i + 1}, \ldots, v_{j - 1}, v_j)$ \emph{kein} längster Weg von $v_i$ nach $v_j$.
+            Sei stattdessen $P' = (v_i, v_1', v_2', \ldots, v_{m - 1}', v_m', v_j)$ ein längster Weg von $v_i$ nach $v_j$.
+            Es gilt also: $w(P_{i, j}) < w(P')$.
+
+            Betrachten wir den Pfad $\hat{P} = (v_1, v_2, \ldots, v_i, v_1' \ldots, v_m', v_j, \ldots, v_{n - 1}, v_n)$.
+            $\hat{P}$ muss zyklenfrei sein, da es sich um einen zusammenhängenden Pfad handelt und der Graph zyklenfrei ist.
+            Es kann also kein Knoten doppelt vorkommen.
+            Außerdem gilt:
+            \begin{align*}
+                w(P) = w(P_{1,i}) + w(P_{i, j}) + w(P(j, n))
+                < w(P_{1,i}) + w(P') + w(P(j, n)) = w(\hat{P})
+            \end{align*}
+            Das Gewicht von $\hat{P}$ ist also größer als das von $P$.
+            Das ist ein Widerspruch zur Annahme, dass $P$ ein längster Pfad ist.
+        \end{proof}
+        \item
+        Wir negieren alle Kantengewichte ($w'(u, v) = -w(u, v)$) und wenden den Algorithmus nach Bellman und Ford an.
+        Da nach Teilaufgabe \ref*{longest_path_dag} längste Pfade in einem gerichteteten, azyklischen Graphen eine optimale Substruktur bilden, können wir den Korrektheitsbeweis von Bellman-Ford (siehe Cormen 24.1) anwenden, um zu zeigen, dass wir so längste Wege finden.
+        Dijkstra können wir nicht anwenden, da $w'(u, v)$ negativ sein kann und vermutlich auch ist.
+        Alternativ können wir den Algorithmus aus Aufgabe 3\ref*{shortest_paths_dag} verwenden.
+        Damit erreichen wir sogar Laufzeit $O(|V| + |E|)$, was deutlich besser ist als $O(|V| \cdot |E|)$ bei Bellman-Ford.
+    \end{enumerate}
+\end{loesung}
 
 \end{document}
