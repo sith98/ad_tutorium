@@ -1,0 +1,204 @@
+{
+    "nodes": [
+        {
+            "x": 161,
+            "y": 168,
+            "text": "1",
+            "isAcceptState": false
+        },
+        {
+            "x": 321,
+            "y": 168,
+            "text": "2",
+            "isAcceptState": false
+        },
+        {
+            "x": 161,
+            "y": 318,
+            "text": "4",
+            "isAcceptState": false
+        },
+        {
+            "x": 321,
+            "y": 318,
+            "text": "5",
+            "isAcceptState": false
+        },
+        {
+            "x": 478,
+            "y": 318,
+            "text": "6",
+            "isAcceptState": false
+        },
+        {
+            "x": 478,
+            "y": 168,
+            "text": "3",
+            "isAcceptState": false
+        },
+        {
+            "x": 161,
+            "y": 472,
+            "text": "7",
+            "isAcceptState": false
+        },
+        {
+            "x": 321,
+            "y": 472,
+            "text": "8",
+            "isAcceptState": false
+        },
+        {
+            "x": 478,
+            "y": 472,
+            "text": "9",
+            "isAcceptState": false
+        }
+    ],
+    "links": [
+        {
+            "type": "Link",
+            "nodeA": 3,
+            "nodeB": 5,
+            "text": "1",
+            "lineAngleAdjust": 3.141592653589793,
+            "parallelPart": 0.4847186578718531,
+            "perpendicularPart": 0
+        },
+        {
+            "type": "Link",
+            "nodeA": 4,
+            "nodeB": 3,
+            "text": "2",
+            "lineAngleAdjust": 0,
+            "parallelPart": 0.43312101910828027,
+            "perpendicularPart": 0
+        },
+        {
+            "type": "Link",
+            "nodeA": 4,
+            "nodeB": 5,
+            "text": "3",
+            "lineAngleAdjust": 3.141592653589793,
+            "parallelPart": 0.47333333333333333,
+            "perpendicularPart": 0
+        },
+        {
+            "type": "Link",
+            "nodeA": 6,
+            "nodeB": 7,
+            "text": "4",
+            "lineAngleAdjust": 3.141592653589793,
+            "parallelPart": 0.475,
+            "perpendicularPart": 0
+        },
+        {
+            "type": "Link",
+            "nodeA": 2,
+            "nodeB": 1,
+            "text": "5",
+            "lineAngleAdjust": 3.141592653589793,
+            "parallelPart": 0.45446985446985455,
+            "perpendicularPart": 0
+        },
+        {
+            "type": "Link",
+            "nodeA": 2,
+            "nodeB": 3,
+            "text": "6",
+            "lineAngleAdjust": 3.141592653589793,
+            "parallelPart": 0.51875,
+            "perpendicularPart": 0
+        },
+        {
+            "type": "Link",
+            "nodeA": 2,
+            "nodeB": 6,
+            "text": "7",
+            "lineAngleAdjust": 0,
+            "parallelPart": 0.5,
+            "perpendicularPart": 0
+        },
+        {
+            "type": "Link",
+            "nodeA": 3,
+            "nodeB": 7,
+            "text": "8",
+            "lineAngleAdjust": 0,
+            "parallelPart": 0.5,
+            "perpendicularPart": 0
+        },
+        {
+            "type": "Link",
+            "nodeA": 1,
+            "nodeB": 5,
+            "text": "9",
+            "lineAngleAdjust": 3.141592653589793,
+            "parallelPart": 0.5286624203821656,
+            "perpendicularPart": 0
+        },
+        {
+            "type": "Link",
+            "nodeA": 0,
+            "nodeB": 1,
+            "text": "10",
+            "lineAngleAdjust": 3.141592653589793,
+            "parallelPart": 0.5625,
+            "perpendicularPart": 0
+        },
+        {
+            "type": "Link",
+            "nodeA": 0,
+            "nodeB": 2,
+            "text": "11",
+            "lineAngleAdjust": 0,
+            "parallelPart": 0.5,
+            "perpendicularPart": 0
+        },
+        {
+            "type": "Link",
+            "nodeA": 4,
+            "nodeB": 8,
+            "text": "13",
+            "lineAngleAdjust": 0,
+            "parallelPart": 0.5,
+            "perpendicularPart": 0
+        },
+        {
+            "type": "Link",
+            "nodeA": 7,
+            "nodeB": 8,
+            "text": "14",
+            "lineAngleAdjust": 3.141592653589793,
+            "parallelPart": 0.6178343949044586,
+            "perpendicularPart": 0
+        },
+        {
+            "type": "Link",
+            "nodeA": 7,
+            "nodeB": 4,
+            "text": "12",
+            "lineAngleAdjust": 3.141592653589793,
+            "parallelPart": 0.5175436782797478,
+            "perpendicularPart": 0
+        },
+        {
+            "type": "Link",
+            "nodeA": 6,
+            "nodeB": 3,
+            "text": "15",
+            "lineAngleAdjust": 3.141592653589793,
+            "parallelPart": 0.5473274393705897,
+            "perpendicularPart": 0
+        },
+        {
+            "type": "Link",
+            "nodeA": 3,
+            "nodeB": 1,
+            "text": "16",
+            "lineAngleAdjust": 3.141592653589793,
+            "parallelPart": 0.43333333333333335,
+            "perpendicularPart": 0
+        }
+    ]
+}
