@@ -2,8 +2,8 @@
 
 \usepackage{gastex}
 \usepackage{etoolbox}
-\newcommand{\showLoesung}{2} %<---als Schalter
-%\newcommand{\showInhalt}{1} %<---als Schalter
+% \newcommand{\showLoesung}{2} %<---als Schalter
+% \newcommand{\showInhalt}{1} %<---als Schalter
 
 \input{../skel/uebmacsPNG}
 
@@ -36,9 +36,9 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
 \begin{aufgabe}{1}{Tiefensuche}
     \begin{enumerate}
         \item Zeigen oder widerlegen Sie folgende Aussage:
-        \emph{Wenn während einer Tiefensuche auf einem ungerichteten Graphen eine Kante $(u, v)$ betrachtet wird, ist $v$ niemals schwarz.}
+        \emph{Wenn während einer Tiefensuche auf einem ungerichteten Graphen eine Kante von $u$ nach $v$ betrachtet wird, ist $v$ niemals schwarz.}
         \item Zeigen oder widerlegen Sie folgende Aussage:
-        \emph{Wenn während einer Tiefensuche auf einem gerichteten, azyklischen Graphen eine Kante $(u, v)$ betrachtet wird, ist $v$ niemals grau.}
+        \emph{Wenn während einer Tiefensuche auf einem gerichteten, azyklischen Graphen eine Kante von $u$ nach $v$ betrachtet wird, ist $v$ niemals grau.}
     \end{enumerate}
 \end{aufgabe}
 
@@ -84,7 +84,7 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
 \end{loesung}
 
 \begin{aufgabe}{2}{Minimale Spannbäume}
-    Gegeben seien folgende Graphen:
+    Gegeben seien folgende, ungerichtete Graphen:
     \begin{figure}[h!]
         \centering
         $G_1$:
@@ -107,7 +107,6 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
                 \draw [black] (23.9,-19.3) -- (31.9,-19.3);
                 \draw (27.9,-18.8) node [above] {$1$};
                 \draw [black] (20.95,-22.3) -- (21.05,-29.2);
-                \fill [black] (21.05,-29.2) -- (21.54,-28.39) -- (20.54,-28.41);
                 \draw (20.48,-25.75) node [left] {$1$};
                 \draw [black] (48.6,-22.3) -- (48.6,-29.2);
                 \draw (48.1,-25.75) node [left] {$2$};
@@ -126,9 +125,9 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
             \end{tikzpicture}
         \end{subfigure}
         $G_2$:
-        \begin{subfigure}{0.38\textwidth}
+        \begin{subfigure}{0.34\textwidth}
             \centering
-            \begin{tikzpicture}[scale=0.15]
+            \begin{tikzpicture}[scale=0.13]
                 \tikzstyle{every node}+=[inner sep=0pt]
                 \draw [black] (16.1,-16.8) circle (3);
                 \draw (16.1,-16.8) node {$1$};
@@ -185,15 +184,15 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
     \end{figure}
     \FloatBarrier
     \begin{enumerate}[label=\alph*)]
-        \item Demonstieren Sie den Algorithmus von Kruskal zum Finden von minimalen Spannbäumen an $G_1$ und $G_2$ nach dem Schema aus der Vorlesung.
+        \item Demonstieren Sie den Algorithmus von Kruskal zum Finden von minimalen Spannbäumen an $G_1$ (und optional $G_2$) nach dem Schema aus der Vorlesung.
         Geben Sie für jeden Zwischenschritt den bisherigen Teil-MST sowie den aktuellen Zustand der Union-Find-Datenstruktur an.
-        \item Demonstieren Sie den Algorithmus von Prim zum Finden von minimalen Spannbäumen an $G_1$ und $G_2$ nach dem Schema aus der Vorlesung.
+        \item Demonstieren Sie den Algorithmus von Prim zum Finden von minimalen Spannbäumen an $G_1$ (und optional $G_2$) nach dem Schema aus der Vorlesung.
         Starten Sie jeweils bei Knoten 1.
         Geben Sie für jeden Zwischenschritt den bisherigen Teil-MST sowie den aktuellen Zustand des Min-Heaps an.
-        \item In $G_2$ gilt $\forall (u, v) \in E$: $w(u, v) = \{1, 2, \ldots, |E|\}$.
+        \item Angenommen, für einen Graph $G=(V,E)$ gilt $\forall \{u, v\} \in E$: $w(u, v) \in \{1, 2, \ldots, |E|\}$.
         Wie kann man den Algorithmus von Kruskal in einem solchen Fall mithilfe eines anderen Sortieralgorithmus beschleunigen?
         Welche Laufzeit hat Kruskal dann?
-        \item\label{connected_components}Ein ungerichteter Graph lässt sich in disjunkte \emph{Zusammenhangskomponenten} aufteilen, wobei sich in der Komponente, in der der Knoten $v$ liegt, genau die von $v$ aus erreichbaren Knoten befinden.
+        \item\label{connected_components}Ein ungerichteter (nicht unbedingt zusammenhängender) Graph lässt sich in disjunkte \emph{Zusammenhangskomponenten} aufteilen, wobei sich in der Komponente, in der der Knoten $v$ liegt, genau die von $v$ aus erreichbaren Knoten befinden.
         Implementieren Sie einen Algorithmus in Pseudocode oder einer Programmiersprache Ihrer Wahl auf Basis der Union-Find-Datenstruktur aus der Vorlesung, der alle Zusammenhangskomponenten eines ungerichteten Graphen findet.
         Welche Worst-Case-Laufzeit hat Ihr Algorithmus?
         \item
@@ -269,7 +268,7 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
 \end{loesung}
 
 \begin{aufgabe}{3}{Kürzeste Wege}
-    Gegeben sei folgender Graph $G_3$:
+    Gegeben sei folgender, gerichteter Graph $G_3$:
     \begin{figure}[h!]
         \centering
         \begin{tikzpicture}[scale=0.15]
@@ -324,16 +323,16 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
     \FloatBarrier
     \begin{enumerate}[label=\alph*)]
         \item Demonstieren Sie den Algorithmus von Bellman und Ford nach dem Schema aus der Vorlesung, indem Sie in $G_3$ alle kürzesten Wege, beginnend bei Knoten $a$, suchen.
-        Durchlaufen Sie Kanten $(u, v)$ alphabetisch~(nach $u$, dann nach $v$).
+        Durchlaufen Sie Kanten $(u, v)$ alphabetisch~(nach $u$ sortiert, bei gleichem $u$ nach $v$).
         Geben Sie alle Zwischenschritte an.
         \item Demonstieren Sie den Algorithmus von Dijkstra nach dem Schema aus der Vorlesung, indem Sie in $G_3$ alle kürzesten Wege, beginnend bei Knoten $a$, suchen.
-        Geben Sie alle Zwischenschritte an.
+        Geben Sie alle Zwischenschritte an, inklusive Min-Heaps.
         \item Suchen Sie nach demselben Schema mittels Dijkstra die kürzesten Wege in $G_2$, beginnend bei Knoten 1.
-        \item Bei welchen Arten von Graphen ist Dijkstra mit einen Array statt eines Min-Heaps potentiell effizienter?
-        \item Zeigen Sie anhand eines Beispiels, dass Dijkstra bei negativen Kantengewichten nicht immer kürzeste Wege findet.
+        \item Bei welchen Arten von Graphen ist Dijkstra mit einem Array statt einem Min-Heap potentiell effizienter?
+        \item Zeigen Sie anhand eines Beispielgraphen mit 3 Knoten, dass Dijkstra bei negativen Kantengewichten nicht immer kürzeste Wege findet.
         \item Angenommen, die Kantengewichte eines Graphen werden angepasst: $w'(u, v) = w(u, v) - \min\limits_{(a, b) \in E} \{w(a, b) \}$.
         Die neuen Gewichte $w'(u, v)$ sind stets nicht-negativ, sodass prinzipiell Dijkstra auf den Graphen mit angepassten Gewichten angewendet werden könnte.
-        Zeigen Sie anhand eines Beispiels, dass sich kürzeste Wege durch das Anpassen der Gewichte ändern können.
+        Zeigen Sie anhand eines Beispiels, dass sich kürzeste Wege durch das Anpassen der Gewichte ändern können und somit die obige Anpassung nicht sinnvoll ist.
         \item\label{shortest_paths_dag} Implementieren Sie einen Algorithmus in Pseudocode oder einer Programmiersprache Ihrer Wahl, der alle kürzesten Wege in einem gerichteten, azyklischen Graphen beginnend bei einem Knoten $s$ in Laufzeit $O(|V| + |E|)$ findet.
         \begin{description}
             \item[Tipp:] Wenn Sie alle Kanten entlang eines kürzesten Weges in der Reihenfolge relaxieren, in der sie auf dem Weg vorkommen, haben Sie den kürzesten Weg gefunden.
@@ -467,6 +466,7 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         \item\label{longest_path_dag}Zeigen Sie folgende Aussage:
         \emph{Längste Wege in einem gerichteten, azyklischen Graphen bilden eine optimale Substruktur.}
         \item Beschreiben Sie kurz, wie Sie mit einem Algorithmus aus der Vorlesung längste Wege beginnend bei einem Knoten $s$ in einem gerichteten, azyklischen Graphen finden können.
+        Geben Sie die Laufzeit des Algorithmus an.
     \end{enumerate}
 \end{aufgabe}
 \begin{loesung}
