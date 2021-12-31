@@ -26,3 +26,29 @@ $s_i, \ldots, s_j$ ist im erweitereten Teilarray weiterhin eine längste, aufste
 Diesen längsten Pfad kann man beispielsweise mittels Floyd-Warshall finden.
 Dafür legt man für alle $u, v \in E$ das Kantengewicht $w(u, v) = -1$ fest.
 Anschließend sucht man alle kürzesten Wege im Graphen mittels Floyd-Warshall. Der kürzeste Weg gemäß obiger Gewichte entspricht dem längsten Weg nach Kantenanzahl und somit der längsten, aufsteigenden Subsequenz.
+
+# Endliche Automaten
+1. Angenommen, Sie haben einen DEA $M = (Q, q_0, \delta, F)$ mit $\delta \in Q \times \Sigma \rightarrow Q$ und ein Wort $w$ gegeben.
+Beschreiben Sie mittels Pseudocode, wie Sie überprüfen können, ob $w \in \mathcal{L}(M)$. Geben Sie Laufzeit und Speicherbedarf Ihres Algorithmus an, abhängig von $n = |Q|$ und $m = |w|$. Gehen Sie davon aus, dass Sie in $O(1)$ bestimmen können, ob $q \in F$, und dass Sie $\delta(q, a)$ in $O(1)$ berechnen können.
+1. Angenommen, Sie haben einen NEA $M = (Q, Q_0, \delta, F)$ mit $\delta \in Q \times \Sigma \rightarrow \mathcal{P}(Q)$ und ein Wort $w$ gegeben.
+Beschreiben Sie, wie in der vorherigen Teilaufgabe, einen Algorithmus für $w \in \mathcal{L}(M)$ in Pseudocode und geben Sie Laufzeit und Speicherbedarf an.
+
+## Lösung
+1. isInLanguage $((Q, q_0, \delta, F), w)$
+    * $q := q_0$
+    * for $c \in w$:
+        * $q := \delta(q, c)$
+    * return $q \in F$
+    * $\Rightarrow$ Laufzeit $O(m)$, Speicher $O(1)$
+
+1. isInLanguage $((Q, Q_0, \delta, F), w)$:
+    * $\hat{q} := Q_0$
+    * for $c \in w$:
+        * $\hat{q}' := \emptyset$
+        * for $q \in \hat{q}$: $\hat{q}' := \hat{q}' \cup \delta(q, c)$
+        * $\hat{q} := \hat{q}'$
+    * for $q \in \hat{q}$:
+        * if $q \in F$: return true
+    * return false
+    * $\Rightarrow$ Laufzeit $O(m n ^ 2)$, Speicher $O(n)$
+    
