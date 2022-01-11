@@ -33,8 +33,8 @@
 Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in Tutorien, Übungen oder nach Vorlesungen.
 }{}
 
-\begin{aufgabe}{1}{APSP}
-    Gegeben sei der Graph $G$:
+\begin{aufgabe}{1}{\textnormal{\textsc{APSP}} und \textnormal{\textsc{FasterAPSP}}}
+    Gegeben sei der Graph $G_1$:
     \begin{figure}[h!]
         \centering
         \begin{tikzpicture}[scale=0.15]
@@ -83,10 +83,10 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
     \end{figure}
     \FloatBarrier
     \begin{enumerate}
-        \item Geben Sie die Distanzmatrix $D$ von $G$ an.
-        \item Finden Sie alle kürzesten Wege innerhalb des Graphen mithilfe des Algorithmus \textsc{APSP}.
+        \item Geben Sie die Distanzmatrix $D$ von $G_1$ an.
+        \item Finden Sie alle kürzesten Wege in $G_1$ mithilfe des Algorithmus \textsc{APSP}.
         Geben Sie nach jedem Schritt die Matrix $L$ an.
-        \item Finden Sie alle kürzesten Wege innerhalb des Graphen mithilfe des Algorithmus \textsc{FasterAPSP}
+        \item Finden Sie alle kürzesten Wege in $G_1$ mithilfe des Algorithmus \textsc{FasterAPSP}.
         Geben Sie nach jedem Schritt die Matrix $L$ an.
         \item Wie muss \textsc{APSP} erweitert werden, sodass neben der Distanzmatrix $D$ auch die Vorgängermatrix $\pi$ korrekt bestimmt wird.
         % \item Erweitern Sie \textsc{APSP}, sodass der Algorithmus zusätzlich erkennt, ob der Graph negative Zyklen enthält.
@@ -98,15 +98,16 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
 
 \begin{aufgabe}{2}{Floyd-Warshall-Algorithmus}
     \begin{enumerate}
-        \item Bestimmen Sie $D$ und $\pi$ des Graphen $G$ mithilfe des Algorithmus von Floyd und Warshall.
-        \item Angenommen, Sie wenden Floyd-Warshall auf einen Graphen mit negativen Zyklen an.
+        \item Bestimmen Sie $D$ und $\pi$ des Graphen $G_1$ mithilfe des Algorithmus von Floyd und Warshall.
+        Geben Sie alle Zwischenschritte an.
+        \item Angenommen, Sie führen Floyd-Warshall auf einem Graphen mit negativen Zyklen aus.
         Wie können Sie dies anhand der Ausgabe des Algorithmus erkennen?
-        \item Angenommen, Sie modifizieren Floyd-Warshall, sodass er die Matrix $L$ \emph{in-place} aktualisiert, anstatt für jeden Zwischenknoten eine neue Matrix anzulegen ($L^{(1)}, L^{(2)}, \ldots$).
-        Begründen, warum der Algorithmus weiterhin korrekt ist.
-        \item Sei der Graph $G = (V, E)$ gegeben.
+        \item Angenommen, Sie modifizieren Floyd-Warshall, sodass die Matrix $L$ \emph{in-place} aktualisiert wird, anstatt für jeden Zwischenknoten eine neue Matrix anzulegen ($L^{(1)}, L^{(2)}, \ldots$).
+        Begründen Sie, warum der Algorithmus weiterhin korrekt ist.
+        \item Es sei ein Graph $G = (V, E)$ gegeben.
         Dann bezeichnet man den Graphen $G^* = (V, E')$ mit $E' = \{(u, v) \mid u \in V, v \in V, \text{$v$ ist von $u$ aus erreichbar}\}$ als transitive Hülle von $G$.
         In $G^*$ kann man also anhand der Kanten sofort ablesen, welche Knoten in $G$ einander erreichen können.
-        Geben Sie einen Algorithmus mit Laufzeit $O(n^3)$ in Pseudocode an, der als Eingabe einen Graphen $G$ als Adjazenzmatrix erhält und $G^*$ bestimmt.
+        Geben Sie einen Algorithmus mit Laufzeit $O(n^3)$ in Pseudocode an, der als Eingabe einen Graphen $G$ als Adjazenzmatrix erhält und $G^*$ (als Adjazenzmatrix) ausgibt.
     \end{enumerate}
 \end{aufgabe}
 
@@ -234,14 +235,14 @@ int longestIncreasingSubsequenceExt(int a[], int n, int **solP) {
     \begin{enumerate}
         \item Bestimmen die einen minimalen DEA $M$ mit $\mathcal{L}(M) = L$ mithilfe des Algorithmus $\mathrm{L}^*$. Geben Sie alle Zwischenschritte an (Herstellen von Geschlossenheit und Konsistenz, Äquivalenzfragen).
         \item Bestimmen den kanonischen RFSA $M$ mit $\mathcal{L}(M) = L$ mithilfe des Algorithmus $\mathrm{NL}^*$. Geben Sie alle Zwischenschritte an (Herstellen von Geschlossenheit und Konsistenz, Äquivalenzfragen).
-        \item Angenommen, Sie haben einen DEA $M = (Q, q_0, \delta, F)$ und ein Wort $w$ gegeben.
+        \item Angenommen, Sie haben einen DEA $M = (Q, q_0, \delta, F)$ und ein Wort $w \in \Sigma^*$ gegeben.
         Beschreiben Sie mittels Pseudocode, wie Sie überprüfen können, ob $w \in \mathcal{L}(M)$. Geben Sie Laufzeit und Speicherbedarf Ihres Algorithmus an, abhängig von $n = |Q|$ und $m = |w|$.
         \begin{description}
             \item[Hinweis:] Das Berechnen von $\delta$ und das Bestimmen, ob $q \in F$, benötigt nur konstante Laufzeit.
         \end{description}
         \item Angenommen, Sie haben stattdessen einen NEA $M = (Q, Q_0, \delta, F)$ gegeben.
-        Wie können Sie dann für ein Wort $w$ prüfen, ob $w \in \mathcal{L}(M)$?
-        Geben Sie erneut Zeit- und Speicherbedarf an.
+        Geben Sie einen Algorithmus in Pseudocode an, der für ein Wort $w \in \Sigma^*$ prüft, ob $w \in \mathcal{L}(M)$.
+        Welche Laufzeit und Speicherbedarf besitzt Ihr Algorithmus?
     \end{enumerate}
 \end{aufgabe}
 
