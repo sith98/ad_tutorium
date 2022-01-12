@@ -2,7 +2,7 @@
 
 \usepackage{gastex}
 \usepackage{etoolbox}
-% \newcommand{\showLoesung}{2} %<---als Schalter
+\newcommand{\showLoesung}{2} %<---als Schalter
 % \newcommand{\showInhalt}{1} %<---als Schalter
 
 \input{../skel/uebmacsPNG}
@@ -110,6 +110,60 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         Geben Sie einen Algorithmus mit Laufzeit $O(n^3)$ in Pseudocode an, der als Eingabe einen Graphen $G$ als Adjazenzmatrix erhält und $G^*$ (als Adjazenzmatrix) ausgibt.
     \end{enumerate}
 \end{aufgabe}
+\begin{loesung}
+    \begin{enumerate}
+        \item 
+        \item
+        Wenn der Graph einen oder mehrere negative Zyklen enthält, ist dies an negativen Werten auf der Hauptdiagonale ($d_{ii}$) der Distanzmatrix $D$ zu erkennen.
+        Die Werte der Hauptdiagonale von $D$ geben die Länge des kürzesten Weges von einem Knoten zu sich selbst an.
+        Diese Länge sollte im Normalfall 0 sein.
+        Ist sie jedoch negativ, ist dies nur durch einen negativen Zyklus möglich.
+        Jeder (einfache) Zyklus durchläuft im Schlimmsten fall einmal alle Knoten, bevor er wieder beim Startpunkt ankommt, und umfasst somit maximal $|V|+1$ Knoten.
+        Größere Zyklen lassen sich dabei immer in kleinere aufteilen.
+        Bei so einem \quotes{maximalen} Zyklus sind alle Knoten bis auf den Start-/Zielknoten des Graphen Zwischenknoten des Pfades.
+        Da nach Abschluss von Bellman-Ford alle Knoten als Zwischenknoten berücksichtigt wurden, muss ein negativer Zyklus, falls er existiert, in jedem Fall gefunden worden sein.
+        \item
+        Im Folgenden ist mit $D$ stets die Matrix des modifizierten \emph{in-place} Algorithmus gemeint, mit $D^{(k)}$ die Matrizen des Ursprungsalgorithmus.
+
+        \emph{Behauptung:} Die Matrix $D$ ist nach der $k$-ten Iteration der äußeren Schleife identisch zu $D^{(k)}$.
+        \begin{proof}
+            Beweis durch Induktion:
+            \begin{description}
+                \item[IA:] Vor dem ersten Schleifendurchlauf gilt $D = D^{(0)} = W$.
+                \item[IV:] Vor dem $k$-ten Schleifendurchlauf ist $D = D^{(k - 1)}$.
+                \item[IS:] Um $d_{ij}^{(k)}$ zu bestimmen, werden die Werte $d_{ij}^{(k - 1)}$, $d_{ik}^{(k - 1)}$ und $d_{kj}^{(k - 1)}$ benötigt.
+                Wenn also vor dem Setzen von $d_{ij}$ im $k$-ten Schleifendurchlauf die Werte $d_{ij}$, $d_{ik}$ und $d_{kj}$ unverändert im Vergleich zum vorherigen Durchlauf sind, wird $d_{ij}$ korrekt gesetzt.
+
+                $d_{ij}$ ist trivialerweise unverändert, da es ja gerade erst gesetzt wird.
+                $d_{ik}$ und $d_{kj}$ sind auch unverändert, da wir im aktuellen Durchlauf $k$ als Zwischenknoten betrachten. 
+                Der Zwischenknoten $k$ hat nur dann Einfluss auf kürzeste Wege, die bei $k$ starten oder enden, wenn $k$ auf einem negativen Zyklus liegt.
+                Dies haben wir aber per Definition bei Floyd-Warshall ausgeschlossen.
+            \end{description}
+            Nach dem Prinzip der Induktion ist $D$ nach dem $k$-ten Schleifendurchlauf für jedes $k$ identisch zu $D^{(k)}$.
+        \end{proof}
+        Dass der Algorithmus korrekt funktioniert, folgt sofort aus der Behauptung.
+        \item 
+        Setzt man die Gewichte $w(u, v) = 1$ für alle Kanten $(u, v) \in E$ fest und führt man den Floyd-Warshall-Algorithmus aus, kann man die Erreichbarkeit zwischen Knoten in der Matrix $D$ ablesen: $D_{ij} < \infty \Leftrightarrow \text{$j$ ist von $i$ aus erreichbar}$.
+        Wenn allerdings nur die Erreichbarkeit relevant ist und nicht der Abstand, kann man auch eine vereinfachte Variante von Floyd-Warshall nutzen, die auf das Relaxieren komplett verzichtet wird und in den Matrizen $D^{(k)}$ nur die Erreichbarkeit und nicht der Abstand gespeichert wird:
+        \begin{algorithmic}[1]
+            \Procedure{TransitiveClosure}{$V, E$}
+                \State $D \gets E$
+                \For{$i \gets 1 \text{ \textbf{to} } |V|$}
+                    \State $d_{ii} \gets 1$ \Comment{Jeder Knoten kann sich selbst erreichen}
+                \EndFor
+                \For{$k \in V$}
+                    \For{$i \gets 1 \text{ \textbf{to} } |V|$}
+                        \For{$j \gets 1 \text{ \textbf{to} } |V|$}
+                            \State $d_{ij} \gets d_{ij} \vee (d_{ik} \wedge d_{kj})$
+                            \Comment{Update: Ist $j$ von $i$ über $k$ erreichbar?}
+                        \EndFor
+                    \EndFor
+                \EndFor
+                \State \Return $D$
+            \EndProcedure
+        \end{algorithmic}
+    \end{enumerate}
+\end{loesung}
 
 \begin{aufgabe}{3}{Dynamische Programmierung}
     Gegeben sei ein Array $(a_1, a_2, \ldots, a_n)$ mit $a_i \in \mathbb{Z}$ für $1 \leq i \leq n$.
@@ -245,5 +299,41 @@ int longestIncreasingSubsequenceExt(int a[], int n, int **solP) {
         Welche Laufzeit und Speicherbedarf besitzt Ihr Algorithmus?
     \end{enumerate}
 \end{aufgabe}
+
+\begin{loesung}
+    \begin{enumerate}
+        \item 
+        \item 
+        \item 
+        \begin{algorithmic}[1]
+            \Procedure{IsInLanguage}{$(Q, q_0, \delta, F), w$}
+                \State $q \gets q_0$
+                \For{$i \gets 1 \text{ \textbf{to} } |w|$}
+                    \State $q \gets \delta(q, w_i)$
+                \EndFor
+                \State \Return $q \in F$
+            \EndProcedure
+        \end{algorithmic}
+        \item 
+        \begin{algorithmic}[1]
+            \Procedure{IsInLanguage}{$(Q, q_0, \delta, F), w$}
+                \State $\hat{q} \gets q_0$
+                \For{$i \gets 1 \text{ \textbf{to} } |w|$}
+                    \State $\hat{q}' \gets \varnothing$
+                    \For{$q \in \hat{q}$}
+                        \State $\hat{q}' \gets \hat{q} \cup \delta(q, w_i)$
+                    \EndFor
+                    \State $\hat{q} \gets \hat{q}'$
+                \EndFor
+                \For{$q \in \hat{q}$}
+                    \If{$q \in F$}
+                        \State \Return \textbf{true}
+                    \EndIf
+                \EndFor
+                \State \Return \textbf{false}
+            \EndProcedure
+        \end{algorithmic}
+    \end{enumerate}
+\end{loesung}
 
 \end{document}
