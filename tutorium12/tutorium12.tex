@@ -4,6 +4,7 @@
 \usepackage{etoolbox}
 % \newcommand{\showLoesung}{2} %<---als Schalter
 % \newcommand{\showInhalt}{1} %<---als Schalter
+\newcommand{\volbert}{3} %<---als Schalter
 
 \input{../skel/uebmacsPNG}
 
@@ -528,6 +529,7 @@ int longestIncreasingSubsequenceExt(int a[], int n, int **pSolution) {
     \end{enumerate}
 \end{loesung}
 
+\ifcsdef{volbert}{}{
 \begin{aufgabe}{4}{Lernen regulärer Sprachen: $\mathrm{L}^*$, $\mathrm{NL}^*$}
     Gegeben sei die Sprache $L$ über dem Alphabet $\Sigma = \{a, b\}$, die durch den regulären Ausdruck $(a|b)^*ab(a|b)$ definiert ist.
     \begin{enumerate}
@@ -1171,5 +1173,6 @@ int longestIncreasingSubsequenceExt(int a[], int n, int **pSolution) {
         Der Speicherbedarf ist also $O(n)$.
     \end{enumerate}
 \end{loesung}
+}
 
 \end{document}
