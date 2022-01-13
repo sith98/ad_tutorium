@@ -40,15 +40,15 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         \begin{tikzpicture}[scale=0.15]
             \tikzstyle{every node}+=[inner sep=0pt]
             \draw [black] (25.6,-17.5) circle (3);
-            \draw (25.6,-17.5) node {$a$};
+            \draw (25.6,-17.5) node {$1$};
             \draw [black] (51.7,-17.5) circle (3);
-            \draw (51.7,-17.5) node {$b$};
+            \draw (51.7,-17.5) node {$2$};
             \draw [black] (25.6,-40.1) circle (3);
-            \draw (25.6,-40.1) node {$c$};
+            \draw (25.6,-40.1) node {$3$};
             \draw [black] (51.7,-40.1) circle (3);
-            \draw (51.7,-40.1) node {$d$};
+            \draw (51.7,-40.1) node {$4$};
             \draw [black] (38.8,-28.2) circle (3);
-            \draw (38.8,-28.2) node {$e$};
+            \draw (38.8,-28.2) node {$5$};
             \draw [black] (28.213,-18.972) arc (58.55225:43.39089:41.986);
             \fill [black] (36.82,-25.95) -- (36.63,-25.02) -- (35.91,-25.71);
             \draw (33.75,-21.68) node [above] {$2$};
@@ -83,18 +83,99 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
     \end{figure}
     \FloatBarrier
     \begin{enumerate}
-        \item Geben Sie die Distanzmatrix $D$ von $G_1$ an.
+        \item Geben Sie die Gewichtsmatrix $W = (w_{ij})$ von $G_1$ an.
         \item Finden Sie alle kürzesten Wege in $G_1$ mithilfe des Algorithmus \textsc{APSP}.
         Geben Sie nach jedem Schritt die Matrix $L$ an.
         \item Finden Sie alle kürzesten Wege in $G_1$ mithilfe des Algorithmus \textsc{FasterAPSP}.
         Geben Sie nach jedem Schritt die Matrix $L$ an.
-        \item Wie muss \textsc{APSP} erweitert werden, sodass neben der Distanzmatrix $D$ auch die Vorgängermatrix $\pi$ korrekt bestimmt wird.
+        \item Wie muss \textsc{APSP} erweitert werden, sodass neben der Distanzmatrix $D$ auch die Vorgängermatrix $\pi$ korrekt bestimmt wird?
         % \item Erweitern Sie \textsc{APSP}, sodass der Algorithmus zusätzlich erkennt, ob der Graph negative Zyklen enthält.
         % \begin{description}
         %     \item[Tipp:] Wenn ein Pfad $P$ von $v$ zu $v$ existiert mit $w(P) < 0$, liegt $v$ auf einem negativen Zyklus.
         % \end{description}
     \end{enumerate}
 \end{aufgabe}
+\begin{loesung}
+    \begin{enumerate}
+        \item
+        \begin{equation*}
+            W = \begin{pmatrix}
+                0 & 5 & \infty & \infty & 2 \\
+                -3 & 0 & \infty & 4 & \infty \\
+                4 & \infty & 0 & -1 & 7 \\
+                \infty & \infty & \infty & 0 & 2 \\
+                2 & \infty & 5 & \infty & 0 
+            \end{pmatrix}
+        \end{equation*}
+        \item
+        \begin{align*}
+            L^{(1)} &= \begin{pmatrix}
+                0 & 5 & \infty & \infty & 2 \\
+                -3 & 0 & \infty & 4 & \infty \\
+                4 & \infty & 0 & -1 & 7 \\
+                \infty & \infty & \infty & 0 & 2 \\
+                2 & \infty & 5 & \infty & 0
+            \end{pmatrix} \\
+            L^{(2)} &= \begin{pmatrix}
+                0 & 5 & 7 & 9 & 2 \\
+                -3 & 0 & \infty & 4 & -1 \\
+                4 & 9 & 0 & -1 & 1 \\
+                4 & \infty & 7 & 0 & 2 \\
+                2 & 7 & 5 & 4 & 0
+            \end{pmatrix} \\
+            L^{(3)} &= \begin{pmatrix}
+                0 & 5 & 7 & 6 & 2 \\
+                -3 & 0 & 4 & 4 & -1 \\
+                3 & 9 & 0 & -1 & 1 \\
+                4 & 9 & 7 & 0 & 2 \\
+                2 & 7 & 5 & 4 & 0
+            \end{pmatrix} \\
+            L^{(4)} &= \begin{pmatrix}
+                0 & 5 & 7 & 6 & 2 \\
+                -3 & 0 & 4 & 3 & -1 \\
+                3 & 8 & 0 & -1 & 1 \\
+                4 & 9 & 7 & 0 & 2 \\
+                2 & 7 & 5 & 4 & 0
+            \end{pmatrix}
+        \end{align*}
+        \item
+        \begin{align*}
+            L^{(1)} &= \begin{pmatrix}
+                0 & 5 & \infty & \infty & 2 \\
+                -3 & 0 & \infty & 4 & \infty \\
+                4 & \infty & 0 & -1 & 7 \\
+                \infty & \infty & \infty & 0 & 2 \\
+                2 & \infty & 5 & \infty & 0
+            \end{pmatrix} \\
+            L^{(2)} &= \begin{pmatrix}
+                0 & 5 & 7 & 9 & 2 \\
+                -3 & 0 & \infty & 4 & -1 \\
+                4 & 9 & 0 & -1 & 1 \\
+                4 & \infty & 7 & 0 & 2 \\
+                2 & 7 & 5 & 4 & 0
+            \end{pmatrix} \\
+            L^{(4)} &= \begin{pmatrix}
+                0 & 5 & 7 & 6 & 2 \\
+                -3 & 0 & 4 & 3 & -1 \\
+                3 & 8 & 0 & -1 & 1 \\
+                4 & 9 & 7 & 0 & 2 \\
+                2 & 7 & 5 & 4 & 0
+            \end{pmatrix}
+        \end{align*}
+        \item
+        Zunächst wird $\pi$ am Anfang des Algorithmus, genau wie bei Floyd-Warshall initialisiert.
+        In der Funktion \textsc{ExtendShortestPath} werden $L' \gets L$ und $\pi' \gets \pi$ initialisiert.
+        Außerdem wird in der innersten \texttt{for}-Schleife die Zeile $l_{ij}' \gets \min(l_{ij}', l_{ik} + w_{kj})$ durch
+        \begin{algorithmic}
+            \If{$l_{ik} + w_{kj} < l_{ij}'$}
+                \State $l_{ij}' \gets l_{ik} + w_{kj}$
+                \State $\pi_{ij}' \gets k$
+            \EndIf
+        \end{algorithmic}
+        ersetzt.
+        Am Ende von \textsc{ExtendShortestPath} werden $L'$ und $\pi'$ zurückgegeben und die beiden Matrizen entsprechend aktualisiert.
+    \end{enumerate}
+\end{loesung}
 
 \begin{aufgabe}{2}{Floyd-Warshall-Algorithmus}
     \begin{enumerate}
@@ -113,6 +194,93 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
 \begin{loesung}
     \begin{enumerate}
         \item 
+        \begin{align*}
+            L^{(0)} = \begin{pmatrix}
+                0 & 5 & \infty & \infty & 2 \\
+                -3 & 0 & \infty & 4 & \infty \\
+                4 & \infty & 0 & -1 & 7 \\
+                \infty & \infty & \infty & 0 & 2 \\
+                2 & \infty & 5 & \infty & 0
+            \end{pmatrix}\,\,\,
+            \pi^{(0)} = \begin{pmatrix}
+                n & 1 & n & n & 1 \\
+                2 & n & n & 2 & n \\
+                3 & n & n & 3 & 3 \\
+                n & n & n & n & 4 \\
+                5 & n & 5 & n & n
+            \end{pmatrix} \\
+            L^{(1)} = \begin{pmatrix}
+                0 & 5 & \infty & \infty & 2 \\
+                -3 & 0 & \infty & 4 & -1 \\
+                4 & 9 & 0 & -1 & 6 \\
+                \infty & \infty & \infty & 0 & 2 \\
+                2 & 7 & 5 & \infty & 0
+            \end{pmatrix}\,\,\,
+            \pi^{(1)} = \begin{pmatrix}
+                n & 1 & n & n & 1 \\
+                2 & n & n & 2 & 1 \\
+                3 & 1 & n & 3 & 1 \\
+                n & n & n & n & 4 \\
+                5 & 1 & 5 & n & n
+            \end{pmatrix} \\
+            L^{(2)} = \begin{pmatrix}
+                0 & 5 & \infty & 9 & 2 \\
+                -3 & 0 & \infty & 4 & -1 \\
+                4 & 9 & 0 & -1 & 6 \\
+                \infty & \infty & \infty & 0 & 2 \\
+                2 & 7 & 5 & 11 & 0
+            \end{pmatrix}\,\,\,
+            \pi^{(2)} = \begin{pmatrix}
+                n & 1 & n & 2 & 1 \\
+                2 & n & n & 2 & 1 \\
+                3 & 1 & n & 3 & 1 \\
+                n & n & n & n & 4 \\
+                5 & 1 & 5 & 2 & n
+            \end{pmatrix} \\
+            L^{(3)} = \begin{pmatrix}
+                0 & 5 & \infty & 9 & 2 \\
+                -3 & 0 & \infty & 4 & -1 \\
+                4 & 9 & 0 & -1 & 6 \\
+                \infty & \infty & \infty & 0 & 2 \\
+                2 & 7 & 5 & 4 & 0
+            \end{pmatrix}\,\,\,
+            \pi^{(3)} = \begin{pmatrix}
+                n & 1 & n & 2 & 1 \\
+                2 & n & n & 2 & 1 \\
+                3 & 1 & n & 3 & 1 \\
+                n & n & n & n & 4 \\
+                5 & 1 & 5 & 3 & n
+            \end{pmatrix} \\
+            L^{(4)} = \begin{pmatrix}
+                0 & 5 & \infty & 9 & 2 \\
+                -3 & 0 & \infty & 4 & -1 \\
+                4 & 9 & 0 & -1 & 1 \\
+                \infty & \infty & \infty & 0 & 2 \\
+                2 & 7 & 5 & 4 & 0
+            \end{pmatrix}\,\,\,
+            \pi^{(4)} = \begin{pmatrix}
+                n & 1 & n & 2 & 1 \\
+                2 & n & n & 2 & 1 \\
+                3 & 1 & n & 3 & 4 \\
+                n & n & n & n & 4 \\
+                5 & 1 & 5 & 3 & n
+            \end{pmatrix} \\
+            L^{(5)} = \begin{pmatrix}
+                0 & 5 & 7 & 6 & 2 \\
+                -3 & 0 & 4 & 3 & -1 \\
+                3 & 8 & 0 & -1 & 1 \\
+                4 & 9 & 7 & 0 & 2 \\
+                2 & 7 & 5 & 4 & 0
+            \end{pmatrix}\,\,\,
+            \pi^{(5)} = \begin{pmatrix}
+                n & 1 & 5 & 3 & 1 \\
+                2 & n & 5 & 3 & 1 \\
+                5 & 1 & n & 3 & 4 \\
+                5 & 1 & 5 & n & 4 \\
+                5 & 1 & 5 & 3 & n
+            \end{pmatrix}
+        \end{align*}
+
         \item
         Wenn der Graph einen oder mehrere negative Zyklen enthält, ist dies an negativen Werten auf der Hauptdiagonale ($d_{ii}$) der Distanzmatrix $D$ zu erkennen.
         Die Werte der Hauptdiagonale von $D$ geben die Länge des kürzesten Weges von einem Knoten zu sich selbst an.
@@ -290,7 +458,7 @@ int longestIncreasingSubsequenceExt(int a[], int n, int **solP) {
         \item Bestimmen die einen minimalen DEA $M$ mit $\mathcal{L}(M) = L$ mithilfe des Algorithmus $\mathrm{L}^*$. Geben Sie alle Zwischenschritte an (Herstellen von Geschlossenheit und Konsistenz, Äquivalenzfragen).
         \item Bestimmen den kanonischen RFSA $M$ mit $\mathcal{L}(M) = L$ mithilfe des Algorithmus $\mathrm{NL}^*$. Geben Sie alle Zwischenschritte an (Herstellen von Geschlossenheit und Konsistenz, Äquivalenzfragen).
         \item Angenommen, Sie haben einen DEA $M = (Q, q_0, \delta, F)$ und ein Wort $w \in \Sigma^*$ gegeben.
-        Beschreiben Sie mittels Pseudocode, wie Sie überprüfen können, ob $w \in \mathcal{L}(M)$. Geben Sie Laufzeit und Speicherbedarf Ihres Algorithmus an, abhängig von $n = |Q|$ und $m = |w|$.
+        Beschreiben Sie mittels Pseudocode, wie Sie überprüfen können, ob $w \in \mathcal{L}(M)$. Geben Sie Laufzeit und Speicherbedarf Ihres Algorithmus in $O$-Notation an, abhängig von $n = |Q|$ und $m = |w|$.
         \begin{description}
             \item[Hinweis:] Das Berechnen von $\delta$ und das Bestimmen, ob $q \in F$, benötigt nur konstante Laufzeit.
         \end{description}
@@ -302,9 +470,349 @@ int longestIncreasingSubsequenceExt(int a[], int n, int **solP) {
 
 \begin{loesung}
     \begin{enumerate}
+        \item Wir initialisieren die Tabelle:
+        \begin{table}[h!]
+            \centering
+            \begin{tabular}{c|c}
+                & $\epsilon$ \\
+                \hline
+                $\epsilon$ & $-$ \\
+                \hline
+                $a$ & $-$ \\
+                $b$ & $-$ \\
+            \end{tabular}
+        \end{table}
+        \FloatBarrier
+        Die Tabelle ist geschlossen und konsistent.
+        Jedoch bildet der resultierende Automat
+        \begin{figure*}[h!]
+            \centering
+            \begin{tikzpicture}[scale=0.15]
+            \tikzstyle{every node}+=[inner sep=0pt]
+            \draw [black] (27.4,-22) circle (3);
+            \draw (27.4,-22) node {$-$};
+            \draw [black] (26.077,-19.32) arc (234:-54:2.25);
+            \draw (27.4,-14.75) node [above] {$a,b$};
+            \fill [black] (28.72,-19.32) -- (29.6,-18.97) -- (28.79,-18.38);
+            \draw [black] (21.7,-22) -- (24.4,-22);
+            \fill [black] (24.4,-22) -- (23.6,-21.5) -- (23.6,-22.5);
+            \end{tikzpicture}
+        \end{figure*}
+        \FloatBarrier
+        nicht die gewünschte Sprache ab. So sollte das Gegenbeispiel $aba$ in der Sprache enthalten sein.
+        Also erweitern wir die Tabelle:
+        \begin{table}[h!]
+            \centering
+            \begin{tabular}{c|c}
+                & $\epsilon$ \\
+                \hline
+                $\epsilon$ & $-$ \\
+                $a$ & $-$ \\
+                $ab$ & $-$ \\
+                $aba$ & $+$ \\
+                \hline
+                $b$ & $-$ \\
+                $aa$ & $-$ \\
+                $abb$ & $+$ \\
+                $abaa$ & $-$ \\
+                $abab$ & $-$ \\
+            \end{tabular}
+        \end{table}
+        \FloatBarrier
+        Die Tabelle ist geschlossen, aber nicht konsistent (die Präfixe $\epsilon$ und $ab$ mit Folgezeichen $a$ in Spalte $\epsilon$):
+        \begin{table}[h!]
+            \centering
+            \begin{tabular}{c|cc}
+                & $\epsilon$ & $a$ \\
+                \hline
+                $\epsilon$ & $-$ & $-$ \\
+                $a$ & $-$ & $-$ \\
+                $ab$ & $-$ & $+$ \\
+                $aba$ & $+$ & $-$ \\
+                \hline
+                $b$ & $-$ & $-$ \\
+                $aa$ & $-$ & $-$ \\
+                $abb$ & $+$ & $-$ \\
+                $abaa$ & $-$ & $-$ \\
+                $abab$ & $-$ & $+$ \\
+            \end{tabular}
+        \end{table}
+        \FloatBarrier
+        Die Tabelle ist geschlossen, aber nicht konsistent (die Präfixe $\epsilon$ und $a$ mit Folgezeichen $b$ in Spalte $a$):
+        \begin{table}[h!]
+            \centering
+            \begin{tabular}{c|ccc}
+                & $\epsilon$ & $a$ & $ba$ \\
+                \hline
+                $\epsilon$ & $-$ & $-$ & $-$ \\
+                $a$ & $-$ & $-$ & $+$ \\
+                $ab$ & $-$ & $+$ & $-$ \\
+                $aba$ & $+$ & $-$ & $+$ \\
+                \hline
+                $b$ & $-$ & $-$ & $-$ \\
+                $aa$ & $-$ & $-$ & $+$ \\
+                $abb$ & $+$ & $-$ & $-$ \\
+                $abaa$ & $-$ & $-$ & $+$ \\
+                $abab$ & $-$ & $+$ & $-$ \\
+            \end{tabular}
+        \end{table}
+        \FloatBarrier
+        Die Tabelle ist nicht geschlossen (Präfix $abb$):
+        \begin{table}[h!]
+            \centering
+            \begin{tabular}{c|ccc}
+                & $\epsilon$ & $a$ & $ba$ \\
+                \hline
+                $\epsilon$ & $-$ & $-$ & $-$ \\
+                $a$ & $-$ & $-$ & $+$ \\
+                $ab$ & $-$ & $+$ & $-$ \\
+                $aba$ & $+$ & $-$ & $+$ \\
+                $abb$ & $+$ & $-$ & $-$ \\
+                \hline
+                $b$ & $-$ & $-$ & $-$ \\
+                $aa$ & $-$ & $-$ & $+$ \\
+                $abaa$ & $-$ & $-$ & $+$ \\
+                $abab$ & $-$ & $+$ & $-$ \\
+                $abba$ & $-$ & $-$ & $+$ \\
+                $abbb$ & $-$ & $-$ & $-$ \\
+            \end{tabular}
+        \end{table}
+        \FloatBarrier
+        Diese Tabelle ist geschlossen und konsistent.
+        Der resultierende Automat
+        \begin{figure*}[h!]
+            \centering
+            \begin{tikzpicture}[scale=0.23]
+            \tikzstyle{every node}+=[inner sep=0pt]
+            \draw [black] (28.8,-23.9) circle (3);
+            \draw (28.8,-23.9) node {$---$};
+            \draw [black] (42,-23.9) circle (3);
+            \draw (42,-23.9) node {$--+$};
+            \draw [black] (53.1,-23.9) circle (3);
+            \draw (53.1,-23.9) node {$-+-$};
+            \draw [black] (66.9,-17.7) circle (3);
+            \draw (66.9,-17.7) node {$+-+$};
+            \draw [black] (66.9,-17.7) circle (2.4);
+            \draw [black] (66.9,-31.2) circle (3);
+            \draw (66.9,-31.2) node {$+--$};
+            \draw [black] (66.9,-31.2) circle (2.4);
+            \draw [black] (23.5,-23.9) -- (25.8,-23.9);
+            \fill [black] (25.8,-23.9) -- (25,-23.4) -- (25,-24.4);
+            \draw [black] (31.8,-23.9) -- (39,-23.9);
+            \fill [black] (39,-23.9) -- (38.2,-23.4) -- (38.2,-24.4);
+            \draw (35.4,-24.4) node [below] {$a$};
+            \draw [black] (27.477,-21.22) arc (234:-54:2.25);
+            \draw (28.8,-16.65) node [above] {$b$};
+            \fill [black] (30.12,-21.22) -- (31,-20.87) -- (30.19,-20.28);
+            \draw [black] (40.677,-21.22) arc (234:-54:2.25);
+            \draw (42,-16.65) node [above] {$a$};
+            \fill [black] (43.32,-21.22) -- (44.2,-20.87) -- (43.39,-20.28);
+            \draw [black] (45,-23.9) -- (50.1,-23.9);
+            \fill [black] (50.1,-23.9) -- (49.3,-23.4) -- (49.3,-24.4);
+            \draw (47.55,-24.4) node [below] {$b$};
+            \draw [black] (55.342,-21.91) arc (127.41217:100.97425:20.572);
+            \fill [black] (63.92,-18.05) -- (63.04,-17.72) -- (63.23,-18.7);
+            \draw (58.48,-18.98) node [above] {$a$};
+            \draw [black] (55.75,-25.3) -- (64.25,-29.8);
+            \fill [black] (64.25,-29.8) -- (63.77,-28.98) -- (63.31,-29.87);
+            \draw (59.01,-28.05) node [below] {$b$};
+            \draw [black] (44.264,-21.935) arc (127.568:80.39618:25.387);
+            \fill [black] (44.26,-21.93) -- (45.2,-21.84) -- (44.59,-21.05);
+            \draw (52.93,-16.86) node [above] {$a$};
+            \draw [black] (64.477,-19.467) arc (-56.804:-74.80958:29.589);
+            \fill [black] (56.03,-23.26) -- (56.93,-23.53) -- (56.67,-22.57);
+            \draw (61.38,-22.21) node [below] {$b$};
+            \draw [black] (63.922,-31.554) arc (-86.12599:-126.5534:29.567);
+            \fill [black] (44.32,-25.81) -- (44.66,-26.68) -- (45.26,-25.88);
+            \draw (52.83,-30.98) node [below] {$a$};
+            \draw [black] (64.129,-32.346) arc (-70.12983:-131.56313:33.067);
+            \fill [black] (30.95,-25.99) -- (31.22,-26.89) -- (31.88,-26.15);
+            \draw (46.14,-34.31) node [below] {$b$};
+            \end{tikzpicture}
+        \end{figure*}
+        \FloatBarrier
+        bildet die gewünschte Sprache ab.
+        Fertig!
+        \item Wir initialisieren die Tabelle:
+        \begin{table}[h!]
+            \centering
+            \begin{tabular}{c|c}
+                & $\epsilon$ \\
+                \hline
+                $\epsilon$ & $-$ \\
+                \hline
+                $a$ & $-$ \\
+                $b$ & $-$ \\
+            \end{tabular}
+        \end{table}
+        \FloatBarrier
+        Die Tabelle ist geschlossen und konsistent.
+        Jedoch bildet der resultierende Automat
+        \begin{figure*}[h!]
+            \centering
+            \begin{tikzpicture}[scale=0.15]
+            \tikzstyle{every node}+=[inner sep=0pt]
+            \draw [black] (27.4,-22) circle (3);
+            \draw (27.4,-22) node {$-$};
+            \draw [black] (26.077,-19.32) arc (234:-54:2.25);
+            \draw (27.4,-14.75) node [above] {$a,b$};
+            \fill [black] (28.72,-19.32) -- (29.6,-18.97) -- (28.79,-18.38);
+            \draw [black] (21.7,-22) -- (24.4,-22);
+            \fill [black] (24.4,-22) -- (23.6,-21.5) -- (23.6,-22.5);
+            \end{tikzpicture}
+        \end{figure*}
+        \FloatBarrier
+        nicht die gewünschte Sprache ab. So sollte das Gegenbeispiel $aba$ in der Sprache enthalten sein.
+        Also erweitern wir die Tabelle:
+        \begin{table}[h!]
+            \centering
+            \begin{tabular}{c|cccc}
+                & $\epsilon$ & $a$ & $ba$ & $aba$ \\
+                \hline
+                $\epsilon$ & $-$ & $-$ & $-$ & $+$ \\
+                \hline
+                $a$ & $-$ & $-$ & $+$ & $+$ \\
+                $b$ & $-$ & $-$ & $-$ & $+$ \\
+            \end{tabular}
+        \end{table}
+        \FloatBarrier
+        Die Tabelle ist nicht geschlossen (Präfix $a$):
+        \begin{table}[h!]
+            \centering
+            \begin{tabular}{c|cccc}
+                & $\epsilon$ & $a$ & $ba$ & $aba$ \\
+                \hline
+                $\epsilon$ & $-$ & $-$ & $-$ & $+$ \\
+                $a$ & $-$ & $-$ & $+$ & $+$ \\
+                \hline
+                $b$ & $-$ & $-$ & $-$ & $+$ \\
+                $aa$ & $-$ & $-$ & $+$ & $+$ \\
+                $ab$ & $-$ & $+$ & $-$ & $+$ \\
+            \end{tabular}
+        \end{table}
+        \FloatBarrier
+        Die Tabelle ist nicht geschlossen (Präfix $ab$):
+        \begin{table}[h!]
+            \centering
+            \begin{tabular}{c|cccc}
+                & $\epsilon$ & $a$ & $ba$ & $aba$ \\
+                \hline
+                $\epsilon$ & $-$ & $-$ & $-$ & $+$ \\
+                $a$ & $-$ & $-$ & $+$ & $+$ \\
+                $ab$ & $-$ & $+$ & $-$ & $+$ \\
+                \hline
+                $b$ & $-$ & $-$ & $-$ & $+$ \\
+                $aa$ & $-$ & $-$ & $+$ & $+$ \\
+                $aba$ & $+$ & $-$ & $+$ & $+$ \\
+                $abb$ & $+$ & $-$ & $-$ & $+$ \\
+            \end{tabular}
+        \end{table}
+        \FloatBarrier
+        Die Tabelle ist nicht geschlossen ($aba$ ist keine Primzeile, aber $abb$):
+        \begin{table}[h!]
+            \centering
+            \begin{tabular}{c|cccc}
+                & $\epsilon$ & $a$ & $ba$ & $aba$ \\
+                \hline
+                $\epsilon$ & $-$ & $-$ & $-$ & $+$ \\
+                $a$ & $-$ & $-$ & $+$ & $+$ \\
+                $ab$ & $-$ & $+$ & $-$ & $+$ \\
+                $abb$ & $+$ & $-$ & $-$ & $+$ \\
+                \hline
+                $b$ & $-$ & $-$ & $-$ & $+$ \\
+                $aa$ & $-$ & $-$ & $+$ & $+$ \\
+                $aba$ & $+$ & $-$ & $+$ & $+$ \\
+                $abba$ & $-$ & $-$ & $+$ & $+$ \\
+                $abbb$ & $-$ & $-$ & $-$ & $+$ \\
+            \end{tabular}
+        \end{table}
+        \FloatBarrier
+        Diese Tabelle ist geschlossen und konsistent.
+        Der resultierende Automat
+        \begin{figure*}[h!]
+            \centering
+            \begin{tikzpicture}[scale=0.25]
+            \tikzstyle{every node}+=[inner sep=0pt]
+            \draw [black] (15,-23.1) circle (3);
+            \draw (15,-23.1) node {$---+$};
+            \draw [black] (35.5,-23.1) circle (3);
+            \draw (35.5,-23.1) node {$--++$};
+            \draw [black] (15,-40.9) circle (3);
+            \draw (15,-40.9) node {$-+-+$};
+            \draw [black] (35.5,-40.9) circle (3);
+            \draw (35.5,-40.9) node {\tiny $+--+$};
+            \draw [black] (35.5,-40.9) circle (2.4);
+            \draw [black] (10,-23.1) -- (12,-23.1);
+            \fill [black] (12,-23.1) -- (11.2,-22.6) -- (11.2,-23.6);
+            \draw [black] (18,-23.1) -- (32.5,-23.1);
+            \fill [black] (32.5,-23.1) -- (31.7,-22.6) -- (31.7,-23.6);
+            \draw (25.25,-23.6) node [below] {$a$};
+            \draw [black] (12.487,-21.484) arc (264.98525:-23.01475:2.25);
+            \draw (9.83,-16.81) node [above] {$a,b$};
+            \fill [black] (14.75,-20.12) -- (15.32,-19.37) -- (14.33,-19.28);
+            \draw [black] (15,-37.9) -- (15,-26.1);
+            \fill [black] (15,-26.1) -- (14.5,-26.9) -- (15.5,-26.9);
+            \draw (14.5,-32) node [left] {$a,b$};
+            \draw [black] (17.609,-21.626) arc (114.764:65.236:18.242);
+            \fill [black] (17.61,-21.63) -- (18.54,-21.74) -- (18.13,-20.84);
+            \draw (25.25,-19.45) node [above] {$a,b$};
+            \draw [black] (34.023,-43.505) arc (-35.59913:-226.33596:14.229);
+            \fill [black] (12.63,-24.93) -- (11.7,-25.12) -- (12.39,-25.84);
+            \draw (11.42,-46.46) node [below] {$a,b$};
+            \draw [black] (35.5,-37.9) -- (35.5,-26.1);
+            \fill [black] (35.5,-26.1) -- (35,-26.9) -- (36,-26.9);
+            \draw (36,-32) node [right] {$a$};
+            \draw [black] (18,-40.9) -- (32.5,-40.9);
+            \fill [black] (32.5,-40.9) -- (31.7,-40.4) -- (31.7,-41.4);
+            \draw (25.25,-41.4) node [below] {$a,b$};
+            \draw [black] (34.177,-20.42) arc (234:-54:2.25);
+            \draw (35.5,-15.85) node [above] {$a$};
+            \fill [black] (36.82,-20.42) -- (37.7,-20.07) -- (36.89,-19.48);
+            \draw [black] (16.713,-38.438) arc (143.43977:118.49531:49.392);
+            \fill [black] (16.71,-38.44) -- (17.59,-38.09) -- (16.79,-37.5);
+            \draw (22.99,-30.07) node [above] {$b$};
+            \draw [black] (33.58,-25.405) arc (-40.93176:-57.13316:75.322);
+            \fill [black] (33.58,-25.41) -- (32.68,-25.68) -- (33.43,-26.34);
+            \draw (27.01,-33.42) node [below] {$a$};
+            \end{tikzpicture}
+        \end{figure*}
+        \FloatBarrier
+        bildet die gewünschte Sprache ab.
+        Das ist einfacher zu sehen, wenn man sich klar macht, dass man das Wort von vorne beliebig verlängern kann und es immer noch Teil der Sprache ist.
+        Das bedeuetet, dass man einige Transitionen entfernen kann, ohne die Sprache zu verändern.
+        \begin{figure*}[h!]
+            \centering
+            \begin{tikzpicture}[scale=0.25]
+            \draw [black] (15,-23.1) circle (3);
+            \draw (15,-23.1) node {$---+$};
+            \draw [black] (35.5,-23.1) circle (3);
+            \draw (35.5,-23.1) node {$--++$};
+            \draw [black] (15,-40.9) circle (3);
+            \draw (15,-40.9) node {$-+-+$};
+            \draw [black] (35.5,-40.9) circle (3);
+            \draw (35.5,-40.9) node {\tiny $+--+$};
+            \draw [black] (35.5,-40.9) circle (2.4);
+            \draw [black] (10,-23.1) -- (12,-23.1);
+            \fill [black] (12,-23.1) -- (11.2,-22.6) -- (11.2,-23.6);
+            \draw [black] (18,-23.1) -- (32.5,-23.1);
+            \fill [black] (32.5,-23.1) -- (31.7,-22.6) -- (31.7,-23.6);
+            \draw (25.25,-23.6) node [below] {$a$};
+            \draw [black] (12.487,-21.484) arc (264.98525:-23.01475:2.25);
+            \draw (9.83,-16.81) node [above] {$a,b$};
+            \fill [black] (14.75,-20.12) -- (15.32,-19.37) -- (14.33,-19.28);
+            \draw [black] (18,-40.9) -- (32.5,-40.9);
+            \fill [black] (32.5,-40.9) -- (31.7,-40.4) -- (31.7,-41.4);
+            \draw (25.25,-41.4) node [below] {$a,b$};
+            \draw [black] (33.23,-25.07) -- (17.27,-38.93);
+            \fill [black] (17.27,-38.93) -- (18.2,-38.79) -- (17.54,-38.03);
+            \draw (24.24,-31.51) node [above] {$b$};
+            \end{tikzpicture}
+        \end{figure*}
+        \FloatBarrier
         \item 
-        \item 
-        \item 
+        Es genügt, den aktuellen Zustand $q$ des Automats zu speichern (initialisiert mit $q_0$).
+        Das Wort $w$ wird Zeichen für Zeichen eingelesen und $q$ gemäß $\delta$ aktualisiert.
+        Nachdem das Wort gelesen wurde, muss nur überprüft werden, ob $q \in F$.
         \begin{algorithmic}[1]
             \Procedure{IsInLanguage}{$(Q, q_0, \delta, F), w$}
                 \State $q \gets q_0$
@@ -314,7 +822,15 @@ int longestIncreasingSubsequenceExt(int a[], int n, int **solP) {
                 \State \Return $q \in F$
             \EndProcedure
         \end{algorithmic}
+        Die Laufzeit wird dominiert von der \texttt{for}-Schleife, die insgesamt $m$ Iterationen durchläuft.
+        Die Laufzeit ist also $O(m)$.
+        Nur der aktuelle Zustand muss temporär zwischengespeichert werden.
+        Der Speicherbedarf ist also $O(1)$.
         \item 
+        Es wird die Menge der Zustände $\hat{q}$ gespeichert, in der sich der Automat zum aktuellen Zeitpunkt befinden kann.
+        $\hat{q}$ wird zu Beginn mit der Menge der Startzustände $Q_0$ initialisiert.
+        Anschließend wird $\hat{q}$ für jedes Zeichen $w_i$ des Wortes aktualisiert, indem $\delta(q, w_i)$ für jeden Zustand $q \in \hat{q}$ bestimmt wird und alle resultierenden Mengen vereinigt werden.
+        Wenn nach dem Lesen des Wortes mindestens ein Zustand in $\hat{q}$ in $F$ liegt, wird das Wort akzeptiert.
         \begin{algorithmic}[1]
             \Procedure{IsInLanguage}{$(Q, q_0, \delta, F), w$}
                 \State $\hat{q} \gets q_0$
@@ -333,6 +849,26 @@ int longestIncreasingSubsequenceExt(int a[], int n, int **solP) {
                 \State \Return \textbf{false}
             \EndProcedure
         \end{algorithmic}
+        Die Laufzeit des Algorithmus hängt von der konkreten Darstellung der Menge $\hat{q}$ ab.
+        Gehen wir davon aus, dass $\hat{q}$ durch ein Array $a$ von $n$ Booleans repräsentiert wird, sodass der $a_i$ angibt, ob $q_i \in \hat{q}$ (Das gleiche gilt für $\hat{q}'$).
+        Eine alternative Darstellung wäre eine Hashtabelle. Die Laufzeit ändert sich jedoch in diesem Fall nicht wesentlich.
+
+        Betrachten wir für zunächst die erste \texttt{for}-Schleife.
+        Die äußere Schleife durchläuft $m$ Iterationen.
+        Für die innere Schleife wird einmal $a$ durchlaufen und alle Zustände betrachtet, die in $\hat{q}$ enthalten sind.
+        Das Durchlaufen der Schleife benötigt also jedes Mal Laufzeit $O(n)$.
+        Wie lange benötigt allerdings Zeile 6?
+        Wir implementieren das Vereinigen, indem wir alle Elemente von $\delta(q, w_i)$ durchlaufen und jedes Mal den entsprechenden Boolean-Wert des Arrays auf \emph{wahr} setzen.
+        Die Laufzeit hängt also von der Größe von $\delta(q, w_i)$ ab.
+        Da $\delta(q, w_i) \subseteq Q$, beträgt die Laufzeit $O(n)$.
+        Die Laufzeit für die gesamte erste \texttt{for}-Schleife ist also $O(m \cdot n \cdot n) = O(m n^2)$.
+
+        Die zweite Schleife, die überprüft, ob der Automat in einem Endzustand landet, benötigt Laufzeit $O(n)$, da laut Angabe $q \in F$ in $O(1)$ bestimmbar ist.
+        Die Gesamtlaufzeit des Algorithmus ist also $O(mn^2)$.
+
+        Der Algorithmus speichert $\hat{q}$ und $\hat{q}'$ temporär.
+        Beide werden durch Arrays der Länge $n$ repräsentiert.
+        Der Speicherbedarf ist also $O(n)$.
     \end{enumerate}
 \end{loesung}
 
