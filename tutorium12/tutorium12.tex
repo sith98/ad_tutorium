@@ -4,7 +4,7 @@
 \usepackage{etoolbox}
 % \newcommand{\showLoesung}{2} %<---als Schalter
 % \newcommand{\showInhalt}{1} %<---als Schalter
-\newcommand{\volbert}{3} %<---als Schalter
+% \newcommand{\volbert}{3} %<---als Schalter
 
 \input{../skel/uebmacsPNG}
 
@@ -548,7 +548,9 @@ int longestIncreasingSubsequenceExt(int a[], int n, int **pSolution) {
         Welche Laufzeit und Speicherbedarf besitzt Ihr Algorithmus?
     \end{enumerate}
 \end{aufgabe}
+}
 
+\ifcsdef{showLoesung}{\ifcsdef{volbert}{}{
 \begin{loesung}
     \begin{enumerate}
         \item Wir initialisieren die Tabelle:
@@ -1173,6 +1175,6 @@ int longestIncreasingSubsequenceExt(int a[], int n, int **pSolution) {
         Der Speicherbedarf ist also $O(n)$.
     \end{enumerate}
 \end{loesung}
-}
+}}
 
 \end{document}
