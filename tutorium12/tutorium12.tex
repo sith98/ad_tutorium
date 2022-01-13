@@ -2,7 +2,7 @@
 
 \usepackage{gastex}
 \usepackage{etoolbox}
-\newcommand{\showLoesung}{2} %<---als Schalter
+% \newcommand{\showLoesung}{2} %<---als Schalter
 % \newcommand{\showInhalt}{1} %<---als Schalter
 
 \input{../skel/uebmacsPNG}
@@ -84,11 +84,13 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
     \FloatBarrier
     \begin{enumerate}
         \item Geben Sie die Gewichtsmatrix $W = (w_{ij})$ von $G_1$ an.
-        \item Finden Sie alle kürzesten Wege in $G_1$ mithilfe des Algorithmus \textsc{APSP}.
-        Geben Sie nach jedem Schritt die Matrix $L$ an.
+        \item Wie muss \textsc{APSP}/\textsc{FasterAPSP} erweitert werden, sodass neben der Distanzmatrix $D$ auch die Vorgängermatrix $\pi$ korrekt bestimmt wird?
+        % \item Finden Sie alle kürzesten Wege in $G_1$ mithilfe des Algorithmus \textsc{APSP}.
+        % Geben Sie nach jedem Schritt die Matrizen $L$ und $\pi$ an.
         \item Finden Sie alle kürzesten Wege in $G_1$ mithilfe des Algorithmus \textsc{FasterAPSP}.
-        Geben Sie nach jedem Schritt die Matrix $L$ an.
-        \item Wie muss \textsc{APSP} erweitert werden, sodass neben der Distanzmatrix $D$ auch die Vorgängermatrix $\pi$ korrekt bestimmt wird?
+        Geben Sie nach jedem Schritt die Matrizen $L$ und $\pi$ an.
+        \item Ändert sich die ausgegebene Kürzeste-Wege-Matrix $D$ bei \textsc{FasterAPSP}, wenn Sie \textsc{ExtendPaths} eine Iteration häufiger ausführen als vorgesehen?
+        Wenn ja, bei welchen Arten von Eingaben?
         % \item Erweitern Sie \textsc{APSP}, sodass der Algorithmus zusätzlich erkennt, ob der Graph negative Zyklen enthält.
         % \begin{description}
         %     \item[Tipp:] Wenn ein Pfad $P$ von $v$ zu $v$ existiert mit $w(P) < 0$, liegt $v$ auf einem negativen Zyklus.
@@ -108,72 +110,118 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
             \end{pmatrix}
         \end{equation*}
         \item
-        \begin{align*}
-            L^{(1)} &= \begin{pmatrix}
-                0 & 5 & \infty & \infty & 2 \\
-                -3 & 0 & \infty & 4 & \infty \\
-                4 & \infty & 0 & -1 & 7 \\
-                \infty & \infty & \infty & 0 & 2 \\
-                2 & \infty & 5 & \infty & 0
-            \end{pmatrix} \\
-            L^{(2)} &= \begin{pmatrix}
-                0 & 5 & 7 & 9 & 2 \\
-                -3 & 0 & \infty & 4 & -1 \\
-                4 & 9 & 0 & -1 & 1 \\
-                4 & \infty & 7 & 0 & 2 \\
-                2 & 7 & 5 & 4 & 0
-            \end{pmatrix} \\
-            L^{(3)} &= \begin{pmatrix}
-                0 & 5 & 7 & 6 & 2 \\
-                -3 & 0 & 4 & 4 & -1 \\
-                3 & 9 & 0 & -1 & 1 \\
-                4 & 9 & 7 & 0 & 2 \\
-                2 & 7 & 5 & 4 & 0
-            \end{pmatrix} \\
-            L^{(4)} &= \begin{pmatrix}
-                0 & 5 & 7 & 6 & 2 \\
-                -3 & 0 & 4 & 3 & -1 \\
-                3 & 8 & 0 & -1 & 1 \\
-                4 & 9 & 7 & 0 & 2 \\
-                2 & 7 & 5 & 4 & 0
-            \end{pmatrix}
-        \end{align*}
-        \item
-        \begin{align*}
-            L^{(1)} &= \begin{pmatrix}
-                0 & 5 & \infty & \infty & 2 \\
-                -3 & 0 & \infty & 4 & \infty \\
-                4 & \infty & 0 & -1 & 7 \\
-                \infty & \infty & \infty & 0 & 2 \\
-                2 & \infty & 5 & \infty & 0
-            \end{pmatrix} \\
-            L^{(2)} &= \begin{pmatrix}
-                0 & 5 & 7 & 9 & 2 \\
-                -3 & 0 & \infty & 4 & -1 \\
-                4 & 9 & 0 & -1 & 1 \\
-                4 & \infty & 7 & 0 & 2 \\
-                2 & 7 & 5 & 4 & 0
-            \end{pmatrix} \\
-            L^{(4)} &= \begin{pmatrix}
-                0 & 5 & 7 & 6 & 2 \\
-                -3 & 0 & 4 & 3 & -1 \\
-                3 & 8 & 0 & -1 & 1 \\
-                4 & 9 & 7 & 0 & 2 \\
-                2 & 7 & 5 & 4 & 0
-            \end{pmatrix}
-        \end{align*}
-        \item
-        Zunächst wird $\pi$ am Anfang des Algorithmus, genau wie bei Floyd-Warshall initialisiert.
-        In der Funktion \textsc{ExtendShortestPath} werden $L' \gets L$ und $\pi' \gets \pi$ initialisiert.
+        Zunächst wird $\pi$ am Anfang des Algorithmus, genau wie bei Floyd-Warshall, initialisiert.
+        In der Funktion \textsc{ExtendShortestPath} wird neben $L'$ auch $\pi' \gets \pi$ initialisiert.
         Außerdem wird in der innersten \texttt{for}-Schleife die Zeile $l_{ij}' \gets \min(l_{ij}', l_{ik} + w_{kj})$ durch
         \begin{algorithmic}
             \If{$l_{ik} + w_{kj} < l_{ij}'$}
                 \State $l_{ij}' \gets l_{ik} + w_{kj}$
-                \State $\pi_{ij}' \gets k$
+                \If{$l_{ij}' < l_{ij}$} \Comment{Echte Verbesserung des kürzesten Weges}
+                    \State $\pi_{ij}' \gets \pi_{kj}$ \Comment{Wir gehen jetzt über $k$}
+                \EndIf
             \EndIf
         \end{algorithmic}
         ersetzt.
         Am Ende von \textsc{ExtendShortestPath} werden $L'$ und $\pi'$ zurückgegeben und die beiden Matrizen entsprechend aktualisiert.
+        % \item
+        % \begin{align*}
+        %     L^{(1)} &= \begin{pmatrix}
+        %         0 & 5 & \infty & \infty & 2 \\
+        %         -3 & 0 & \infty & 4 & \infty \\
+        %         4 & \infty & 0 & -1 & 7 \\
+        %         \infty & \infty & \infty & 0 & 2 \\
+        %         2 & \infty & 5 & \infty & 0
+        %     \end{pmatrix} \\
+        %     L^{(2)} &= \begin{pmatrix}
+        %         0 & 5 & 7 & 9 & 2 \\
+        %         -3 & 0 & \infty & 4 & -1 \\
+        %         4 & 9 & 0 & -1 & 1 \\
+        %         4 & \infty & 7 & 0 & 2 \\
+        %         2 & 7 & 5 & 4 & 0
+        %     \end{pmatrix} \\
+        %     L^{(3)} &= \begin{pmatrix}
+        %         0 & 5 & 7 & 6 & 2 \\
+        %         -3 & 0 & 4 & 4 & -1 \\
+        %         3 & 9 & 0 & -1 & 1 \\
+        %         4 & 9 & 7 & 0 & 2 \\
+        %         2 & 7 & 5 & 4 & 0
+        %     \end{pmatrix} \\
+        %     L^{(4)} &= \begin{pmatrix}
+        %         0 & 5 & 7 & 6 & 2 \\
+        %         -3 & 0 & 4 & 3 & -1 \\
+        %         3 & 8 & 0 & -1 & 1 \\
+        %         4 & 9 & 7 & 0 & 2 \\
+        %         2 & 7 & 5 & 4 & 0
+        %     \end{pmatrix}
+        % \end{align*}
+        \item
+        \begin{align*}
+            L^{(1)} = 
+            \begin{pmatrix}
+                0 & 5 & \infty & \infty & 2 \\
+                -3 & 0 & \infty & 4 & \infty \\
+                4 & \infty & 0 & -1 & 7 \\
+                \infty & \infty & \infty & 0 & 2 \\
+                2 & \infty & 5 & \infty & 0
+            \end{pmatrix}
+            \,\,\,\,
+            \pi^{(1)} = 
+            \begin{pmatrix}
+                n & 1 & n & n & 1 \\
+                2 & n & n & 2 & n \\
+                3 & n & n & 3 & 3 \\
+                n & n & n & n & 4 \\
+                5 & n & 5 & n & n
+            \end{pmatrix}
+            \\
+            L^{(2)} = 
+            \begin{pmatrix}
+                0 & 5 & 7 & 9 & 2 \\
+                -3 & 0 & \infty & 4 & -1 \\
+                4 & 9 & 0 & -1 & 1 \\
+                4 & \infty & 7 & 0 & 2 \\
+                2 & 7 & 5 & 4 & 0
+            \end{pmatrix}
+            \,\,\,\,
+            \pi^{(2)} =
+            \begin{pmatrix}
+                n & 1 & 5 & 2 & 1 \\
+                2 & n & n & 2 & 1 \\
+                3 & 1 & n & 3 & 4 \\
+                5 & n & 5 & n & 4 \\
+                5 & 1 & 5 & 3 & n
+            \end{pmatrix}
+            \\
+            L^{(4)} =
+            \begin{pmatrix}
+                0 & 5 & 7 & 6 & 2 \\
+                -3 & 0 & 4 & 3 & -1 \\
+                3 & 8 & 0 & -1 & 1 \\
+                4 & 9 & 7 & 0 & 2 \\
+                2 & 7 & 5 & 4 & 0
+            \end{pmatrix}
+            \,\,\,\,
+            \pi^{(4)} =
+            \begin{pmatrix}
+                n & 1 & 5 & 3 & 1 \\
+                2 & n & 1 & 5 & 1 \\
+                4 & 5 & n & 3 & 4 \\
+                5 & 1 & 5 & n & 4 \\
+                5 & 1 & 5 & 3 & n
+            \end{pmatrix}
+        \end{align*}
+        \item
+        $L^{(n)}$ gibt die Länge kürzester Wege an, die maximal $n$ Kanten traversieren.
+        Wenn der Graph keine negativen Zyklen enthält, sind alle kürzesten Wege maximal $|V| - 1$ Kanten lang, da alle Pfade mit mindestens $|V|$ Kanten einen Zyklus enthalten.
+        Bei \textsc{FasterAPSP} wird $L^{(n)}$ mit $n = \min\{2^i \mid i \in \mathbb{N}, 2^i \geq |V| - 1\}$ bestimmt.
+        Es gilt also $n \geq |V| - 1$.
+        Daher sollte sich das Ergebnis nicht ändern, wenn man eine Iteration weiterrechnet.
+        
+        Anders sieht es aus, wenn der Graph negative Zyklen enthält.
+        Dann kann es passieren, dass sich $L^{(n + 1)}$ von $L^{(n)}$ unterscheidet, da sich durch negative Zyklen kürzeste Wege verbessern, wenn mehr als $|V| - 1$ Kanten erlaubt werden.
+
+        Tatsächlich kann man sogar zeigen, dass, wenn ein Graph negative Zyklen enthält, immer $L^{(n + 1)} \neq L^{(n)}$.
+        Siehe dazu auch Bellman-Ford, wo ja auch nur ein weiterer Durchlauf zum Erkennen von negativen Zyklen genügt.
     \end{enumerate}
 \end{loesung}
 
@@ -181,104 +229,129 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
     \begin{enumerate}
         \item Bestimmen Sie $D$ und $\pi$ des Graphen $G_1$ mithilfe des Algorithmus von Floyd und Warshall.
         Geben Sie alle Zwischenschritte an.
-        \item Angenommen, Sie führen Floyd-Warshall auf einem Graphen mit negativen Zyklen aus.
+        Markieren Sie dabei jeweils, welche Werte sich geändert haben.
+        \item Angenommen, Sie führen den Floyd-Warshall-Algorithmus auf einem Graphen mit negativen Zyklen aus.
         Wie können Sie dies anhand der Ausgabe des Algorithmus erkennen?
-        \item Angenommen, Sie modifizieren Floyd-Warshall, sodass die Matrix $L$ \emph{in-place} aktualisiert wird, anstatt für jeden Zwischenknoten eine neue Matrix anzulegen ($L^{(1)}, L^{(2)}, \ldots$).
+        \item Angenommen, Sie modifizieren den Floyd-Warshall-Algorithmus, sodass die Matrix $L$ \emph{in-place} aktualisiert wird, anstatt für jeden Zwischenknoten eine neue Matrix anzulegen ($L^{(1)}, L^{(2)}, \ldots$).
         Begründen Sie, warum der Algorithmus weiterhin korrekt ist.
-        \item Es sei ein Graph $G = (V, E)$ gegeben.
-        Dann bezeichnet man den Graphen $G^* = (V, E')$ mit $E' = \{(u, v) \mid u \in V, v \in V, \text{$v$ ist von $u$ aus erreichbar}\}$ als transitive Hülle von $G$.
-        In $G^*$ kann man also anhand der Kanten sofort ablesen, welche Knoten in $G$ einander erreichen können.
-        Geben Sie einen Algorithmus mit Laufzeit $O(n^3)$ in Pseudocode an, der als Eingabe einen Graphen $G$ als Adjazenzmatrix erhält und $G^*$ (als Adjazenzmatrix) ausgibt.
+        % \item Es sei ein Graph $G = (V, E)$ gegeben.
+        % Dann bezeichnet man den Graphen $G^* = (V, E')$ mit $E' = \{(u, v) \mid u \in V, v \in V, \text{$v$ ist von $u$ aus erreichbar}\}$ als transitive Hülle von $G$.
+        % In $G^*$ kann man also anhand der Kanten sofort ablesen, welche Knoten in $G$ einander erreichen können.
+        % Geben Sie einen Algorithmus mit Laufzeit $O(n^3)$ in Pseudocode an, der als Eingabe einen Graphen $G$ als Adjazenzmatrix erhält und $G^*$ (als Adjazenzmatrix) ausgibt.
     \end{enumerate}
 \end{aufgabe}
 \begin{loesung}
     \begin{enumerate}
         \item 
         \begin{align*}
-            L^{(0)} = \begin{pmatrix}
+            L^{(0)} = 
+            \begin{pmatrix}
                 0 & 5 & \infty & \infty & 2 \\
                 -3 & 0 & \infty & 4 & \infty \\
                 4 & \infty & 0 & -1 & 7 \\
                 \infty & \infty & \infty & 0 & 2 \\
                 2 & \infty & 5 & \infty & 0
-            \end{pmatrix}\,\,\,
-            \pi^{(0)} = \begin{pmatrix}
+            \end{pmatrix}
+            \,\,\,\,
+            \pi^{(0)} = 
+            \begin{pmatrix}
                 n & 1 & n & n & 1 \\
                 2 & n & n & 2 & n \\
                 3 & n & n & 3 & 3 \\
                 n & n & n & n & 4 \\
                 5 & n & 5 & n & n
-            \end{pmatrix} \\
-            L^{(1)} = \begin{pmatrix}
+            \end{pmatrix}
+            \\
+            L^{(1)} = 
+            \begin{pmatrix}
                 0 & 5 & \infty & \infty & 2 \\
-                -3 & 0 & \infty & 4 & -1 \\
-                4 & 9 & 0 & -1 & 6 \\
+                -3 & 0 & \infty & 4 & \mathbf{-1} \\
+                4 & \mathbf{9} & 0 & -1 & \mathbf{6} \\
                 \infty & \infty & \infty & 0 & 2 \\
-                2 & 7 & 5 & \infty & 0
-            \end{pmatrix}\,\,\,
-            \pi^{(1)} = \begin{pmatrix}
+                2 & \mathbf{7} & 5 & \infty & 0
+            \end{pmatrix}
+            \,\,\,\,
+            \pi^{(1)} = 
+            \begin{pmatrix}
                 n & 1 & n & n & 1 \\
+                2 & n & n & 2 & \mathbf{1} \\
+                3 & \mathbf{1} & n & 3 & \mathbf{1} \\
+                n & n & n & n & 4 \\
+                5 & \mathbf{1} & 5 & n & n
+            \end{pmatrix}
+            \\
+            L^{(2)} =
+            \begin{pmatrix}
+                0 & 5 & \infty & \mathbf{9} & 2 \\
+                -3 & 0 & \infty & 4 & -1 \\
+                4 & 9 & 0 & -1 & 6 \\
+                \infty & \infty & \infty & 0 & 2 \\
+                2 & 7 & 5 & \mathbf{11} & 0
+            \end{pmatrix}
+            \,\,\,\,
+            \pi^{(2)} =
+            \begin{pmatrix}
+                n & 1 & n & \mathbf{2} & 1 \\
                 2 & n & n & 2 & 1 \\
                 3 & 1 & n & 3 & 1 \\
                 n & n & n & n & 4 \\
-                5 & 1 & 5 & n & n
-            \end{pmatrix} \\
-            L^{(2)} = \begin{pmatrix}
+                5 & 1 & 5 & \mathbf{2} & n
+            \end{pmatrix}
+            \\
+            L^{(3)} =
+            \begin{pmatrix}
                 0 & 5 & \infty & 9 & 2 \\
                 -3 & 0 & \infty & 4 & -1 \\
                 4 & 9 & 0 & -1 & 6 \\
                 \infty & \infty & \infty & 0 & 2 \\
-                2 & 7 & 5 & 11 & 0
-            \end{pmatrix}\,\,\,
-            \pi^{(2)} = \begin{pmatrix}
+                2 & 7 & 5 & \mathbf{4} & 0
+            \end{pmatrix}
+            \,\,\,\,
+            \pi^{(3)} =
+            \begin{pmatrix}
                 n & 1 & n & 2 & 1 \\
                 2 & n & n & 2 & 1 \\
                 3 & 1 & n & 3 & 1 \\
                 n & n & n & n & 4 \\
-                5 & 1 & 5 & 2 & n
-            \end{pmatrix} \\
-            L^{(3)} = \begin{pmatrix}
+                5 & 1 & 5 & \mathbf{3} & n
+            \end{pmatrix}
+            \\
+            L^{(4)} =
+            \begin{pmatrix}
                 0 & 5 & \infty & 9 & 2 \\
                 -3 & 0 & \infty & 4 & -1 \\
-                4 & 9 & 0 & -1 & 6 \\
+                4 & 9 & 0 & -1 & \mathbf{1} \\
                 \infty & \infty & \infty & 0 & 2 \\
                 2 & 7 & 5 & 4 & 0
-            \end{pmatrix}\,\,\,
-            \pi^{(3)} = \begin{pmatrix}
+            \end{pmatrix}
+            \,\,\,\,
+            \pi^{(4)} =
+            \begin{pmatrix}
                 n & 1 & n & 2 & 1 \\
                 2 & n & n & 2 & 1 \\
-                3 & 1 & n & 3 & 1 \\
+                3 & 1 & n & 3 & \mathbf{4} \\
                 n & n & n & n & 4 \\
-                5 & 1 & 5 & 3 & n
-            \end{pmatrix} \\
-            L^{(4)} = \begin{pmatrix}
-                0 & 5 & \infty & 9 & 2 \\
-                -3 & 0 & \infty & 4 & -1 \\
-                4 & 9 & 0 & -1 & 1 \\
-                \infty & \infty & \infty & 0 & 2 \\
-                2 & 7 & 5 & 4 & 0
-            \end{pmatrix}\,\,\,
-            \pi^{(4)} = \begin{pmatrix}
-                n & 1 & n & 2 & 1 \\
-                2 & n & n & 2 & 1 \\
-                3 & 1 & n & 3 & 4 \\
-                n & n & n & n & 4 \\
-                5 & 1 & 5 & 3 & n
-            \end{pmatrix} \\
-            L^{(5)} = \begin{pmatrix}
-                0 & 5 & 7 & 6 & 2 \\
-                -3 & 0 & 4 & 3 & -1 \\
-                3 & 8 & 0 & -1 & 1 \\
-                4 & 9 & 7 & 0 & 2 \\
-                2 & 7 & 5 & 4 & 0
-            \end{pmatrix}\,\,\,
-            \pi^{(5)} = \begin{pmatrix}
-                n & 1 & 5 & 3 & 1 \\
-                2 & n & 5 & 3 & 1 \\
-                5 & 1 & n & 3 & 4 \\
-                5 & 1 & 5 & n & 4 \\
                 5 & 1 & 5 & 3 & n
             \end{pmatrix}
+            \\
+            L^{(5)} =
+            \begin{pmatrix}
+                0 & 5 & \mathbf{7} & \mathbf{6} & 2 \\
+                -3 & 0 & \mathbf{4} & \mathbf{3} & -1 \\
+                \mathbf{3} & \mathbf{8} & 0 & -1 & 1 \\
+                \mathbf{4} & \mathbf{9} & \mathbf{7} & 0 & 2 \\
+                2 & 7 & 5 & 4 & 0
+            \end{pmatrix}
+            \,\,\,\,
+            \pi^{(5)} =
+            \begin{pmatrix}
+                n & 1 & \mathbf{5} & \mathbf{3} & 1 \\
+                2 & n & \mathbf{5} & \mathbf{3} & 1 \\
+                \mathbf{5} & 1 & n & 3 & 4 \\
+                \mathbf{5} & \mathbf{1} & \mathbf{5} & n & 4 \\
+                5 & 1 & 5 & 3 & n
+            \end{pmatrix}
+            \\
         \end{align*}
 
         \item
@@ -286,10 +359,10 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         Die Werte der Hauptdiagonale von $D$ geben die Länge des kürzesten Weges von einem Knoten zu sich selbst an.
         Diese Länge sollte im Normalfall 0 sein.
         Ist sie jedoch negativ, ist dies nur durch einen negativen Zyklus möglich.
-        Jeder (einfache) Zyklus durchläuft im Schlimmsten fall einmal alle Knoten, bevor er wieder beim Startpunkt ankommt, und umfasst somit maximal $|V|+1$ Knoten.
+        Jeder (einfache) Zyklus durchläuft im schlimmsten Fall einmal alle Knoten, bevor er wieder beim Startpunkt ankommt, und umfasst somit maximal $|V|+1$ Knoten.
         Größere Zyklen lassen sich dabei immer in kleinere aufteilen.
-        Bei so einem \quotes{maximalen} Zyklus sind alle Knoten bis auf den Start-/Zielknoten des Graphen Zwischenknoten des Pfades.
-        Da nach Abschluss von Bellman-Ford alle Knoten als Zwischenknoten berücksichtigt wurden, muss ein negativer Zyklus, falls er existiert, in jedem Fall gefunden worden sein.
+        Bei so einem \quotes{maximalen} Zyklus sind alle Knoten bis auf den Start-/Zielknoten des Zyklus Zwischenknoten des Pfades.
+        Da nach Abschluss von Floyd-Warshall alle Knoten als Zwischenknoten berücksichtigt wurden, muss ein negativer Zyklus, falls er existiert, in jedem Fall gefunden worden sein.
         \item
         Im Folgenden ist mit $D$ stets die Matrix des modifizierten \emph{in-place} Algorithmus gemeint, mit $D^{(k)}$ die Matrizen des Ursprungsalgorithmus.
 
@@ -309,30 +382,31 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
             \end{description}
             Nach dem Prinzip der Induktion ist $D$ nach dem $k$-ten Schleifendurchlauf für jedes $k$ identisch zu $D^{(k)}$.
         \end{proof}
-        Dass der Algorithmus korrekt funktioniert, folgt sofort aus der Behauptung.
-        \item 
-        Setzt man die Gewichte $w(u, v) = 1$ für alle Kanten $(u, v) \in E$ fest und führt man den Floyd-Warshall-Algorithmus aus, kann man die Erreichbarkeit zwischen Knoten in der Matrix $D$ ablesen: $D_{ij} < \infty \Leftrightarrow \text{$j$ ist von $i$ aus erreichbar}$.
-        Wenn allerdings nur die Erreichbarkeit relevant ist und nicht der Abstand, kann man auch eine vereinfachte Variante von Floyd-Warshall nutzen, die auf das Relaxieren komplett verzichtet wird und in den Matrizen $D^{(k)}$ nur die Erreichbarkeit und nicht der Abstand gespeichert wird:
-        \begin{algorithmic}[1]
-            \Procedure{TransitiveClosure}{$V, E$}
-                \State $D \gets E$
-                \For{$i \gets 1 \text{ \textbf{to} } |V|$}
-                    \State $d_{ii} \gets 1$ \Comment{Jeder Knoten kann sich selbst erreichen}
-                \EndFor
-                \For{$k \in V$}
-                    \For{$i \gets 1 \text{ \textbf{to} } |V|$}
-                        \For{$j \gets 1 \text{ \textbf{to} } |V|$}
-                            \State $d_{ij} \gets d_{ij} \vee (d_{ik} \wedge d_{kj})$
-                            \Comment{Update: Ist $j$ von $i$ über $k$ erreichbar?}
-                        \EndFor
-                    \EndFor
-                \EndFor
-                \State \Return $D$
-            \EndProcedure
-        \end{algorithmic}
+        Dass der modifizierte Algorithmus korrekt ist, folgt sofort aus der Behauptung.
+        % \item 
+        % Setzt man die Gewichte $w(u, v) = 1$ für alle Kanten $(u, v) \in E$ fest und führt man den Floyd-Warshall-Algorithmus aus, kann man die Erreichbarkeit zwischen Knoten in der Matrix $D$ ablesen: $D_{ij} < \infty \Leftrightarrow \text{$j$ ist von $i$ aus erreichbar}$.
+        % Wenn allerdings nur die Erreichbarkeit relevant ist und nicht der Abstand, kann man auch eine vereinfachte Variante von Floyd-Warshall nutzen, die auf das Relaxieren komplett verzichtet wird und in den Matrizen $D^{(k)}$ nur die Erreichbarkeit und nicht der Abstand gespeichert wird:
+        % \begin{algorithmic}[1]
+        %     \Procedure{TransitiveClosure}{$V, E$}
+        %         \State $D \gets E$
+        %         \For{$i \gets 1 \text{ \textbf{to} } |V|$}
+        %             \State $d_{ii} \gets 1$ \Comment{Jeder Knoten kann sich selbst erreichen}
+        %         \EndFor
+        %         \For{$k \in V$}
+        %             \For{$i \gets 1 \text{ \textbf{to} } |V|$}
+        %                 \For{$j \gets 1 \text{ \textbf{to} } |V|$}
+        %                     \State $d_{ij} \gets d_{ij} \vee (d_{ik} \wedge d_{kj})$
+        %                     \Comment{Update: Ist $j$ von $i$ über $k$ erreichbar?}
+        %                 \EndFor
+        %             \EndFor
+        %         \EndFor
+        %         \State \Return $D$
+        %     \EndProcedure
+        % \end{algorithmic}
     \end{enumerate}
 \end{loesung}
 
+\ifcsdef{showLoesung}{}{\newpage}
 \begin{aufgabe}{3}{Dynamische Programmierung}
     Gegeben sei ein Array $(a_1, a_2, \ldots, a_n)$ mit $a_i \in \mathbb{Z}$ für $1 \leq i \leq n$.
     Eine aufsteigende Subsequenz des Arrays ist definiert als eine Folge $s_1, s_2, \ldots, s_{k - 1}, s_k$ mit $1 \leq s_1 < s_2 < \ldots < s_k \leq n$ und $a_{s_1} < a_{s_2} < \ldots < a_{s_k}$.
@@ -342,7 +416,8 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
     \end{description}
     \begin{enumerate}[label=\alph*)]
         \item\label{optimal_substructure} Beschreiben Sie kurz, inwiefern die längste, aufsteigende Subsequenz die Eigenschaften einer optimalen Substruktur besitzt.
-        \item\label{dynamic} Implementieren Sie einen Algorithmus in Pseudocode oder einer Programmiersprache Ihrer Wahl mit Laufzeit $O(n^2)$ nach dem Prinzip der dynamischen Programmierung, welcher ein Array $a$ als Eingabe erhält und $k$ ausgibt, die Länge der längsten, aufsteigenden Subsequenz $s_1, \ldots, s_k$.
+        \item\label{dynamic} Implementieren Sie einen Algorithmus in Pseudocode oder einer Programmiersprache Ihrer Wahl mit Laufzeit $O(n^2)$ nach dem Prinzip der dynamischen Programmierung, welcher ein Array $a$ als Eingabe erhält und $k$ ausgibt.
+        Dabei ist $k$ die Länge der längsten, aufsteigenden Subsequenz $s_1, \ldots, s_k$.
         \begin{description}
             \item[Tipp:] Berechnen Sie für jedes $i$ ($1 \leq i \leq n$) die Länge der längsten, aufsteigenden Subsequenz die bei $a_i$ endet ($s_k = i$) und geben Sie abschießend das Maximum dieser Werte zurück.
         \end{description}
@@ -376,12 +451,13 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         In diesem Fall enthält sie zusätzlich weitere Elemente aus der Menge $\{a_1, a_2, \ldots, a_{i - 1}\}$.
         Seien dies die Elemente $(a_{s_1}, a_{s_2}, \ldots, a_{s_l})$.
         Aufgrund der Eigentschaften aufsteigender Subsequenzen gilt dann $1 \leq s_1 < s_2 < \ldots < s_l < i$ sowie außerdem $a_{s_1} < a_{s_2} < \ldots < a_{s_l} < a_i$.
-        Da längste, aufsteigende Subsequenzen eine optimale Substruktur bilden (siehe Teilaufgabe \ref*{optimal_substructure}), muss $s_1, s_2, \ldots, s_l$ die längste, aufsteigende Subsequenz im Bereich $[1, i - 1]$ sein unter der zusätzlichen Einschränkung, dass $a_{s_l} < a_i$.
+        Da längste, aufsteigende Subsequenzen gemäß Teilaufgabe~\ref*{optimal_substructure} eine optimale Substruktur bilden, muss $s_1, s_2, \ldots, s_l$ die längste, aufsteigende Subsequenz im Bereich $[1, i - 1]$ sein unter der zusätzlichen Einschränkung, dass $a_{s_l} < a_i$.
 
         Die Länge $l$ dieser Subsequenz entspricht $\max\{l_j \mid j \in \{1, 2, \ldots, i - 1\}, a_j < a_i\}$.
         Es gilt dann also $l_i = l + 1$.
-        Für jedes $i$ kann man also $l_i$ leicht bestimmen, indem man über alle $l_1, l_2, \ldots, l_{i - 1}$ iteriert und das Maximium aller $l_j$ bestimmt, für die $a_j < a_i$ gilt.
-        Schließlich muss man nur noch $k = \max\{l_i | i \in \{1, 2, \ldots, n\}\}$ bestimmen.
+        Für jedes $i$ kann man $l_i$ leicht bestimmen, indem man über alle $l_1, l_2, \ldots, l_{i - 1}$ iteriert und das Maximium aller $l_j$ bestimmt, für die $a_j < a_i$ gilt.
+        
+        Nachdem man alle $l_i$ bestimmt hat, muss man nur noch $k = \max\{l_i | i \in \{1, 2, \ldots, n\}\}$ ausgeben.
         \begin{lstlisting}[language=c++]
 int longestIncreasingSubsequence(int a[], int n) {
     int *seqLen = new int[n];
@@ -408,7 +484,7 @@ int longestIncreasingSubsequence(int a[], int n) {
         Auf diese Weise kennt man, nachdem alle $l_i$ bestimmt wurden, die Endposition der längsten, aufsteigenden Subsequenz.
         Außerdem kann man mittels \texttt{prev} die gesamte Sequenz von hinten nach vorne rekonstruieren.
         \begin{lstlisting}[language=c++]
-int longestIncreasingSubsequenceExt(int a[], int n, int **solP) {
+int longestIncreasingSubsequenceExt(int a[], int n, int **pSolution) {
     int *seqLen = new int[n];
     int *prev = new int[n];
     int k = 1;
@@ -429,13 +505,13 @@ int longestIncreasingSubsequenceExt(int a[], int n, int **solP) {
             }
         }
     }
-    int *sol = new int[k];
+    int *solution = new int[k];
     int j = kIndex;
     for (int i = k - 1; i >= 0; i--) {
-        sol[i] = a[j];
+        solution[i] = a[j];
         j = prev[j];
     }
-    *solP = sol;
+    *pSolution = solution;
     return k;
 }
         \end{lstlisting}
@@ -453,14 +529,17 @@ int longestIncreasingSubsequenceExt(int a[], int n, int **solP) {
 \end{loesung}
 
 \begin{aufgabe}{4}{Lernen regulärer Sprachen: $\mathrm{L}^*$, $\mathrm{NL}^*$}
-    Gegeben sei die Sprache $L$ über dem Alphabet $\Sigma = \{a, b\}$, die durch den regulären Ausdruck $(a|b)^*ab(a|b)$ definiert ist. $L$ enthält also genau die Wörter, die auf $aba$ oder $abb$ enden.
+    Gegeben sei die Sprache $L$ über dem Alphabet $\Sigma = \{a, b\}$, die durch den regulären Ausdruck $(a|b)^*ab(a|b)$ definiert ist.
     \begin{enumerate}
-        \item Bestimmen die einen minimalen DEA $M$ mit $\mathcal{L}(M) = L$ mithilfe des Algorithmus $\mathrm{L}^*$. Geben Sie alle Zwischenschritte an (Herstellen von Geschlossenheit und Konsistenz, Äquivalenzfragen).
-        \item Bestimmen den kanonischen RFSA $M$ mit $\mathcal{L}(M) = L$ mithilfe des Algorithmus $\mathrm{NL}^*$. Geben Sie alle Zwischenschritte an (Herstellen von Geschlossenheit und Konsistenz, Äquivalenzfragen).
+        \item Bestimmen die einen minimalen DEA $M$ mit $\mathcal{L}(M) = L$ mithilfe des Algorithmus $\mathrm{L}^*$. Geben Sie alle Zwischenschritte an (Herstellen von Geschlossenheit und Konsistenz, Äquivalenzfragen, Gegenbeispiele).
+        \item Bestimmen den kanonischen RFSA $M$ mit $\mathcal{L}(M) = L$ mithilfe des Algorithmus $\mathrm{NL}^*$. Geben Sie alle Zwischenschritte an (Herstellen von Geschlossenheit und Konsistenz, Äquivalenzfragen, Gegenbeispiele).
+        \item Bestimmen Sie, zunächst von Hand, den (minimalen) DEA, der das Muster $abba$ in einem Text ($\Sigma = \{a, b\}$) sucht.
+        Überprüfen Sie Ihr Ergebnis, indem Sie den Automaten mittels $\mathrm{L}^*$ erlernen.
         \item Angenommen, Sie haben einen DEA $M = (Q, q_0, \delta, F)$ und ein Wort $w \in \Sigma^*$ gegeben.
         Beschreiben Sie mittels Pseudocode, wie Sie überprüfen können, ob $w \in \mathcal{L}(M)$. Geben Sie Laufzeit und Speicherbedarf Ihres Algorithmus in $O$-Notation an, abhängig von $n = |Q|$ und $m = |w|$.
         \begin{description}
-            \item[Hinweis:] Das Berechnen von $\delta$ und das Bestimmen, ob $q \in F$, benötigt nur konstante Laufzeit.
+            \item[Hinweis:] Das Auswerten von $\delta(q, w_i)$ für einen Zustand $q$ und ein Zeichen des Wortes $w_i$ benötigt konstante Laufzeit.
+            Ebenso kann man in $O(1)$ bestimmen, ob $q \in F$.
         \end{description}
         \item Angenommen, Sie haben stattdessen einen NEA $M = (Q, Q_0, \delta, F)$ gegeben.
         Geben Sie einen Algorithmus in Pseudocode an, der für ein Wort $w \in \Sigma^*$ prüft, ob $w \in \mathcal{L}(M)$.
@@ -809,6 +888,227 @@ int longestIncreasingSubsequenceExt(int a[], int n, int **solP) {
             \end{tikzpicture}
         \end{figure*}
         \FloatBarrier
+        \item Der folgende Automat erkennt Vorkommnisse des Wortes $abba$.
+        \begin{figure*}[h!]
+            \centering
+            \begin{tikzpicture}[scale=0.15]
+                \tikzstyle{every node}+=[inner sep=0pt]
+                \draw [black] (14.2,-19.6) circle (3);
+                \draw (14.2,-19.6) node {$0$};
+                \draw [black] (23.6,-19.6) circle (3);
+                \draw (23.6,-19.6) node {$1$};
+                \draw [black] (32.9,-19.6) circle (3);
+                \draw (32.9,-19.6) node {$2$};
+                \draw [black] (42.5,-19.6) circle (3);
+                \draw (42.5,-19.6) node {$3$};
+                \draw [black] (52,-19.6) circle (3);
+                \draw (52,-19.6) node {$4$};
+                \draw [black] (52,-19.6) circle (2.4);
+                \draw [black] (8.4,-19.6) -- (11.2,-19.6);
+                \fill [black] (11.2,-19.6) -- (10.4,-19.1) -- (10.4,-20.1);
+                \draw [black] (17.2,-19.6) -- (20.6,-19.6);
+                \fill [black] (20.6,-19.6) -- (19.8,-19.1) -- (19.8,-20.1);
+                \draw (18.9,-19.1) node [above] {$a$};
+                \draw [black] (26.6,-19.6) -- (29.9,-19.6);
+                \fill [black] (29.9,-19.6) -- (29.1,-19.1) -- (29.1,-20.1);
+                \draw (28.25,-19.1) node [above] {$b$};
+                \draw [black] (35.9,-19.6) -- (39.5,-19.6);
+                \fill [black] (39.5,-19.6) -- (38.7,-19.1) -- (38.7,-20.1);
+                \draw (37.7,-19.1) node [above] {$b$};
+                \draw [black] (45.5,-19.6) -- (49,-19.6);
+                \fill [black] (49,-19.6) -- (48.2,-19.1) -- (48.2,-20.1);
+                \draw (47.25,-19.1) node [above] {$a$};
+                \draw [black] (12.877,-16.92) arc (234:-54:2.25);
+                \draw (14.2,-12.35) node [above] {$b$};
+                \fill [black] (15.52,-16.92) -- (16.4,-16.57) -- (15.59,-15.98);
+                \draw [black] (21.159,-17.876) arc (262.5036:-25.4964:2.25);
+                \draw (19.44,-13.17) node [above] {$a$};
+                \fill [black] (23.48,-16.61) -- (24.08,-15.89) -- (23.09,-15.76);
+                \draw [black] (30.978,-21.847) arc (-57.47803:-122.52197:5.075);
+                \fill [black] (25.52,-21.85) -- (25.93,-22.7) -- (26.47,-21.86);
+                \draw (28.25,-23.14) node [below] {$a$};
+                \draw [black] (40.328,-21.665) arc (-50.96462:-129.03538:19.019);
+                \fill [black] (16.37,-21.66) -- (16.68,-22.56) -- (17.31,-21.78);
+                \draw (28.35,-26.41) node [below] {$b$};
+                \draw [black] (25.3,-17.133) arc (140.14712:39.85288:16.283);
+                \fill [black] (25.3,-17.13) -- (26.2,-16.84) -- (25.43,-16.2);
+                \draw (37.8,-10.78) node [above] {$a$};
+                \draw [black] (35.107,-17.578) arc (125.67421:54.32579:12.592);
+                \fill [black] (35.11,-17.58) -- (36.05,-17.52) -- (35.46,-16.71);
+                \draw (42.45,-14.72) node [above] {$b$};
+            \end{tikzpicture}
+        \end{figure*}
+        \FloatBarrier
+        Wir überprüfen den Automat mittels $\mathrm{L}^*$.
+        Dazu initialisieren wir zunächst die Tabelle:
+        \begin{table}[h!]
+            \centering
+            \begin{tabular}{c|c}
+                & $\epsilon$ \\
+                \hline
+                $\epsilon$ & $-$ \\
+                \hline
+                $a$ & $-$ \\
+                $b$ & $-$ \\
+            \end{tabular}
+        \end{table}
+        \FloatBarrier
+        Die Tabelle ist geschlossen und konsistent.
+        Jedoch bildet der resultierende Automat
+        \begin{figure*}[h!]
+            \centering
+            \begin{tikzpicture}[scale=0.15]
+            \tikzstyle{every node}+=[inner sep=0pt]
+            \draw [black] (27.4,-22) circle (3);
+            \draw (27.4,-22) node {$-$};
+            \draw [black] (26.077,-19.32) arc (234:-54:2.25);
+            \draw (27.4,-14.75) node [above] {$a,b$};
+            \fill [black] (28.72,-19.32) -- (29.6,-18.97) -- (28.79,-18.38);
+            \draw [black] (21.7,-22) -- (24.4,-22);
+            \fill [black] (24.4,-22) -- (23.6,-21.5) -- (23.6,-22.5);
+            \end{tikzpicture}
+        \end{figure*}
+        \FloatBarrier
+        nicht die gewünschte Sprache ab. So sollte das Gegenbeispiel $abba$ in der Sprache enthalten sein.
+        Also erweitern wir die Tabelle:
+        \begin{table}[h!]
+            \centering
+            \begin{tabular}{c|c}
+                & $\epsilon$ \\
+                \hline
+                $\epsilon$ & $-$ \\
+                $a$ & $-$ \\
+                $ab$ & $-$ \\
+                $abb$ & $-$ \\
+                $abba$ & $+$ \\
+                \hline
+                $b$ & $-$ \\
+                $aa$ & $-$ \\
+                $aba$ & $-$ \\
+                $abbb$ & $-$ \\
+                $abbaa$ & $-$ \\
+                $abbab$ & $-$ \\
+            \end{tabular}
+        \end{table}
+        \FloatBarrier
+        Die Tabelle ist geschlossen, aber nicht konsistent (die Präfixe $ab$ und $abb$ mit Folgezeichen $a$ in Spalte $\epsilon$):
+        \begin{table}[h!]
+            \centering
+            \begin{tabular}{c|cc}
+                & $\epsilon$ & $a$ \\
+                \hline
+                $\epsilon$ & $-$ & $-$ \\
+                $a$ & $-$ & $-$ \\
+                $ab$ & $-$ & $-$ \\
+                $abb$ & $-$ & $+$ \\
+                $abba$ & $+$ & $-$ \\
+                \hline
+                $b$ & $-$ & $-$ \\
+                $aa$ & $-$ & $-$ \\
+                $aba$ & $-$ & $-$ \\
+                $abbb$ & $-$ & $-$ \\
+                $abbaa$ & $-$ & $-$ \\
+                $abbab$ & $-$ & $-$ \\
+            \end{tabular}
+        \end{table}
+        \FloatBarrier
+        Die Tabelle ist geschlossen, aber nicht konsistent (die Präfixe $a$ und $ab$ mit Folgezeichen $b$ in Spalte $a$):
+        \begin{table}[h!]
+            \centering
+            \begin{tabular}{c|ccc}
+                & $\epsilon$ & $a$ & $ba$ \\
+                \hline
+                $\epsilon$ & $-$ & $-$ & $-$ \\
+                $a$ & $-$ & $-$ & $-$ \\
+                $ab$ & $-$ & $-$ & $+$ \\
+                $abb$ & $-$ & $+$ & $-$ \\
+                $abba$ & $+$ & $-$ & $-$ \\
+                \hline
+                $b$ & $-$ & $-$ & $-$ \\
+                $aa$ & $-$ & $-$ & $-$ \\
+                $aba$ & $-$ & $-$ & $-$ \\
+                $abbb$ & $-$ & $-$ & $-$ \\
+                $abbaa$ & $-$ & $-$ & $-$ \\
+                $abbab$ & $-$ & $-$ & $+$ \\
+            \end{tabular}
+        \end{table}
+        \FloatBarrier
+        Die Tabelle ist geschlossen, aber nicht konsistent (die Präfixe $\epsilon$ und $a$ mit Folgezeichen $b$ in Spalte $ba$):
+        \begin{table}[h!]
+            \centering
+            \begin{tabular}{c|cccc}
+                & $\epsilon$ & $a$ & $ba$ & $bba$ \\
+                \hline
+                $\epsilon$ & $-$ & $-$ & $-$ & $-$ \\
+                $a$ & $-$ & $-$ & $-$ & $+$ \\
+                $ab$ & $-$ & $-$ & $+$ & $-$ \\
+                $abb$ & $-$ & $+$ & $-$ & $-$ \\
+                $abba$ & $+$ & $-$ & $-$ & $+$ \\
+                \hline
+                $b$ & $-$ & $-$ & $-$ & $-$ \\
+                $aa$ & $-$ & $-$ & $-$ & $+$ \\
+                $aba$ & $-$ & $-$ & $-$ & $+$ \\
+                $abbb$ & $-$ & $-$ & $-$ & $-$ \\
+                $abbaa$ & $-$ & $-$ & $-$ & $+$ \\
+                $abbab$ & $-$ & $-$ & $+$ & $-$ \\
+            \end{tabular}
+        \end{table}
+        \FloatBarrier
+        Diese Tabelle ist geschlossen und konsistent.
+        Der entsprechende Automat
+        \begin{figure*}[h!]
+            \centering
+            \begin{tikzpicture}[scale=0.25]
+                \tikzstyle{every node}+=[inner sep=0pt]
+                \draw [black] (14.2,-19.6) circle (3);
+                \draw (14.2,-19.6) node {$----$};
+                \draw [black] (23.6,-19.6) circle (3);
+                \draw (23.6,-19.6) node {$---+$};
+                \draw [black] (32.9,-19.6) circle (3);
+                \draw (32.9,-19.6) node {$--+-$};
+                \draw [black] (42.5,-19.6) circle (3);
+                \draw (42.5,-19.6) node {$-+--$};
+                \draw [black] (52,-19.6) circle (3);
+                \draw (52,-19.6) node {\tiny $+--+$};
+                \draw [black] (52,-19.6) circle (2.4);
+                \draw [black] (8.4,-19.6) -- (11.2,-19.6);
+                \fill [black] (11.2,-19.6) -- (10.4,-19.1) -- (10.4,-20.1);
+                \draw [black] (17.2,-19.6) -- (20.6,-19.6);
+                \fill [black] (20.6,-19.6) -- (19.8,-19.1) -- (19.8,-20.1);
+                \draw (18.9,-19.1) node [above] {$a$};
+                \draw [black] (26.6,-19.6) -- (29.9,-19.6);
+                \fill [black] (29.9,-19.6) -- (29.1,-19.1) -- (29.1,-20.1);
+                \draw (28.25,-19.1) node [above] {$b$};
+                \draw [black] (35.9,-19.6) -- (39.5,-19.6);
+                \fill [black] (39.5,-19.6) -- (38.7,-19.1) -- (38.7,-20.1);
+                \draw (37.7,-19.1) node [above] {$b$};
+                \draw [black] (45.5,-19.6) -- (49,-19.6);
+                \fill [black] (49,-19.6) -- (48.2,-19.1) -- (48.2,-20.1);
+                \draw (47.25,-19.1) node [above] {$a$};
+                \draw [black] (12.877,-16.92) arc (234:-54:2.25);
+                \draw (14.2,-12.35) node [above] {$b$};
+                \fill [black] (15.52,-16.92) -- (16.4,-16.57) -- (15.59,-15.98);
+                \draw [black] (21.159,-17.876) arc (262.5036:-25.4964:2.25);
+                \draw (19.44,-13.17) node [above] {$a$};
+                \fill [black] (23.48,-16.61) -- (24.08,-15.89) -- (23.09,-15.76);
+                \draw [black] (30.978,-21.847) arc (-57.47803:-122.52197:5.075);
+                \fill [black] (25.52,-21.85) -- (25.93,-22.7) -- (26.47,-21.86);
+                \draw (28.25,-23.14) node [below] {$a$};
+                \draw [black] (40.328,-21.665) arc (-50.96462:-129.03538:19.019);
+                \fill [black] (16.37,-21.66) -- (16.68,-22.56) -- (17.31,-21.78);
+                \draw (28.35,-26.41) node [below] {$b$};
+                \draw [black] (25.3,-17.133) arc (140.14712:39.85288:16.283);
+                \fill [black] (25.3,-17.13) -- (26.2,-16.84) -- (25.43,-16.2);
+                \draw (37.8,-10.78) node [above] {$a$};
+                \draw [black] (35.107,-17.578) arc (125.67421:54.32579:12.592);
+                \fill [black] (35.11,-17.58) -- (36.05,-17.52) -- (35.46,-16.71);
+                \draw (42.45,-14.72) node [above] {$b$};
+            \end{tikzpicture}
+        \end{figure*}
+        \FloatBarrier
+        bildet die gewünschte Sprache ab.
+        Fertig!
+
         \item 
         Es genügt, den aktuellen Zustand $q$ des Automats zu speichern (initialisiert mit $q_0$).
         Das Wort $w$ wird Zeichen für Zeichen eingelesen und $q$ gemäß $\delta$ aktualisiert.
