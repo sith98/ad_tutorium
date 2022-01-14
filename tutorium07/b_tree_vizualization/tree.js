@@ -167,7 +167,7 @@ document.querySelectorAll(".tree").forEach(el => {
     canvas.width = canvasSize.x;
     canvas.height = canvasSize.y;
 
-    ctx.font = `${UNIT / 2}px Arial`
+    ctx.font = `${UNIT / 2}px "Times New Roman"`
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
 
