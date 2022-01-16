@@ -36,20 +36,21 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
 
 \begin{aufgabe}{1}{Verständnisfragen}
     Sind folgende Aussagen \emph{richtig} oder \emph{falsch}?
+    Begründen Sie jeweils Ihre Antwort.
     \begin{enumerate}
-        \item $\log(n!) = \Theta(n \log n)$
-        \item Selection Sort ist stabil
-        \item Mergesort hat Laufzeit $\Omega(n \log n)$
+        \item $\log(n!) = \Theta(n \log n)$.
+        \item Selection Sort ist stabil.
+        \item Mergesort hat Laufzeit $\Omega(n \log n)$.
         \item Beim Löschen eines Elements aus einem AVL-Baum ist maximal eine (Doppelt)Rotation nötig.
         \item Es ist erlaubt, dass die Wurzel eines B-Baumes der Ordnung 5 nur ein Element enthält.
         \item $h(s, i) = (s + i \cdot h'(s)) \bmod 13$ mit $h'(s) = s \bmod 7$ ist eine geeignete Funktion für Hashing mit offener Adressierung.
-        \item Zum Lösen des APSP-Problems hat der Floyd-Warshall-Algorithmus für alle Eingaben eine bessere Laufzeit als Dijkstra von jedem Knoten aus zu starten.
+        \item Zum Lösen des APSP-Problems hat der Floyd-Warshall-Algorithmus für alle Eingaben eine bessere Laufzeit als, Dijkstra von jedem Knoten aus zu starten.
     \end{enumerate}
     Nur für den Kurs von Herrn Kern:
     \begin{enumerate}
         \setcounter{enumi}{7}
         \item Die Laufzeit von $\mathrm{NL}^*$ ist für die gleiche Sprache stets höher als die von $\mathrm{L}^*$.
-        \item Die Tabellenzeile $-+-$ ist bei $\mathrm{NL}^*$ immer prim.
+        \item Die Zeile $-+-$ ist, sobald sie bei $\mathrm{NL}^*$ in der Tabelle auftritt, immer prim.
     \end{enumerate}
     Nur für den Kurs von Herrn Volbert:
     \begin{enumerate}
@@ -58,20 +59,108 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         \item Aus $\mathrm{SAT} \leq_p L$ folgt: $L$ ist NP-vollständig.
     \end{enumerate}
 \end{aufgabe}
+\begin{loesung}
+    \begin{enumerate}
+        \item $\log(n!) = \Theta(n \log n)$.
+
+        Die Aussage ist \emph{richtig}.
+        \begin{align*}
+            \log(n!) &= \log(1 \cdot 2 \cdot \ldots \cdot (n - 1) \cdot n) \\
+            &\leq \log(\underbrace{n \cdot n \cdot \ldots \cdot n \cdot n}_{\text{$n$ Mal}}) 
+            = \log(n^n) = n \log(n) = O(n\log n )
+        \end{align*}
+        \begin{align*}
+            \log(n!) &= \log(1 \cdot 2 \cdot \ldots \cdot (n - 1) \cdot n) \\
+            &\geq \log\left(\frac{n}{2} \cdot \left(\frac{n}{2} + 1\right) \cdot \ldots \cdot (n - 1) \cdot n\right)  \\
+            &\geq \log\Big(\underbrace{\frac{n}{2} \cdot \frac{n}{2} \cdot \ldots \cdot \frac{n}{2} \cdot \frac{n}{2}}_{\text{$\frac{n}{2}$ Mal}}\Big) \\
+            &= \log\left(\left(\frac{n}{2}\right)^{\frac{n}{2}}\right)
+            = \frac{n}{2} \log\left(\frac{n}{2}\right) 
+            = \frac{n}{2} \cdot \left( \log(n) - \log(2) \right)
+            = \Omega(n \log n )
+        \end{align*}
+        Aus $\log(n!) = O(n \log n)$ und $\log(n!) = \Omega(n \log n)$ folgt: $\log(n!) = \Theta(n \log n)$.
+        \item Selection Sort ist stabil.
+
+        Die Aussage ist \emph{falsch}.
+        Wenn das aktuelle Minimum mit dem ersten Wert getauscht wird, kann es passieren, dass dieser erste Wert an einem gleichen Wert \quotes{vorbeigetauscht} wird.
+        \item Mergesort hat Laufzeit $\Omega(n \log n)$.
+
+        Die Aussage ist \emph{richtig}.
+        Mergesort hat immer die gleiche Laufzeit: $\Theta(n \log n)$ und damit aufch $\Omega(n \log n)$
+        \item Beim Löschen eines Elements aus einem AVL-Baum ist maximal eine (Doppelt)Rotation nötig.
+
+        Die Aussage ist \emph{falsch}.
+        Es gibt Fälle, wo mehrfach rotiert werden muss (siehe Tutoriumsblatt 6, Aufgabe 3c).
+        Beim Einfügen ist dagegen maximale eine (Doppel)Rotation nötig.
+
+        \item Es ist erlaubt, dass die Wurzel eines B-Baumes der Ordnung 5 nur ein Element enthält.
+
+        Die Aussage ist \emph{richtig}.
+        Die Wurzel eines B-Baums darf immer, unabhängig von der Ordnung des Baumes, nur ein Element enthalten.
+        Die untere Schranke gilt nur für Nicht-Wurzel-Knoten.
+        \item $h(s, i) = (s + i \cdot h'(s)) \bmod 13$ mit $h'(s) = s \bmod 7$ ist eine geeignete Funktion für Hashing mit offener Adressierung.
+
+        Die Aussage ist \emph{falsch}.
+        Wenn $s \equiv 0 \bmod 7$, dann ist $h(s, i) = s \bmod 13$, unabhängig von $i$.
+        \newline
+        $(h(s, 0), h(s, 1), \ldots, h(s, m-1))$ muss aber eine Permutation der Menge $\{0, 1, \ldots, m-1\}$ sein.
+        Das ist mit obiger Hashfunktion nicht der Fall.
+        \item Zum Lösen des APSP-Problems hat der Floyd-Warshall-Algorithmus für alle Eingaben eine bessere Laufzeit als, Dijkstra von jedem Knoten aus zu starten.
+
+        Die Aussage ist \emph{falsch}.
+        Die Laufzeit von Floyd-Warshall ist $O(|V|^3)$.
+        Dijkstra mit Min-Heap, von jedem Knoten aus gestartet, hat Laufzeit $O(|V|^2 \cdot \log |V| + |V|\cdot|E| \cdot\log |V|)$.
+        Für dünne Graphen ($|E| = O(|V|)$) lässt sich dies zu $O(|V|^2 \log |V|)$ vereinfachen.
+        Diese Laufzeit ist deutliche schneller als $O(|V|^3)$
+    \end{enumerate}
+    Nur für den Kurs von Herrn Kern:
+    \begin{enumerate}
+        \setcounter{enumi}{7}
+        \item Die Laufzeit von $\mathrm{NL}^*$ ist für die gleiche Sprache stets höher als die von $\mathrm{L}^*$.
+
+        Die Aussage ist \emph{falsch}.
+        Die Laufzeit von $\mathrm{NL}^*$ ist zwar mit $O(m \cdot|\Sigma| \cdot n^3)$ schlechter als die von $\mathrm{L}^*$ ($O(m \cdot|\Sigma| \cdot n^2)$).
+        Allerdings kann bei der gleichen zu lernenden Sprache die Anzahl der Zustände des resultierenden Automaten $n$ bei $\mathrm{NL}^*$ (NEA) exponentiell kleiner sein als bei $\mathrm{L}^*$ (DEA).
+        Die Laufzeit von $\mathrm{NL}^*$ ist also bei manchen Sprachen exponentiell besser als bei $\mathrm{L}^*$.
+        \item Die Zeile $-+-$ ist, sobald sie bei $\mathrm{NL}^*$ in der Tabelle auftritt, immer prim.
+
+        Die Aussage ist \emph{richtig}.
+        Wenn $-+-$ nicht prim wäre, müsste es zusammengesetzt sein.
+        Dabei kommen nur Reihen in Frage, die gemäß der Relation $sqsubseteq$ kleiner sind als $-+-$.
+        Nur für $r \in \{---, -+-\}$ gilt, dass $r \sqsubseteq -+-$.
+        Bei der Zusammensetzung von $-+-$ darf nicht $-+-$ selbst auftauchen.
+        Es bleibt also nur $---$ übrig, wodurch sich $-+-$ natürlich nicht zusammensetzen lässt.
+        $-+-$ ist also prim.
+    \end{enumerate}
+    Nur für den Kurs von Herrn Volbert:
+    \begin{enumerate}
+        \setcounter{enumi}{7}
+        \item Aus $L \leq_p \mathrm{SAT}$ folgt: $L$ ist NP-vollständig.
+
+        Die Aussage ist \emph{falsch}.
+        Aus der Aussage folgt nur, dass $L \in \mathrm{NP}$, da man eine Eingabe $L$ in polynomieller Zeit in eine für SAT konvertieren kann und $\mathrm{SAT} \in \mathrm{NP}$.
+        \item Aus $\mathrm{SAT} \leq_p L$ folgt: $L$ ist NP-vollständig.
+
+        Die Aussage ist \emph{falsch}.
+        Aus der Aussage folgt nur, dass $L$ NP-hart ist.
+        $L$ könnte aber außerhalb von NP liegen.
+    \end{enumerate}
+\end{loesung}
 
 \begin{aufgabe}{2}{$O$-Kalkül}
     Zeigen oder widerlegen Sie folgende Aussagen:
     \begin{enumerate}
-        \item $3^{2n} = O(3^n)$
+        % \item $3^{2n} = O(3^n)$
         \item $\log_3(2n) = \Omega(\log n)$
         % \item $5^{\log(n)} \in \Omega(n^2)$
         \item $\sum\limits_{i=0}^n \frac{i + 2^i}{2} = \Omega(2^n)$
     \end{enumerate}
 \end{aufgabe}
 \begin{aufgabe}{3}{Rekursionsgleichungen}
-    \begin{enumerate}
-        \item Lösen Sie die Rekursionsgleichung $T(1) = 1, \,\, T(n) = 2T(n / 4) + \sqrt{n}$ mithilfe des Master-Theorems.
-        \item Lösen Sie die Rekursionsgleichung $T(1) = 1, \,\, T(n) = 4T(n / 2) + n^2$ mithilfe des Iterationsmethode.
+    % \begin{enumerate}
+        % \item Lösen Sie die Rekursionsgleichung $T(1) = 1, \,\, T(n) = 2T(n / 4) + \sqrt{n}$ mithilfe des Master-Theorems.
+        % \item
+        Lösen Sie die Rekursionsgleichung $T(1) = 1, \,\, T(n) = 4T(n / 2) + n^2$ mithilfe des Iterationsmethode.
 %         \item Gegeben sei folgender Algorithmus:
 %         \begin{lstlisting}[language=c++]
 % int algorithm(int a[], int n) {
@@ -81,25 +170,26 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
 %     return sum + algorithm(a, 2/3 * n) * 2;
 % }
 %         \end{lstlisting}
-        Geben Sie die Worst-Case-Laufzeit des Algorithmus als Rekursionsgleichung an und lösen Sie die Gleichung mithilfe des Master-Theorems.
-    \end{enumerate}
+        % Geben Sie die Worst-Case-Laufzeit des Algorithmus als Rekursionsgleichung an und lösen Sie die Gleichung mithilfe des Master-Theorems.
+    % \end{enumerate}
 \end{aufgabe}
-\begin{aufgabe}{4}{Vollständige Induktion}
-    Gegeben sei die Folge der Fibonacci-Zahlen: $f(1) = 1$, $f(2) = 1$ und $f(n) = f(n - 1) + f(n - 2)$ für alle $n > 2$.
-    Zeigen Sie mittels vollständiger Induktion, dass $f(n) \leq 2^{n - 1}$ für alle $n \in \mathbb{N}$.
-\end{aufgabe}
-\begin{aufgabe}{5}{Sortieralgorithmen}
-    \begin{enumerate}
-        \item Sie möchten folgendes Array mittels Quicksort sortieren: $(3, 4, 1, 5, 2, 6)$.
+% \begin{aufgabe}{4}{Vollständige Induktion}
+%     Gegeben sei die Folge der Fibonacci-Zahlen: $f(1) = 1$, $f(2) = 1$ und $f(n) = f(n - 1) + f(n - 2)$ für alle $n > 2$.
+%     Zeigen Sie mittels vollständiger Induktion, dass $f(n) \leq 2^{n - 1}$ für alle $n \in \mathbb{N}$.
+% \end{aufgabe}
+\begin{aufgabe}{4}{Sortieralgorithmen}
+    % \begin{enumerate}
+        % \item
+        Sie möchten folgendes Array mittels Quicksort sortieren: $(3, 4, 1, 5, 2, 6)$.
         Geben Sie die Reihenfolge der Elemente nach dem ersten Aufruf von \texttt{preparePartition} an.
         Wie oft wird die Funktion \texttt{quickSort(arr, start, end)} insgesamt aufgerufen?
-        \item Sie möchten folgendes Array mittels Heapsort sortieren: $(1, 5, 3, 6, 2, 4)$.
-        Stellen die Heap-Eigenschaft im Array mittels \texttt{buildMaxHeap} her.
-        Löschen Sie anschließend mittels \texttt{extractMax} die beiden größten Elemente des Heaps.
-        Geben Sie die resultierenden Heaps (jeweils nach den drei Operationen) an.
-    \end{enumerate}
+        % \item Sie möchten folgendes Array mittels Heapsort sortieren: $(1, 5, 3, 6, 2, 4)$.
+        % Stellen die Heap-Eigenschaft im Array mittels \texttt{buildMaxHeap} her.
+        % Löschen Sie anschließend mittels \texttt{extractMax} die beiden größten Elemente des Heaps.
+        % Geben Sie die resultierenden Heaps (jeweils nach den drei Operationen) an.
+    % \end{enumerate}
 \end{aufgabe}
-\begin{aufgabe}{6}{Suchbäume}
+\begin{aufgabe}{5}{Suchbäume}
     \begin{enumerate}
         \item Löschen Sie bei folgendem AVL-Baum den markierten Knoten. Geben Sie alle Zwischenschritte und Rotationen an.
         \begin{figure}[h!]
@@ -115,8 +205,7 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         \FloatBarrier   
     \end{enumerate}
 \end{aufgabe}
-\ifcsdef{showLoesung}{}{\newpage}
-\begin{aufgabe}{7}{Graphalgorithmen}
+\begin{aufgabe}{6}{Graphalgorithmen}
     \begin{enumerate}
         \item Demonstrieren Sie den Algorithmus zur topologischen Sortierung an folgendem Graphen:
         \begin{figure*}[h!]
