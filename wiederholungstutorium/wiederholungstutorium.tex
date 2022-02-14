@@ -2,7 +2,7 @@
 
 \usepackage{gastex}
 \usepackage{etoolbox}
-% \newcommand{\showLoesung}{2} %<---als Schalter
+\newcommand{\showLoesung}{2} %<---als Schalter
 % \newcommand{\showInhalt}{1} %<---als Schalter
 % \newcommand{\volbert}{3} %<---als Schalter
 
@@ -70,7 +70,7 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
             = \log(n^n) = n \log(n) = O(n\log n )
         \end{align*}
         \begin{align*}
-            \log(n!) &= \log(1 \cdot 2 \cdot \ldots \cdot (n - 1) \cdot n) \\
+            \log(n!) &= \log(1 \cdot 2 \cdot \ldots \frac{n}{2} \cdot \left(\frac{n}{2} + 1\right)\ldots \cdot (n - 1) \cdot n) \\
             &\geq \log\left(\frac{n}{2} \cdot \left(\frac{n}{2} + 1\right) \cdot \ldots \cdot (n - 1) \cdot n\right)  \\
             &\geq \log\Big(\underbrace{\frac{n}{2} \cdot \frac{n}{2} \cdot \ldots \cdot \frac{n}{2} \cdot \frac{n}{2}}_{\text{$\frac{n}{2}$ Mal}}\Big) \\
             &= \log\left(\left(\frac{n}{2}\right)^{\frac{n}{2}}\right)
@@ -86,11 +86,11 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         \item Mergesort hat Laufzeit $\Omega(n \log n)$.
 
         Die Aussage ist \emph{richtig}.
-        Mergesort hat immer die gleiche Laufzeit: $\Theta(n \log n)$ und damit aufch $\Omega(n \log n)$
+        Mergesort hat immer die gleiche Laufzeit: $\Theta(n \log n)$ und damit auch $\Omega(n \log n)$
         \item Beim Löschen eines Elements aus einem AVL-Baum ist maximal eine (Doppelt)Rotation nötig.
 
         Die Aussage ist \emph{falsch}.
-        Es gibt Fälle, wo mehrfach rotiert werden muss (siehe Tutoriumsblatt 6, Aufgabe 3c).
+        Es gibt Fälle, wo mehrfach rotiert werden muss (siehe Aufgabe 5a).
         Beim Einfügen ist dagegen maximale eine (Doppel)Rotation nötig.
 
         \item Es ist erlaubt, dass die Wurzel eines B-Baumes der Ordnung 5 nur ein Element enthält.
@@ -101,8 +101,7 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         \item $h(s, i) = (s + i \cdot h'(s)) \bmod 13$ mit $h'(s) = s \bmod 7$ ist eine geeignete Funktion für Hashing mit offener Adressierung.
 
         Die Aussage ist \emph{falsch}.
-        Wenn $s \equiv 0 \bmod 7$, dann ist $h(s, i) = s \bmod 13$, unabhängig von $i$.
-        \newline
+        Wenn $s \equiv 0 \bmod 7$ (zum Beispiel $s = 14$), dann ist $h(s, i) = s \bmod 13$, unabhängig von $i$.
         $(h(s, 0), h(s, 1), \ldots, h(s, m-1))$ muss aber eine Permutation der Menge $\{0, 1, \ldots, m-1\}$ sein.
         Das ist mit obiger Hashfunktion nicht der Fall.
         \item Zum Lösen des APSP-Problems hat der Floyd-Warshall-Algorithmus für alle Eingaben eine bessere Laufzeit als, Dijkstra von jedem Knoten aus zu starten.
@@ -111,7 +110,7 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         Die Laufzeit von Floyd-Warshall ist $O(|V|^3)$.
         Dijkstra mit Min-Heap, von jedem Knoten aus gestartet, hat Laufzeit $O(|V|^2 \cdot \log |V| + |V|\cdot|E| \cdot\log |V|)$.
         Für dünne Graphen ($|E| = O(|V|)$) lässt sich dies zu $O(|V|^2 \log |V|)$ vereinfachen.
-        Diese Laufzeit ist deutliche schneller als $O(|V|^3)$
+        Diese Laufzeit ist deutlich schneller als $O(|V|^3)$
     \end{enumerate}
     Nur für den Kurs von Herrn Kern:
     \begin{enumerate}
@@ -126,7 +125,7 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
 
         Die Aussage ist \emph{richtig}.
         Wenn $-+-$ nicht prim wäre, müsste es zusammengesetzt sein.
-        Dabei kommen nur Reihen in Frage, die gemäß der Relation $sqsubseteq$ kleiner sind als $-+-$.
+        Dabei kommen nur Reihen in Frage, die gemäß der Relation $\sqsubseteq$ kleiner sind als $-+-$.
         Nur für $r \in \{---, -+-\}$ gilt, dass $r \sqsubseteq -+-$.
         Bei der Zusammensetzung von $-+-$ darf nicht $-+-$ selbst auftauchen.
         Es bleibt also nur $---$ übrig, wodurch sich $-+-$ natürlich nicht zusammensetzen lässt.
@@ -142,8 +141,13 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         \item Aus $\mathrm{SAT} \leq_p L$ folgt: $L$ ist NP-vollständig.
 
         Die Aussage ist \emph{falsch}.
-        Aus der Aussage folgt nur, dass $L$ NP-hart ist.
+        Aus der Aussage folgt nur, dass $L$ NP-schwer ist.
         $L$ könnte aber außerhalb von NP liegen.
+
+        Ein Beispiel für ein NP-schweres, aber nicht NP-vollständiges Problem ist das Halteproblem.
+        Es ist offensichtlich nicht Teil von NP, da es unentscheidbar ist.
+        Es ist jedoch NP-schwer:
+        Man kann SAT auf das Halteproblem reduzieren, indem man eine Turing Maschine entwickelt, die alle Belegungen eines Boolschen Ausdrucks durchprobiert und in eine Endlosschleife läuft, wenn es keine erfüllende Belegung gibt.
     \end{enumerate}
 \end{loesung}
 
@@ -156,6 +160,35 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         \item $\sum\limits_{i=0}^n \frac{i + 2^i}{2} = \Omega(2^n)$
     \end{enumerate}
 \end{aufgabe}
+\begin{loesung}
+    \begin{enumerate}
+        \item 
+        \begin{align*}
+            \log_3(2n) &= \frac{\log(2n)}{\log(3)}
+            = \frac{\overbrace{\log(2)}^{=1} + \log(n)}{\log(3)}
+            = \frac{1}{\log(3)} + \frac{\log(n)}{\log(3)}
+            \geq \frac{\log(n)}{\log(3)}
+            = c \log(n) = \Omega(\log n)
+            % &\geq c \log(n) &| : \log(n)
+            % \Omega(\log n)
+        \end{align*}
+        \item
+        \begin{align*}
+            \sum\limits_{i=0}^n \frac{i + 2^i}{2} 
+            &= \frac{1}{2}\Bigg( \underbrace{\sum\limits_{i = 0}^n i}_{\text{Gaußsumme}} + \underbrace{\sum\limits_{i = 0}^n 2^i}_{\text{geom. Reihe}}\Bigg)
+            = \frac{1}{2}\left(\frac{(n + 1)n}{2} + 2^{n + 1} - 1\right) \\
+            &\geq \frac{1}{2} \left(2^{n + 1} - 1\right)
+            = 2^n - \frac{1}{2}
+        \end{align*}
+        \begin{align*}
+            2^n - \frac{1}{2}
+            &\geq c \cdot 2^n
+            & | : 2^n \\
+            1 - \underbrace{\frac{1}{2 \cdot 2^n}}_{\lim\limits_{n \rightarrow \infty}=0} 
+            &\geq c
+        \end{align*}
+    \end{enumerate}
+\end{loesung}
 \begin{aufgabe}{3}{Rekursionsgleichungen}
     % \begin{enumerate}
         % \item Lösen Sie die Rekursionsgleichung $T(1) = 1, \,\, T(n) = 2T(n / 4) + \sqrt{n}$ mithilfe des Master-Theorems.
@@ -173,6 +206,30 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         % Geben Sie die Worst-Case-Laufzeit des Algorithmus als Rekursionsgleichung an und lösen Sie die Gleichung mithilfe des Master-Theorems.
     % \end{enumerate}
 \end{aufgabe}
+\begin{loesung}
+    \begin{align*}
+        T(n) &= 4T(n/2) + n^2 
+        = 4\left(4T(n/2^2) + (n/2)^2\right) + n^2 \\
+        &= 4^2 T(n / 2^2) + 2 \cdot n^2 
+        = 4\left(4^2 T(n / 2^3) + (n/2^2)^2\right) + 2 \cdot n^2 \\
+        &=4^3 T(n/ 2^3) + 3 n^2 \\
+        &= 4^i T(n / 2^i) + i n^2
+    \end{align*}
+    Abbruchbedingung $T(1) = 1$: $1 = n/2^i \Rightarrow i = \log(n)$.
+    Einsetzen liefert:
+    \begin{align*}
+        T(n) &= 4^{\log(n)} \cdot T(n / 2^{\log(n)}) + {\log(n)} n^2 \\
+        &= n^2 \cdot T(1) + \log(n) \cdot n^2 = n^2 + n^2 \cdot \log(n) = \Theta(n^2 \log n)
+    \end{align*}
+    Probe:
+    \begin{align*}
+        T(n) &= 4T(n/2) + n^2 
+        = 4\left((n/2)^2 + (n/2)^2 \cdot \log(n/2)\right) + n^2 \\
+        &= n^2 + n^2 \cdot \log(n / 2) + n^2
+        = n^2 + n^2 \cdot \log(n) - n^2 + n^2 \\
+        &= n^2 + n^2 \log(n)
+    \end{align*}
+\end{loesung}
 % \begin{aufgabe}{4}{Vollständige Induktion}
 %     Gegeben sei die Folge der Fibonacci-Zahlen: $f(1) = 1$, $f(2) = 1$ und $f(n) = f(n - 1) + f(n - 2)$ für alle $n > 2$.
 %     Zeigen Sie mittels vollständiger Induktion, dass $f(n) \leq 2^{n - 1}$ für alle $n \in \mathbb{N}$.
@@ -187,10 +244,27 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         % Stellen die Heap-Eigenschaft im Array mittels \texttt{buildMaxHeap} her.
         % Löschen Sie anschließend mittels \texttt{extractMax} die beiden größten Elemente des Heaps.
         % Geben Sie die resultierenden Heaps (jeweils nach den drei Operationen) an.
+        % 3 4 1 5 2 6
+        % 2 1 3 5 4 6
     % \end{enumerate}
 \end{aufgabe}
+\begin{loesung}
+    Die Reihenfolge nach \texttt{preparePartition} (Pivot: 3) lautet: 2, 1, 3, 5, 4, 6.
+
+    Insgesamt wird \texttt{quickSort} 7 Mal ausgeführt:
+    \begin{itemize}
+        \item\texttt{quickSort(0, 5)}
+        \item\texttt{quickSort(0, 1)}
+        \item\texttt{quickSort(0, 0)}
+        \item\texttt{quickSort(2, 1)}
+        \item\texttt{quickSort(3, 5)}
+        \item\texttt{quickSort(3, 3)}
+        \item\texttt{quickSort(5, 5)}
+    \end{itemize}
+\end{loesung}
 \begin{aufgabe}{5}{Suchbäume}
     \begin{enumerate}
+        \label{avl}
         \item Löschen Sie bei folgendem AVL-Baum den markierten Knoten. Geben Sie alle Zwischenschritte und Rotationen an.
         \begin{figure}[h!]
             \centering
@@ -205,6 +279,62 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         \FloatBarrier   
     \end{enumerate}
 \end{aufgabe}
+\begin{loesung}
+    \begin{enumerate}
+        \item \ \\
+        \begin{figure}[h!]
+            \centering
+            \includegraphics[width=0.42\textwidth]{img/avl.png}
+        \end{figure}
+        \FloatBarrier   
+        \begin{figure}[h!]
+            \centering
+            \includegraphics[width=0.42\textwidth]{img/avl2.png}
+        \end{figure}
+        \FloatBarrier
+        \begin{figure}[h!]
+            \centering
+            \includegraphics[width=0.42\textwidth]{img/avl3.png}
+        \end{figure}
+        \FloatBarrier
+        \begin{figure}[h!]
+            \centering
+            \includegraphics[width=0.42\textwidth]{img/avl4.png}
+        \end{figure}
+        \FloatBarrier
+        \begin{figure}[h!]
+            \centering
+            \includegraphics[width=0.42\textwidth]{img/avl5.png}
+        \end{figure}
+        \FloatBarrier
+        \begin{figure}[h!]
+            \centering
+            \includegraphics[width=0.42\textwidth]{img/avl6.png}
+        \end{figure}
+        \FloatBarrier
+        \item \ \\
+        \begin{figure}[h!]
+            \centering
+            \includegraphics[height=0.22\textwidth]{img/b_tree.png}
+        \end{figure}
+        \FloatBarrier   
+        \begin{figure}[h!]
+            \centering
+            \includegraphics[height=0.22\textwidth]{img/b_tree_1.png}
+        \end{figure}
+        \FloatBarrier   
+        \begin{figure}[h!]
+            \centering
+            \includegraphics[height=0.22\textwidth]{img/b_tree_2.png}
+        \end{figure}
+        \FloatBarrier   
+        \begin{figure}[h!]
+            \centering
+            \includegraphics[height=0.22\textwidth]{img/b_tree_3.png}
+        \end{figure}
+        \FloatBarrier   
+    \end{enumerate}
+\end{loesung}
 \ifcsdef{showLoesung}{}{\newpage}
 \begin{aufgabe}{6}{Graphalgorithmen}
     \begin{enumerate}
@@ -290,5 +420,32 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         Die Kantengewichte genügen.
     \end{enumerate}
 \end{aufgabe}
+\begin{loesung}
+    \begin{enumerate}
+        \item  \ \\
+        \begin{table}[h!]
+            \centering
+            \begin{tabular}{|l|l|}
+                \hline
+                Topologische Sortierung & 4, 3, 6, 5, 1, 2 \\
+                \hline
+                Entdeckungsreihenfolge & 1, 2, 3, 5, 6, 4 \\
+                \hline
+            \end{tabular}
+        \end{table}
+        \FloatBarrier
+        \item \ \\
+        \begin{table}[h!]
+            \centering
+            \begin{tabular}{|l|l|}
+                \hline
+                Kruskal & 1, 2, 3, 5, 7 \\
+                \hline
+                Prim & 3, 2, 5, 1, 7\\
+                \hline
+            \end{tabular}
+        \end{table}
+    \end{enumerate}
+\end{loesung}
 
 \end{document}
