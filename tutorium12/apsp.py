@@ -120,4 +120,4 @@ def FloydWarshall(W):
         P = P2
 
 
-FloydWarshall(D)
+FasterAPSP(D)
