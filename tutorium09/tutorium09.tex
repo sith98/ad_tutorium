@@ -115,7 +115,7 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         Beschreiben Sie kurz, wie die Einfüge- und Lösch-Operationen für diese Erweiterung angepasst werden müssen, ohne das asymptotische Laufzeitverhalten zu verändern.
 
         \item 
-        Implementieren Sie auf Basis der Erweiterung aus Teilaufgabe \ref*{skip} die Operation \textsc{KthSmallestValue} in Pseudocode oder einer Programmiersprache Ihrer Wahl mit durchschnittlicher Laufzeit $O(\log n)$, welche Ihnen den $k$-kleinsten Wert der Liste liefert.
+        \hard Implementieren Sie auf Basis der Erweiterung aus Teilaufgabe \ref*{skip} die Operation \textsc{KthSmallestValue} in Pseudocode oder einer Programmiersprache Ihrer Wahl mit durchschnittlicher Laufzeit $O(\log n)$, welche Ihnen den $k$-kleinsten Wert der Liste liefert.
     \end{enumerate}
 \end{aufgabe}
 
@@ -359,11 +359,11 @@ int kthSmallestValue(SkipList *list, int k) {
         % \item In der Boyer-Moore-Implementierung aus den Vorlesungsunterlagen wird, sobald das Muster gefunden wurde, das Muster nur um 1 nach rechts geschoben, bevor weiter gesucht wird.
         % Machen Sie einen Vorschlag zu einer möglichen Optimierung, indem Sie Ideen aus der Vorlesung verwenden.
 
-        \item Erstellen Sie einen deterministischen, endlichen Automat über dem Alphabet $\Sigma = \{\text{\texttt{A}}, \text{\texttt{B}}, \text{\texttt{C}}\}$ mit 7 Zuständen, welcher Vorkommen der des Musters \texttt{ABCABA} in einer Zeichenkette erkennt.
+        \item \hard Erstellen Sie einen deterministischen, endlichen Automat über dem Alphabet $\Sigma = \{\text{\texttt{A}}, \text{\texttt{B}}, \text{\texttt{C}}\}$ mit 7 Zuständen, welcher Vorkommen der des Musters \texttt{ABCABA} in einer Zeichenkette erkennt.
         Der Automat soll die zu durchsuchende Zeichenkette Zeichen für Zeichen einlesen und mit jedem gelesenden Zeichen gemäß seiner Transitionen in einen anderen Zustand wechseln.
         Jedes Mal, wenn ein ausgewiesener Endzustand erreicht wird, wurde ein weiteres Vorkommen des Musters gefunden.
         Beschreiben Sie den Automaten eindeutig, zum Beispiel, indem Sie dessen Transitionsgraph angeben.
-        \item Betrachten Sie folgenden Suchalgorithmus:
+        \item \hard Betrachten Sie folgenden Suchalgorithmus:
         Sämtliche Teilstrings des zu durchsuchenden Texts werden in einer Hashtabelle abgespeichert (bei \quotes{abc} also z.B. \quotes{a}, \quotes{b}, \quotes{c}, \quotes{bc}, \quotes{ab}, \quotes{abc}).
         Wenn nun ein Muster im Text gesucht werden soll, muss nur überprüft werden, ob das Muster in der Hashtabelle liegt.
         Geben Sie folgende Funktionen in $O$-Notation an, jeweils abhängig von der Länge des Textes $n$ und der Länge des Musters $m$:
@@ -377,7 +377,7 @@ int kthSmallestValue(SkipList *list, int k) {
             \item[Hinweis 1:] Die Laufzeit für Hashing und Vergleichen von Strings ist linear in der Länge des/der Strings.
             \item[Hinweis 2:] Die durchschnittliche Länge aller Teilstrings eines Strings der Länge $n$ beträgt $\Theta(n)$.
         \end{description}
-        \item Ein Anagramm eines Wortes ist eine beliebige Permutation der Buchstaben dieses Wortes.
+        \item \hard Ein Anagramm eines Wortes ist eine beliebige Permutation der Buchstaben dieses Wortes.
         Zum Beispiel ist \texttt{REIFEN} ein Anagramm von \texttt{FERIEN}, genauso wie \texttt{IEENFR}.
         Implementieren Sie einen Algorithmus in Pseudocode oder einer Programmiersprache Ihrer Wahl, welcher einen Text sowie ein Muster als Eingabe erhält, und ausgibt, wie viele Anagramme des eingegebenen Musters im Text vorkommen.
         Die Laufzeit des Algorithmus soll $O(n \cdot |\Sigma|)$ betragen, wobei $n$ die Länge des Textes ist und $|\Sigma|$ die Größe des Alphabets.

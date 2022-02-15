@@ -31,7 +31,7 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         \item $T(n) = T(3n / 4) + n$
         \item $T(n) = 4T(n / 2) + n^2 \log(n)$
         \item $T(n) = 4T(n / 3) + \frac{n}{\log(n)}$ ($n \geq 2$)
-        \item \textbf{schwer:} $T(n) = 3T(n / 3) + \frac{n}{\log(n)}$ ($n \geq 2$)
+        \item \hard $T(n) = 3T(n / 3) + \frac{n}{\log(n)}$ ($n \geq 2$)
     \end{enumerate}
 
     \item Lösen Sie folgende Rekursionsgleichungen mithilfe der Iterationsmethode:
@@ -48,7 +48,7 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
 
     \item Beweisen Sie mithilfe der Substitutionsmethode, dass $T(1) = 1, \, T(n) = 2T(n / 2) + n$ durch $\Theta(n \log n)$ abgeschätzt werden kann (Tipp: Zeigen Sie, dass $T(n) = n \log(n) + n$).
 
-    \item Gegeben sei eine Funktion \texttt{coinFlip}, welche mit 50\% Wahrscheinlichkeit \texttt{true} und mit 50\% Wahrscheinlichkeit \texttt{false} zurückgibt. Betrachten Sie folgendes Programm:
+    \item \hard Gegeben sei eine Funktion \texttt{coinFlip}, welche mit 50\% Wahrscheinlichkeit \texttt{true} und mit 50\% Wahrscheinlichkeit \texttt{false} zurückgibt. Betrachten Sie folgendes Programm:
     \begin{lstlisting}
 void example(int n) {
     if (n <= 1) return;
@@ -61,7 +61,7 @@ void example(int n) {
     Zeigen Sie mittels Substitutionsmethode, dass diese durchschnittliche Laufzeit durch $O(n)$ beschränkt werden kann.
 
     \item
-    Lösen Sie folgende Rekursionsgleichung:
+    \hard Lösen Sie folgende Rekursionsgleichung:
     \begin{equation*}
         T(n) = T\left(\sqrt{n}\right) + 1
     \end{equation*}
@@ -446,7 +446,7 @@ int maxDifferenceLinear(int[] arr) {
 \end{enumerate}
 \end{loesung}
 
-\begin{aufgabe}{3}{Fibonacci-Zahlen}
+\begin{aufgabe}{3}{\hard Fibonacci-Zahlen}
 In der Vorlesung haben Sie ein rekursiver Algorithmus zum Berechnen der $n$-ten Fibonacci-Zahl mit exponentieller Laufzeit kennengelernt.
 Der Algorithmus ist so ineffizient, da er viele Berechnungen unnötigerweise mehrfach durchführt~(siehe Vorlesung 4, Folie 14).
 \begin{enumerate}

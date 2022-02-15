@@ -46,7 +46,7 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         24, 11, 50, 37, 40.
         Geben Sie jeweils den Inhalt der Tabelle nach dem Einfügen aller Werte an.
         \item
-        Gegeben sei eine Hashtabelle mit $m = 77$.
+        \hard Gegeben sei eine Hashtabelle mit $m = 77$.
         Begründen Sie jeweils für folgende Hashfunktionen, warum sie bei Verwendung von offener Adressierung nicht geeignet sind:
         \begin{enumerate}[label=\roman*)]
             \item $h_1(s, i) = (s + 7i) \bmod{m}$.
@@ -228,7 +228,7 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         % Welche durchschnittliche Laufzeit erhalten Sie für Suchen, Einfügen und Löschen abhängig von der Anzahl der Elemente in der Hashmap ($n$) und $\alpha = n / m$.
         \item Nennen Sie zwei Vorteile und zwei Nachteile von Hashtabellen als Such-Datenstruktur im Vergleich zu balancierten Suchbäumen.
         \item Nennen Sie zwei Vorteile und zwei Nachteile von Hashing mit offener Adressierung in der Praxis im Vergleich zu Hashing mit Verkettung.
-        \item In der Praxis werden häufig Schlüssel-Wert-Paare in Hashtabellen verwaltet.
+        \item \hard In der Praxis werden häufig Schlüssel-Wert-Paare in Hashtabellen verwaltet.
         Solche Tabellen unterstützen meist folgende Operationen:
         \begin{lstlisting}[language=c++]
 void insert(key, value);
@@ -237,7 +237,7 @@ bool contains(key);
 value getValue(key);
         \end{lstlisting}
         Beschreiben Sie knapp, wie diese Operationen auf Basis der Operationen aus der Vorlesungen in durchschnittlich konstanter Laufzeit (bei kleinem Belegungsfaktor) umgesetzt werden können und wie die Datenstruktur der Hashtabelle dafür erweitert werden muss.
-        \item Um Strings in Hashtabellen verwalten zu können, muss zunächst jede Zeichenkette in eine natürliche Zahl konvertiert werden, auf die eine Hashfunktion angewendet werden kann.
+        \item \hard Um Strings in Hashtabellen verwalten zu können, muss zunächst jede Zeichenkette in eine natürliche Zahl konvertiert werden, auf die eine Hashfunktion angewendet werden kann.
         Eine Möglichkeit dies zu tun, ist es, die einzelnen (ASCII-)Werte des Strings einfach aufzuaddieren.
         Nennen Sie ein mögliches Problem dieses Verfahrens und machen Sie einen Vorschlag, wie man dieses Problem lösen könnte.
     \end{enumerate}
@@ -391,7 +391,7 @@ void sumOfTwoElements(int a[], int n, int s) {
     Daher ist obige Analyse weiterhin korrekt.
 \end{loesung}
 
-\begin{aufgabe}{5}{Universelles Hashing}
+\begin{aufgabe}{5}{\hard Universelles Hashing}
     \begin{enumerate}[label=\alph*)]
         \item Gegeben sei eine Hashtabelle mit $m = 23$, welche Hashing mit Verkettung mithilfe der Divisionsmethode verwendet.
         Geben Sie $n$ Werte an, die, eingefügt in die Hashtabelle, dafür sorgen würden, dass die Suchoperation im Erfolgsfall durchschnittlich Laufzeit $O(n)$ benötigt.

@@ -33,7 +33,7 @@
 Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in Tutorien, Übungen oder nach Vorlesungen.
 }{}
 
-\begin{aufgabe}{1}{Tiefensuche}
+\begin{aufgabe}{1}{\hard Tiefensuche}
     \begin{enumerate}
         \item Zeigen oder widerlegen Sie folgende Aussage:
         \emph{Wenn während einer Tiefensuche auf einem ungerichteten Graphen eine Kante $\{u, v\}$ zum ersten Mal und zwar von $u$ aus betrachtet wird, ist $v$ niemals schwarz.}
@@ -200,14 +200,14 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         \item Demonstieren Sie den Algorithmus von Prim zum Finden von minimalen Spannbäumen an $G_1$ (und optional $G_2$) nach dem Schema aus der Vorlesung.
         Starten Sie jeweils bei Knoten 1.
         Geben Sie für jeden Zwischenschritt den bisherigen Teil-MST sowie den aktuellen Zustand des Min-Heaps an.
-        \item Angenommen, für einen Graph $G=(V,E)$ gilt $\forall \{u, v\} \in E$: $w(u, v) \in \{1, 2, \ldots, |E|\}$.
+        \item \hard Angenommen, für einen Graph $G=(V,E)$ gilt $\forall \{u, v\} \in E$: $w(u, v) \in \{1, 2, \ldots, |E|\}$.
         Wie kann man den Algorithmus von Kruskal in einem solchen Fall mithilfe eines anderen Sortieralgorithmus beschleunigen?
         Welche Laufzeit hat Kruskal dann?
-        \item\label{connected_components}Ein ungerichteter (nicht unbedingt zusammenhängender) Graph lässt sich in disjunkte \emph{Zusammenhangskomponenten} aufteilen, wobei sich in der Komponente, in der der Knoten $v$ liegt, genau die von $v$ aus erreichbaren Knoten befinden.
+        \item\label{connected_components} \hard Ein ungerichteter (nicht unbedingt zusammenhängender) Graph lässt sich in disjunkte \emph{Zusammenhangskomponenten} aufteilen, wobei sich in der Komponente, in der der Knoten $v$ liegt, genau die von $v$ aus erreichbaren Knoten befinden.
         Implementieren Sie einen Algorithmus in Pseudocode oder einer Programmiersprache Ihrer Wahl auf Basis der Union-Find-Datenstruktur aus der Vorlesung, der alle Zusammenhangskomponenten eines ungerichteten Graphen findet.
         Welche Worst-Case-Laufzeit hat Ihr Algorithmus?
         \item
-        Wie können Sie das Problem aus Teilaufgabe \ref*{connected_components} schneller, nämlich in $O(|V| + |E|)$, mit einem Ihnen aus der Vorlesung bekannten Graphalgorithmus lösen?
+        \hard Wie können Sie das Problem aus Teilaufgabe \ref*{connected_components} schneller, nämlich in $O(|V| + |E|)$, mit einem Ihnen aus der Vorlesung bekannten Graphalgorithmus lösen?
     \end{enumerate}
 \end{aufgabe}
 
@@ -2221,7 +2221,7 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         \item Angenommen, die Kantengewichte eines Graphen werden angepasst: $w'(u, v) = w(u, v) - \min\limits_{(a, b) \in E} \{w(a, b) \}$.
         Die neuen Gewichte $w'(u, v)$ sind stets nicht-negativ, sodass prinzipiell Dijkstra auf den Graphen mit angepassten Gewichten angewendet werden könnte.
         Zeigen Sie anhand eines Beispiels, dass sich kürzeste Wege durch das Anpassen der Gewichte ändern können und somit die obige Anpassung nicht sinnvoll ist.
-        \item\label{shortest_paths_dag} Implementieren Sie einen Algorithmus in Pseudocode oder einer Programmiersprache Ihrer Wahl, der alle kürzesten Wege in einem gerichteten, azyklischen Graphen beginnend bei einem Knoten $s$ in Laufzeit $O(|V| + |E|)$ findet.
+        \item\label{shortest_paths_dag} \hard Implementieren Sie einen Algorithmus in Pseudocode oder einer Programmiersprache Ihrer Wahl, der alle kürzesten Wege in einem gerichteten, azyklischen Graphen beginnend bei einem Knoten $s$ in Laufzeit $O(|V| + |E|)$ findet.
         \begin{description}
             \item[Tipp:] Wenn Sie alle Kanten entlang eines kürzesten Weges in der Reihenfolge relaxieren, in der sie auf dem Weg vorkommen, haben Sie den kürzesten Weg gefunden.
         \end{description}
@@ -3954,7 +3954,7 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         Die Worst-Case-Laufzeit ändert sich durch diese Optimierung natürlich nicht, da im Worst Case alle Knoten von $s$ aus erreichbar sind.
     \end{enumerate}
 \end{loesung}
-\begin{aufgabe}{4}{Längste Wege}
+\begin{aufgabe}{4}{\hard Längste Wege}
     Der \emph{längste Weg} zwischen zwei Knoten $v$ und $w$ ist der längste, zyklenfreie (!) Pfad von $v$ nach $w$.
     \begin{enumerate}[label=\alph*)]
         \item Widerlegen Sie folgende Aussage, zum Beispiel mithilfe eines Gegenbeispiels:

@@ -112,7 +112,7 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         \item
         Nennen Sie zwei Vorteile und zwei Nachteile von RS-Bäumen in der Praxis im Vergleich zu AVL-Bäumen.
 
-        \item Fügen Sie jeweils den Wert 7 in die folgenden RS-Bäume ein.
+        \item \hard Fügen Sie jeweils den Wert 7 in die folgenden RS-Bäume ein.
         Fügen Sie dafür einen roten Knoten mit Wert 7 an die entsprechende Stelle gemäß der Suchbaumeigenschaft in den Baum ein.
         Nutzen Sie anschließend jeweils die angegebenen Operationen, um alle RS-Baum-Eigenschaften wiederherzustellen.
         Wie sehen die Bäume am Ende aus?
@@ -141,7 +141,7 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
 
         \item Beweisen oder widerlegen Sie folgende Behauptung: Bei jedem roten Knoten eines RS-Baumes sind entweder beide oder keiner der Nachfolger das RS-Blatt.
 
-        \item Wenn Sie in einem RS-Baum jeden schwarzen Knoten mit seinem/seinen roten Nachfolger(n) verschmelzen und die Nachfolger des roten Knotens als Nachfolger des schwarzen Knotens übernehmen, erhalten Sie einen Baum, mit potentiell mehr als einem Wert und mehr als zwei Nachfolgern pro Knoten.
+        \item \hard Wenn Sie in einem RS-Baum jeden schwarzen Knoten mit seinem/seinen roten Nachfolger(n) verschmelzen und die Nachfolger des roten Knotens als Nachfolger des schwarzen Knotens übernehmen, erhalten Sie einen Baum, mit potentiell mehr als einem Wert und mehr als zwei Nachfolgern pro Knoten.
         Beispiel:
         \begin{figure}[h!]
             \centering
@@ -326,7 +326,7 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
 \end{loesung}
 
 \begin{aufgabe}{3}{B-Bäume}
-    \begin{enumerate}
+    \begin{enumerate}[label=\alph*)]
         \item
         Nennen Sie zwei Vorteile und zwei Nachteile von B-Bäumen in der Praxis im Vergleich zu AVL-Bäumen.
 
@@ -343,14 +343,14 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         \textsc{Insert(2)}, \textsc{Remove(11)}, \textsc{Insert(7)}, \textsc{Insert(30)}, \textsc{Remove(8)}, \textsc{Remove(15)}.
         Geben Sie alle Zwischenschritte an.
 
-        \item Gegeben sei ein leerer B-Baum der Ordnung 4. Fügen Sie sukzessiv folgende Elemente in den Baum ein: 
+        \item\label{b_tree_insert} Gegeben sei ein leerer B-Baum der Ordnung 4. Fügen Sie sukzessiv folgende Elemente in den Baum ein: 
         7, 3, 8, 18, 10, 14, 12, 13, 6, 15, 20.
 
         \item
-        Entfernen Sie aus dem resultierenden Baum der vorherigen Teilaufgabe folgende Elemente:
+        Entfernen Sie aus dem resultierenden Baum von Teilaufgabe \ref*{b_tree_insert} folgende Elemente:
         3, 13, 6, 18, 20, 10.
 
-        \item Angenommen, Sie haben einen B-Baum der Ordnung $t$ mit $n$ Werten im Arbeitsspeicher vorliegen:
+        \item \hard Angenommen, Sie haben einen B-Baum der Ordnung $t$ mit $n$ Werten im Arbeitsspeicher vorliegen:
         \begin{lstlisting}[language=c++]
 class Node {
     int nValues; bool isLeaf;
@@ -359,7 +359,7 @@ class Node {
         \end{lstlisting}
         Implementieren Sie die Suchoperation, die überprüft, ob ein bestimmter Wert im Baum enthalten ist, in Pseudocode oder einer Programmiersprache Ihrer Wahl, einmal mit linearer Suche innerhalb eines Knotens und einmal mit binärer Suche.
 
-        \item Geben Sie die Worst-Case-Laufzeiten der beiden Algorithmen der vorherigen Teilaufgabe abhängig von $t$ und $n$ an.
+        \item \hard Geben Sie die Worst-Case-Laufzeiten der beiden Algorithmen der vorherigen Teilaufgabe abhängig von $t$ und $n$ an.
     \end{enumerate}
 \end{aufgabe}
 

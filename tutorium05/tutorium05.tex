@@ -165,7 +165,7 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
 
         % \emph{Zusatzaufgabe:} Schaffen Sie es auch ohne einen Stack und mit nur konstantem Speicherbedarf.
 
-        \item Gegeben sei die Sprache $L$ der korrekt geklammerten Ausdrücke über dem Alphabet $\Sigma = \{\texttt{[]\{\}()}\}$, die durch folgende kontextfreie Grammatik definiert ist:
+        \item \hard Gegeben sei die Sprache $L$ der korrekt geklammerten Ausdrücke über dem Alphabet $\Sigma = \{\texttt{[]\{\}()}\}$, die durch folgende kontextfreie Grammatik definiert ist:
         \begin{equation*}
             S \rightarrow
             \epsilon \mid
@@ -179,7 +179,7 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
 
         Beispiele: $\text{\texttt{"([]\{[()]\})"}} \in L$, $\text{\texttt{"[\{(\})]"}} \not\in L$
 
-        \item
+        \item \hard
         Manchmal weiß man im Vorhinein nicht, wie groß das zugrundeliegende Array eines Stacks sein soll.
         Deshalb beginnnt man häufig mit einem \glqq{}kleinen\grqq{} Array und vergrößert es dynamisch, wenn kein Platz für neue Elemente übrig ist.
         Vergrößern bedeutet hierbei: Allokiere Speicherplatz für ein größeres Array und kopiere die bestehenden Werte in das neue Array.
@@ -455,7 +455,7 @@ void list::enqueue(object o) {
         \FloatBarrier
         \item Gegeben sei ein linksvoller, binärer, verketteter Baum mit Inorder-Darstellung (9, 8, 7, 6, 5, 4, 3, 2, 1).
         Wie sieht der Baum aus?
-        \item Sei ein Knoten eines binären, verketteten Suchbaums durch folgende Datenstruktur definiert:
+        \item \hard Sei ein Knoten eines binären, verketteten Suchbaums durch folgende Datenstruktur definiert:
         \begin{lstlisting}[language=c++]
 class Node {
     int value;
@@ -464,7 +464,7 @@ class Node {
         \end{lstlisting}
         Geben Sie einen Algorithmus in Pseudocode oder einer Programmiersprache Ihrer Wahl an, welcher Ihnen bei einem gegebenen Knoten den nächsten Knoten in Inorder-Reihenfolge liefert.
         \item
-        Gegeben sei ein aufsteigend sortiertes Array mit $n$ ganzen Zahlen.
+        \hard Gegeben sei ein aufsteigend sortiertes Array mit $n$ ganzen Zahlen.
         Geben Sie einen Algorithmus mit Laufzeit $O(n)$ in Pseudocode oder einer Programmiersprache Ihrer Wahl an, welcher einen perfekt balancierten binär verketteten Suchbaum zurückgibt, der die gleichen Elemente wie das Array enthält.
     \end{enumerate}
 \end{aufgabe}

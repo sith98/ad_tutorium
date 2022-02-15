@@ -31,7 +31,7 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
         \item \label{it:ex} Gegeben sei folgendes Array: $(32, 4, 12, 71, 32, 66, 19, 15)$. Führen Sie händisch \textsc{BuildMaxHeap} auf diesem Array aus.
         Geben Sie den resultierenden Heap an.
         \item Entfernen Sie von Hand aus dem resultierenden Heap aus Teilaufgabe a) mittels \textsc{Heapify} die drei größten Elemente.
-        \item Mit Heapify lassen sich Werte in den Heap hineinsickern, um die Heap-Eigenschaft wiederherzustellen.
+        \item \hard Mit Heapify lassen sich Werte in den Heap hineinsickern, um die Heap-Eigenschaft wiederherzustellen.
         Gegeben sei die folgende Funktion, die einen Wert solange im Heap aufsteigen lässt, bis die Heap-Eigenschaft wiederhergestellt ist.
         \begin{lstlisting}[language=c++]
 void bubbleUp(int a[], int i) {
@@ -48,7 +48,7 @@ void bubbleUp(int a[], int i) {
         Überlegen Sie sich, wie diese Operationen mit Worst-Case-Laufzeit $O\big(\log(n)\big)$ umgesetzt werden können.
         Die Heap-Eigenschaft soll nach jedem Aufruf einer der Operationen weiterhin an allen Stellen des Heaps gelten.
         Implementieren Sie die Operationen in Pseudocode oder einer Programmiersprache Ihrer Wahl.
-        \item Gegeben sei der resultierende Heap aus Teilaufgabe a).
+        \item \hard Gegeben sei der resultierende Heap aus Teilaufgabe a).
         Führen Sie von Hand die folgenden Operationen hintereinander aus: \textsc{Remove(2)}, \textsc{Insert(66)}.
         Wie sieht der Heap nach den einzelnen Operationen jeweils aus?
     \end{enumerate}
@@ -232,7 +232,7 @@ void bubbleUp(int a[], int i) {
     
 \end{loesung}
 
-\begin{aufgabe}{2}{Optimierungen von Mergesort}
+\begin{aufgabe}{2}{Mergesort}
     \begin{enumerate}
         \item Sortieren Sie händisch das Array aus Aufgabe 1a) mittels Mergesort.
         Geben Sie den Inhalt des Arrays nach jedem Aufruf von \texttt{merge} an.
@@ -244,7 +244,7 @@ void bubbleUp(int a[], int i) {
 
         Wie sieht eine Best- und wie eine Worst-Case-Eingabe für die veränderte Mergesort-Implementierung aus?
         Wie lautet nun die Best- und die Worst-Case-Laufzeit?
-        \item Um ein Array mit $2n$ Elementen, welches aus zwei sortierten Teilarrays mit jeweils $n$ Elementen besteht, mit der Merge-Operation aus der Vorlesung zu vereinigen, ist ein zusätzliches Array mit Länge $2n$ nötig.
+        \item \hard Um ein Array mit $2n$ Elementen, welches aus zwei sortierten Teilarrays mit jeweils $n$ Elementen besteht, mit der Merge-Operation aus der Vorlesung zu vereinigen, ist ein zusätzliches Array mit Länge $2n$ nötig.
         Verändern Sie die Merge-Operation, sodass Sie nur noch ein Array der Länge $n$ benötigen. Die Laufzeit von $O(n)$ soll sich dabei nicht ändern.
         \begin{description}
             \item[Tipp:] Kopieren Sie zunächst einen Teil der Eingabe in das temporäre Array und vereinigen Sie dann in das ursprüngliche Array hinein.
@@ -416,7 +416,7 @@ void merge(int a[], int f, int l, int m) {
 \end{loesung}
 
 % Quelle: Cormen Problem 2-4 d)
-\begin{aufgabe}{4}{Algorithmus zum Finden der Anzahl von Inversionen in einem Array}
+\begin{aufgabe}{4}{\hard Algorithmus zum Finden der Anzahl von Inversionen in einem Array}
     \textit{Hinweis:} Die folgende Aufgabe baut auf Aufgabe 4 von Tutoriumsblatt 3 auf.
     Es ist hilfreich, diese Aufgabe vorher zu bearbeiten.
 

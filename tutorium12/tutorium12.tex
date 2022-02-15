@@ -409,7 +409,7 @@ Bei Fragen oder Unklarheiten kontaktieren Sie bitte den Tutor oder Dozenten in T
 \end{loesung}
 
 \ifcsdef{showLoesung}{}{\newpage}
-\begin{aufgabe}{3}{Dynamische Programmierung}
+\begin{aufgabe}{3}{\hard Dynamische Programmierung}
     Gegeben sei ein Array $(a_1, a_2, \ldots, a_n)$ mit $a_i \in \mathbb{Z}$ für $1 \leq i \leq n$.
     Eine aufsteigende Subsequenz des Arrays ist definiert als eine Folge $s_1, s_2, \ldots, s_{k - 1}, s_k$ mit $1 \leq s_1 < s_2 < \ldots < s_k \leq n$ und $a_{s_1} < a_{s_2} < \ldots < a_{s_k}$.
     Gesucht ist die längste, aufsteigende Subsequenz.
@@ -538,13 +538,13 @@ int longestIncreasingSubsequenceExt(int a[], int n, int **pSolution) {
         \item Bestimmen den kanonischen RFSA $M$ mit $\mathcal{L}(M) = L$ mithilfe des Algorithmus $\mathrm{NL}^*$. Geben Sie alle Zwischenschritte an (Herstellen von Geschlossenheit und Konsistenz, Äquivalenzfragen, Gegenbeispiele).
         \item Bestimmen Sie, zunächst von Hand, den (minimalen) DEA, der das Muster $abba$ in einem Text ($\Sigma = \{a, b\}$) sucht.
         Überprüfen Sie Ihr Ergebnis, indem Sie den Automaten mittels $\mathrm{L}^*$ erlernen.
-        \item Angenommen, Sie haben einen DEA $M = (Q, q_0, \delta, F)$ und ein Wort $w \in \Sigma^*$ gegeben.
+        \item \hard Angenommen, Sie haben einen DEA $M = (Q, q_0, \delta, F)$ und ein Wort $w \in \Sigma^*$ gegeben.
         Beschreiben Sie mittels Pseudocode, wie Sie überprüfen können, ob $w \in \mathcal{L}(M)$. Geben Sie Laufzeit und Speicherbedarf Ihres Algorithmus in $O$-Notation an, abhängig von $n = |Q|$ und $m = |w|$.
         \begin{description}
             \item[Hinweis:] Das Auswerten von $\delta(q, w_i)$ für einen Zustand $q$ und ein Zeichen des Wortes $w_i$ benötigt konstante Laufzeit.
             Ebenso kann man in $O(1)$ bestimmen, ob $q \in F$.
         \end{description}
-        \item Angenommen, Sie haben stattdessen einen NEA $M = (Q, Q_0, \delta, F)$ gegeben.
+        \item \hard Angenommen, Sie haben stattdessen einen NEA $M = (Q, Q_0, \delta, F)$ gegeben.
         Geben Sie einen Algorithmus in Pseudocode an, der für ein Wort $w \in \Sigma^*$ prüft, ob $w \in \mathcal{L}(M)$.
         Welche Laufzeit und Speicherbedarf besitzt Ihr Algorithmus?
     \end{enumerate}
